@@ -58,12 +58,12 @@ const LoginPage = () => {
     <div className="form">
       <form onSubmit={handleSubmit}>
         <div className="input-container">
-          <label>Username </label>
+          <label>Tên tài khoản </label>
           <input type="text" name="uname" required />
           {renderErrorMessage("uname")}
         </div>
         <div className="input-container">
-          <label>Password </label>
+          <label>Mật khẩu </label>
           <input type="password" name="pass" required />
           {renderErrorMessage("pass")}
         </div>
@@ -76,13 +76,10 @@ const LoginPage = () => {
   return (
     <>
       <MetaTags title="Login" description="Login page" />
-
-      <h1>LoginPage</h1>
-
       <div className="app">
       <div className="login-form">
-        <div className="title">Sign In</div>
-        {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
+        <div className="title">Đăng nhập</div>
+        {isSubmitted ? <div>Người dùng đã đăng nhập thành công</div> : renderForm}
       </div>
     </div>
 

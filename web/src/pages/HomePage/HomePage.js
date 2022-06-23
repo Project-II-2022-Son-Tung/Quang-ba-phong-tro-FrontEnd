@@ -6,7 +6,10 @@ const HomePage = () => {
     <>
       <MetaTags title="Home" description="Home page" />
       Home
-      <Button type="primary">Button</Button>
+      <section>
+        ffaf
+      </section>
+
     </>
   )
 }
