@@ -2,7 +2,30 @@ import { MetaTags } from '@redwoodjs/web'
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import './index.css'
+
+import{useMutation} from '@redwoodjs/web'
 const LoginPage = () => {
+
+
+
+  const mutation = gql`
+  mutation Login {
+  login(loginInput:{
+    usernameOrEmail: "congson1907"
+    password:"19072001"
+  }){
+    code
+    success
+    message
+    user {
+      username
+    }
+  }
+}
+  `
+  const [mutate] =useMutation(mutation)
+
+
 
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -70,9 +93,13 @@ const LoginPage = () => {
         <div className="button-container">
           <input type="submit" />
         </div>
+        <button onClick={() => mutate()}>
+      Click to mutate
+    </button>
       </form>
     </div>
   );
+
   return (
     <>
       <MetaTags title="Login" description="Login page" />
