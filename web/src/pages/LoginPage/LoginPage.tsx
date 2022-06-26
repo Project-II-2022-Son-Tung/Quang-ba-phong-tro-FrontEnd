@@ -23,7 +23,7 @@ const LoginPage = () => {
   }
 }
   `
-  const [mutate] =useMutation(mutation)
+  // const [mutate] =useMutation(mutation)
 
 
 
@@ -71,10 +71,10 @@ const LoginPage = () => {
   };
 
   // Generate JSX code for error message
-  const renderErrorMessage = (name) =>
-    name === errorMessages.name && (
-      <div className="error">{errorMessages.message}</div>
-    );
+  // const renderErrorMessage = (name) =>
+  //   name === errorMessages.name && (
+  //     <div className="error">{errorMessages.message}</div>
+  //   );
 
   // JSX code for login form
   const renderForm = (
@@ -83,17 +83,17 @@ const LoginPage = () => {
         <div className="input-container">
           <label>Tên tài khoản </label>
           <input type="text" name="uname" required />
-          {renderErrorMessage("uname")}
+          {/* {renderErrorMessage("uname")} */}
         </div>
         <div className="input-container">
           <label>Mật khẩu </label>
           <input type="password" name="pass" required />
-          {renderErrorMessage("pass")}
+          {/* {renderErrorMessage("pass")} */}
         </div>
         <div className="button-container">
           <input type="submit" />
         </div>
-        <button onClick={() => mutate()}>
+        <button>
       Click to mutate
     </button>
       </form>

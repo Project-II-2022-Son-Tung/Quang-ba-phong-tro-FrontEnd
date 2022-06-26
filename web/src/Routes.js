@@ -7,7 +7,7 @@ const Routes = () => {
   return (
     <Router>
 
-      <Route path="/signup" page={SignupPage} name="signup" />
+
 
       <Set wrap={CustomerLayout}>
         <Route path="/about" page={AboutPage} name="about" />

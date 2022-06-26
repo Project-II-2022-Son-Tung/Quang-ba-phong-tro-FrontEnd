@@ -1,10 +1,12 @@
 {
+
   "compilerOptions": {
     "noEmit": true,
     "allowJs": true,
     "esModuleInterop": true,
     "target": "esnext",
     "module": "esnext",
+    "outDir" :"./dist",
     "moduleResolution": "node",
     "baseUrl": "./",
     "rootDirs": [
