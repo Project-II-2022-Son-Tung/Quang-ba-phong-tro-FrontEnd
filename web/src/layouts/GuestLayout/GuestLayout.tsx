@@ -1,22 +1,26 @@
-import {Button} from 'antd';
-import "antd/dist/antd.css";
-import React from 'react';
+import { Button } from 'antd'
+import 'antd/dist/antd.css'
+import React from 'react'
+import './index.css'
 const GuestLayout = ({ children }) => {
   return (
-    <div>
-      <header style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
+    <>
+      <header
+        className="header"
+      >
+        <h1 style={{}}>House Rental</h1>
+        <div>
 
-        <h1 style={{}}>
-          House Rental
-        </h1>
-
-        <Button style={{justifyContent:'right'}} type="primary" shape="round">Đăng nhập</Button>
-        <Button style={{justifyContent:'right'}} type="primary" shape="round">Đăng ký</Button>
-
-
+          <Button type="primary" shape="round">
+            Đăng nhập
+          </Button>
+          <Button type="primary" shape="round">
+            Đăng ký
+          </Button>
+        </div>
       </header>
       <main>{children}</main>
-    </div>
+    </>
   )
 }
 

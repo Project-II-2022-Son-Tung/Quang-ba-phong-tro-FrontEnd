@@ -1,0 +1,6 @@
+.center_row{
+  justify-content: center;
+ align-items: center;
+  marginLeft:40px;
+  width: 1000px;
+}

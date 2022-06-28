@@ -1,82 +1,50 @@
 import { MetaTags } from '@redwoodjs/web'
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useState } from 'react'
 import './index.css'
 
-import{useMutation} from '@redwoodjs/web'
+import { useLoginMutation } from '../../generated/graphql'
+import { navigate, routes } from '@redwoodjs/router'
+
+
+
 const LoginPage = () => {
 
+  const [loginUser, { loading: _loginUserLoading, error }] = useLoginMutation()
 
-
-  const mutation = gql`
-  mutation Login {
-  login(loginInput:{
-    usernameOrEmail: "congson1907"
-    password:"19072001"
-  }){
-    code
-    success
-    message
-    user {
-      username
-    }
-  }
-}
-  `
   // const [mutate] =useMutation(mutation)
 
-
-
-  const [errorMessages, setErrorMessages] = useState({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   // User Login info
-  const database = [
-    {
-      username: "user1",
-      password: "pass1"
-    },
-    {
-      username: "user2",
-      password: "pass2"
-    }
-  ];
 
-  const errors = {
-    uname: "invalid username",
-    pass: "invalid password"
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     //Prevent page reload
-    event.preventDefault();
+    event.preventDefault()
 
-    var { uname, pass } = document.forms[0];
+    const uname = event.target.uname.value
+    const pass = event.target.pass.value
 
-    // Find user login info
-    const userData = database.find((user) => user.username === uname.value);
+    console.log(uname + '__' + pass + '')
+
+    const response = await loginUser({
+      variables: {
+        loginInput: { usernameOrEmail: uname, password: pass },
+      },
+    })
+    console.log(response)
+
+    const userData = response.data.login.success
 
     // Compare user info
     if (userData) {
-      if (userData.password !== pass.value) {
-        // Invalid password
-        setErrorMessages({ name: "pass", message: errors.pass });
-      } else {
-        setIsSubmitted(true);
-      }
+      setIsSubmitted(true);
+      navigate(routes.home())
     } else {
+      setIsSubmitted(false)
       // Username not found
-      setErrorMessages({ name: "uname", message: errors.uname });
     }
-  };
+  }
 
-  // Generate JSX code for error message
-  // const renderErrorMessage = (name) =>
-  //   name === errorMessages.name && (
-  //     <div className="error">{errorMessages.message}</div>
-  //   );
-
-  // JSX code for login form
   const renderForm = (
     <div className="form">
       <form onSubmit={handleSubmit}>
@@ -93,25 +61,26 @@ const LoginPage = () => {
         <div className="button-container">
           <input type="submit" />
         </div>
-        <button>
-      Click to mutate
-    </button>
       </form>
     </div>
-  );
+  )
 
   return (
     <>
       <MetaTags title="Login" description="Login page" />
       <div className="app">
-      <div className="login-form">
-        <div className="title">Đăng nhập</div>
-        {isSubmitted ? <div>Người dùng đã đăng nhập thành công</div> : renderForm}
+        <div className="login-form">
+          <div className="title">Đăng nhập</div>
+          {isSubmitted ? (
+            <>
+            <div>Người dùng đã đăng nhập thành công</div>
+            </>
+          ) : (
+
+            renderForm
+          )}
+        </div>
       </div>
-    </div>
-
-
-
     </>
   )
 }

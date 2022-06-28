@@ -1,0 +1,53 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  outline:0
+}
+.container{
+  margin: 0 auto;
+  width: 1000px;
+  height: 300px;
+  border: 1px solid;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+
+}
+.image_container{
+  width: 40%;
+  height: 300px;
+  border-right: 1px solid;
+  float: left;
+
+
+}
+.info_container{
+  width: 60%;
+
+  height: 300px;
+  float: right
+
+}
+.img{
+  width: 400px;
+  height: 300px;
+}
+.title{
+  width: 95%;
+  height: 60px;
+  margin-left: 15px;
+
+}
+.title_text{
+  font-size: 18px;
+  line-height:30px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  color: #E13427;
+  display:'block';
+  text-decoration: underline;
+  text-transform: uppercase;
+
+
+}
