@@ -1,16 +1,26 @@
 import React from 'react'
 import './index.css'
 import images from 'src/assets/images'
+// import images from 'src/assets/images'
 const RoomInfo = (props) => {
-  const { title, price, size, district, province, description, owner } = props
+  const { title, price, size, district, province, description, owner, room_images } = props
 
   const fixed_price =
     price % 1000000 == 0 ? price / 1000000 : (price / 1000000).toFixed(1)
 
+
+
+
+
+  const img_src = ((!room_images) || room_images.length == 0  ) ? images.room : room_images[0].imageUrl
+
+
   return (
     <div className="container">
       <div className="image_container">
-        <img className="img" src={images.room} />
+        <img className="img" src= {img_src}/>
+
+
       </div>
       <div className="info_container">
         <div className="title">

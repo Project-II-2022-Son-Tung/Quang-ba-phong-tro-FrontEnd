@@ -35,7 +35,7 @@ const ListRoom = () => {
             rate={room.rate}
             owner={room.owner}
             address={room.address}
-            images={room.images[0]}
+            room_images={room.images}
 
           />
         )
