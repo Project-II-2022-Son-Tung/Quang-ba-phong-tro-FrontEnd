@@ -1,53 +1,115 @@
-*{
+* {
   box-sizing: border-box;
   margin: 0;
-  outline:0
+  outline: 0;
 }
-.container{
+.container {
   margin: 0 auto;
   width: 1000px;
   height: 300px;
-  border: 1px solid;
+  /* border-top: 1px solid;
+  border-bottom: 1px solid; */
+  border: 1px solid #e13427;
   display: block;
   justify-content: center;
   align-items: center;
   margin-bottom: 50px;
-
+  background-color: #fff9f3;
 }
-.image_container{
+.image_container {
   width: 40%;
   height: 300px;
   border-right: 1px solid;
   float: left;
-
-
 }
-.info_container{
+.info_container {
   width: 60%;
 
   height: 300px;
-  float: right
-
+  float: right;
 }
-.img{
+.img {
   width: 400px;
   height: 300px;
 }
-.title{
+.title {
   width: 95%;
   height: 60px;
-  margin-left: 15px;
-
+  margin-left: 25px;
 }
-.title_text{
+.title_text {
   font-size: 18px;
-  line-height:30px;
+  line-height: 30px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 700;
-  color: #E13427;
-  display:'block';
+  color: #e13427;
+  display: 'block';
   text-decoration: underline;
   text-transform: uppercase;
+}
+.sub_info {
+  width: 95%;
+  height: 60px;
+  margin-left: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.price_text {
+  color: #16c784;
+  font-size: 24px;
+  font-weight: 700;
+}
+.size_text {
+  color: #333;
+  line-height: 24px;
+  font-size: 19px;
+}
+.district_text {
+  color: #333;
+  line-height: 24px;
+  font-size: 19px;
+  margin-right: 80px;
+}
+.description_container {
+  width: 95%;
+  height: 75px;
+  margin-left: 25px;
+}
+.description_text {
+  display: block;
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  line-height:25px;
 
+  /* white-space: pre-wrap; current browsers */
+  /* text-overflow: ellipsis; */
+  color: #8a8d91;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+}
+.contact_container{
+  margin-left: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height:105px;
+}
+.avt_img{
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  overflow: hidden;
+
+}
+.owner_name{
+  color: #8a8d91;
+  font-size: 18px;
+  font-family: Arial,Helvetica,sans-serif;
+  margin-left: 5px;
 
 }

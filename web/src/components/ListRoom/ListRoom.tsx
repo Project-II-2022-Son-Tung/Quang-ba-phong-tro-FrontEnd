@@ -30,11 +30,12 @@ const ListRoom = () => {
             price={room.price}
             size={room.size}
             district={room.district}
+            province={room.province}
             description={room.description}
             rate={room.rate}
             owner={room.owner}
             address={room.address}
-            images={room.images}
+            images={room.images[0]}
 
           />
         )
