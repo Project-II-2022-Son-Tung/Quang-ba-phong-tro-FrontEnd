@@ -1,0 +1,12 @@
+query Room ($roomId: String!){
+  room(
+    id: $roomId
+  ) {
+    code
+    success
+    message
+    room {
+      ...roomInfo
+    }
+  }
+}

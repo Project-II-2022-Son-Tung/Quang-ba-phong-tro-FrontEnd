@@ -1,0 +1,18 @@
+fragment ownerInfo on Owner {
+    username
+    id
+    fullName
+    email
+    address
+    avatarUrl
+    wallet {
+      id
+      availableBalance
+      balance
+    }
+    identification {
+      serial
+      issuedBy
+      issueDate
+    }
+}

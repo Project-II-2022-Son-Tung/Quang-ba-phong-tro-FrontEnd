@@ -1,0 +1,5 @@
+query MeOwner{
+  meOwner {
+    ...ownerInfo
+  }
+}

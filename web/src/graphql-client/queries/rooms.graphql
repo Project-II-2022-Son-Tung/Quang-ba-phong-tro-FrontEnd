@@ -1,0 +1,10 @@
+query Rooms($page: Float!, $limit: Float!, $orderBy: RoomOrderByInput, $filter: RoomFilterInput) {
+  rooms (
+      page : $page
+      limit: $limit
+      orderBy: $orderBy
+      filter : $filter
+  ) {
+    ...roomInfo
+  }
+}

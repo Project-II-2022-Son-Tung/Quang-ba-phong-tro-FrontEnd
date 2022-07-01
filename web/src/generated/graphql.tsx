@@ -160,6 +160,8 @@ export type Mutation = {
   changePassword: UserMutationResponse;
   changePasswordOwner: OwnerMutationResponse;
   createRoom: RoomMutationResponse;
+  createRoomFavourite: RoomFavouriteMutationResponse;
+  deleteRoomFavourite: RoomFavouriteMutationResponse;
   forgotPassword: Scalars['Boolean'];
   forgotPasswordOwner: Scalars['Boolean'];
   login: UserMutationResponse;
@@ -190,6 +192,16 @@ export type MutationChangePasswordOwnerArgs = {
 
 export type MutationCreateRoomArgs = {
   roomInput: CreateRoomInput;
+};
+
+
+export type MutationCreateRoomFavouriteArgs = {
+  roomId: Scalars['String'];
+};
+
+
+export type MutationDeleteRoomFavouriteArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -322,8 +334,10 @@ export type Provinces = {
 
 export type Query = {
   __typename?: 'Query';
+  countRoomFavourites: Scalars['Float'];
   districts: Array<Districts>;
   districtsOfProvince: Array<Districts>;
+  isRoomFavourited: Scalars['Boolean'];
   me?: Maybe<User>;
   meAdmin?: Maybe<Admin>;
   meOwner?: Maybe<Owner>;
@@ -335,8 +349,18 @@ export type Query = {
 };
 
 
+export type QueryCountRoomFavouritesArgs = {
+  roomId: Scalars['String'];
+};
+
+
 export type QueryDistrictsOfProvinceArgs = {
   provinceCode: Scalars['String'];
+};
+
+
+export type QueryIsRoomFavouritedArgs = {
+  roomId: Scalars['String'];
 };
 
 
@@ -401,6 +425,25 @@ export type Room = {
   waterPrice?: Maybe<Scalars['Float']>;
   wifi: Scalars['Boolean'];
   wifiFee?: Maybe<Scalars['Float']>;
+};
+
+export type RoomFavourite = {
+  __typename?: 'RoomFavourite';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  room: Room;
+  roomId: Scalars['String'];
+  user: User;
+  userId: Scalars['String'];
+};
+
+export type RoomFavouriteMutationResponse = IMutationResponse & {
+  __typename?: 'RoomFavouriteMutationResponse';
+  code: Scalars['Float'];
+  errors?: Maybe<Array<FieldError>>;
+  message?: Maybe<Scalars['String']>;
+  roomFavourite?: Maybe<RoomFavourite>;
+  success: Scalars['Boolean'];
 };
 
 export type RoomFilterInput = {
@@ -495,6 +538,7 @@ export type User = {
   invites?: Maybe<Array<Invite>>;
   phoneNumber: Scalars['String'];
   rates?: Maybe<Array<OwnerRate>>;
+  roomFavourites?: Maybe<Array<RoomFavourite>>;
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
   wallet: Wallet;
@@ -561,6 +605,13 @@ export type RoomInfoFragment = { __typename?: 'Room', id: string, title: string,
 
 export type UserInfoFragment = { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
 
+export type AddRoomToFavouriteMutationVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type AddRoomToFavouriteMutation = { __typename?: 'Mutation', createRoomFavourite: { __typename?: 'RoomFavouriteMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
+
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
 }>;
@@ -568,22 +619,72 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', username: string } | null | undefined } };
 
+export type LoginAdminMutationVariables = Exact<{
+  loginInput: LoginInput;
+}>;
+
+
+export type LoginAdminMutation = { __typename?: 'Mutation', loginAdmin: { __typename?: 'AdminMutationResponse', code: number, success: boolean, message?: string | null | undefined, admin?: { __typename?: 'Admin', id: string, username: string } | null | undefined } };
+
 export type LoginOwnerMutationVariables = Exact<{
   loginInput: LoginInput;
 }>;
 
 
-export type LoginOwnerMutation = { __typename?: 'Mutation', loginOwner: { __typename?: 'OwnerMutationResponse', code: number, success: boolean, message?: string | null | undefined, owner?: { __typename?: 'Owner', username: string } | null | undefined } };
+export type LoginOwnerMutation = { __typename?: 'Mutation', loginOwner: { __typename?: 'OwnerMutationResponse', code: number, success: boolean, message?: string | null | undefined, owner?: { __typename?: 'Owner', id: string, username: string } | null | undefined } };
+
+export type OwnerRegisterMutationVariables = Exact<{
+  registerInput: OwnerRegisterInput;
+}>;
+
+
+export type OwnerRegisterMutation = { __typename?: 'Mutation', registerOwner: { __typename?: 'OwnerMutationResponse', success: boolean, code: number, message?: string | null | undefined, owner?: { __typename?: 'Owner', username: string } | null | undefined } };
+
+export type UpdateUserMutationVariables = Exact<{
+  updateUserInput: UpdateUiInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UserMutationResponse', code: number, message?: string | null | undefined, user?: { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined } | null | undefined };
+
+export type UserRegisterMutationVariables = Exact<{
+  registerInput: UserRegisterInput;
+}>;
+
+
+export type UserRegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', success: boolean, code: number, message?: string | null | undefined, user?: { __typename?: 'User', id: string, username: string } | null | undefined } };
+
+export type GetMyFavouritesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyFavouritesQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, roomFavourites?: Array<{ __typename?: 'RoomFavourite', room: { __typename?: 'Room', id: string, title: string, address: string, images: Array<{ __typename?: 'RoomImage', imageUrl: string }> } }> | null | undefined } | null | undefined };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
 
+export type MeAdminQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeAdminQuery = { __typename?: 'Query', meAdmin?: { __typename?: 'Admin', id: string, username: string, email: string, fullName: string } | null | undefined };
+
 export type MeOwnerQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeOwnerQuery = { __typename?: 'Query', meOwner?: { __typename?: 'Owner', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
+
+export type ProvincesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProvincesQuery = { __typename?: 'Query', provinces: Array<{ __typename?: 'Provinces', full_name?: string | null | undefined, code: string, name: string, districts: Array<{ __typename?: 'Districts', code: string, full_name?: string | null | undefined, name: string, wards: Array<{ __typename?: 'Wards', code: string, full_name?: string | null | undefined, name: string }> }> }> };
+
+export type RoomQueryVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
 
 export type RoomsQueryVariables = Exact<{
   page: Scalars['Float'];
@@ -691,6 +792,41 @@ export const UserInfoFragmentDoc = gql`
   }
 }
     `;
+export const AddRoomToFavouriteDocument = gql`
+    mutation AddRoomToFavourite($roomId: String!) {
+  createRoomFavourite(roomId: $roomId) {
+    code
+    success
+    message
+  }
+}
+    `;
+export type AddRoomToFavouriteMutationFn = Apollo.MutationFunction<AddRoomToFavouriteMutation, AddRoomToFavouriteMutationVariables>;
+
+/**
+ * __useAddRoomToFavouriteMutation__
+ *
+ * To run a mutation, you first call `useAddRoomToFavouriteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddRoomToFavouriteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addRoomToFavouriteMutation, { data, loading, error }] = useAddRoomToFavouriteMutation({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *   },
+ * });
+ */
+export function useAddRoomToFavouriteMutation(baseOptions?: Apollo.MutationHookOptions<AddRoomToFavouriteMutation, AddRoomToFavouriteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddRoomToFavouriteMutation, AddRoomToFavouriteMutationVariables>(AddRoomToFavouriteDocument, options);
+      }
+export type AddRoomToFavouriteMutationHookResult = ReturnType<typeof useAddRoomToFavouriteMutation>;
+export type AddRoomToFavouriteMutationResult = Apollo.MutationResult<AddRoomToFavouriteMutation>;
+export type AddRoomToFavouriteMutationOptions = Apollo.BaseMutationOptions<AddRoomToFavouriteMutation, AddRoomToFavouriteMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
@@ -729,6 +865,45 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const LoginAdminDocument = gql`
+    mutation LoginAdmin($loginInput: LoginInput!) {
+  loginAdmin(loginInput: $loginInput) {
+    code
+    success
+    message
+    admin {
+      id
+      username
+    }
+  }
+}
+    `;
+export type LoginAdminMutationFn = Apollo.MutationFunction<LoginAdminMutation, LoginAdminMutationVariables>;
+
+/**
+ * __useLoginAdminMutation__
+ *
+ * To run a mutation, you first call `useLoginAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginAdminMutation, { data, loading, error }] = useLoginAdminMutation({
+ *   variables: {
+ *      loginInput: // value for 'loginInput'
+ *   },
+ * });
+ */
+export function useLoginAdminMutation(baseOptions?: Apollo.MutationHookOptions<LoginAdminMutation, LoginAdminMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginAdminMutation, LoginAdminMutationVariables>(LoginAdminDocument, options);
+      }
+export type LoginAdminMutationHookResult = ReturnType<typeof useLoginAdminMutation>;
+export type LoginAdminMutationResult = Apollo.MutationResult<LoginAdminMutation>;
+export type LoginAdminMutationOptions = Apollo.BaseMutationOptions<LoginAdminMutation, LoginAdminMutationVariables>;
 export const LoginOwnerDocument = gql`
     mutation LoginOwner($loginInput: LoginInput!) {
   loginOwner(loginInput: $loginInput) {
@@ -736,6 +911,7 @@ export const LoginOwnerDocument = gql`
     success
     message
     owner {
+      id
       username
     }
   }
@@ -767,6 +943,164 @@ export function useLoginOwnerMutation(baseOptions?: Apollo.MutationHookOptions<L
 export type LoginOwnerMutationHookResult = ReturnType<typeof useLoginOwnerMutation>;
 export type LoginOwnerMutationResult = Apollo.MutationResult<LoginOwnerMutation>;
 export type LoginOwnerMutationOptions = Apollo.BaseMutationOptions<LoginOwnerMutation, LoginOwnerMutationVariables>;
+export const OwnerRegisterDocument = gql`
+    mutation OwnerRegister($registerInput: OwnerRegisterInput!) {
+  registerOwner(registerInput: $registerInput) {
+    success
+    code
+    message
+    owner {
+      username
+    }
+  }
+}
+    `;
+export type OwnerRegisterMutationFn = Apollo.MutationFunction<OwnerRegisterMutation, OwnerRegisterMutationVariables>;
+
+/**
+ * __useOwnerRegisterMutation__
+ *
+ * To run a mutation, you first call `useOwnerRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useOwnerRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [ownerRegisterMutation, { data, loading, error }] = useOwnerRegisterMutation({
+ *   variables: {
+ *      registerInput: // value for 'registerInput'
+ *   },
+ * });
+ */
+export function useOwnerRegisterMutation(baseOptions?: Apollo.MutationHookOptions<OwnerRegisterMutation, OwnerRegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<OwnerRegisterMutation, OwnerRegisterMutationVariables>(OwnerRegisterDocument, options);
+      }
+export type OwnerRegisterMutationHookResult = ReturnType<typeof useOwnerRegisterMutation>;
+export type OwnerRegisterMutationResult = Apollo.MutationResult<OwnerRegisterMutation>;
+export type OwnerRegisterMutationOptions = Apollo.BaseMutationOptions<OwnerRegisterMutation, OwnerRegisterMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($updateUserInput: UpdateUIInput!) {
+  updateUser(updateUserInput: $updateUserInput) {
+    code
+    message
+    user {
+      ...userInfo
+    }
+  }
+}
+    ${UserInfoFragmentDoc}`;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      updateUserInput: // value for 'updateUserInput'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UserRegisterDocument = gql`
+    mutation UserRegister($registerInput: UserRegisterInput!) {
+  register(registerInput: $registerInput) {
+    success
+    code
+    message
+    user {
+      id
+      username
+    }
+  }
+}
+    `;
+export type UserRegisterMutationFn = Apollo.MutationFunction<UserRegisterMutation, UserRegisterMutationVariables>;
+
+/**
+ * __useUserRegisterMutation__
+ *
+ * To run a mutation, you first call `useUserRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userRegisterMutation, { data, loading, error }] = useUserRegisterMutation({
+ *   variables: {
+ *      registerInput: // value for 'registerInput'
+ *   },
+ * });
+ */
+export function useUserRegisterMutation(baseOptions?: Apollo.MutationHookOptions<UserRegisterMutation, UserRegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UserRegisterMutation, UserRegisterMutationVariables>(UserRegisterDocument, options);
+      }
+export type UserRegisterMutationHookResult = ReturnType<typeof useUserRegisterMutation>;
+export type UserRegisterMutationResult = Apollo.MutationResult<UserRegisterMutation>;
+export type UserRegisterMutationOptions = Apollo.BaseMutationOptions<UserRegisterMutation, UserRegisterMutationVariables>;
+export const GetMyFavouritesDocument = gql`
+    query getMyFavourites {
+  me {
+    id
+    roomFavourites {
+      room {
+        id
+        title
+        address
+        images {
+          imageUrl
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyFavouritesQuery__
+ *
+ * To run a query within a React component, call `useGetMyFavouritesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyFavouritesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyFavouritesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyFavouritesQuery(baseOptions?: Apollo.QueryHookOptions<GetMyFavouritesQuery, GetMyFavouritesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyFavouritesQuery, GetMyFavouritesQueryVariables>(GetMyFavouritesDocument, options);
+      }
+export function useGetMyFavouritesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyFavouritesQuery, GetMyFavouritesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyFavouritesQuery, GetMyFavouritesQueryVariables>(GetMyFavouritesDocument, options);
+        }
+export type GetMyFavouritesQueryHookResult = ReturnType<typeof useGetMyFavouritesQuery>;
+export type GetMyFavouritesLazyQueryHookResult = ReturnType<typeof useGetMyFavouritesLazyQuery>;
+export type GetMyFavouritesQueryResult = Apollo.QueryResult<GetMyFavouritesQuery, GetMyFavouritesQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -801,6 +1135,43 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const MeAdminDocument = gql`
+    query MeAdmin {
+  meAdmin {
+    id
+    username
+    email
+    fullName
+  }
+}
+    `;
+
+/**
+ * __useMeAdminQuery__
+ *
+ * To run a query within a React component, call `useMeAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeAdminQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeAdminQuery(baseOptions?: Apollo.QueryHookOptions<MeAdminQuery, MeAdminQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeAdminQuery, MeAdminQueryVariables>(MeAdminDocument, options);
+      }
+export function useMeAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeAdminQuery, MeAdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeAdminQuery, MeAdminQueryVariables>(MeAdminDocument, options);
+        }
+export type MeAdminQueryHookResult = ReturnType<typeof useMeAdminQuery>;
+export type MeAdminLazyQueryHookResult = ReturnType<typeof useMeAdminLazyQuery>;
+export type MeAdminQueryResult = Apollo.QueryResult<MeAdminQuery, MeAdminQueryVariables>;
 export const MeOwnerDocument = gql`
     query MeOwner {
   meOwner {
@@ -835,6 +1206,92 @@ export function useMeOwnerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Me
 export type MeOwnerQueryHookResult = ReturnType<typeof useMeOwnerQuery>;
 export type MeOwnerLazyQueryHookResult = ReturnType<typeof useMeOwnerLazyQuery>;
 export type MeOwnerQueryResult = Apollo.QueryResult<MeOwnerQuery, MeOwnerQueryVariables>;
+export const ProvincesDocument = gql`
+    query Provinces {
+  provinces {
+    full_name
+    code
+    name
+    districts {
+      code
+      full_name
+      name
+      wards {
+        code
+        full_name
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useProvincesQuery__
+ *
+ * To run a query within a React component, call `useProvincesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProvincesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProvincesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProvincesQuery(baseOptions?: Apollo.QueryHookOptions<ProvincesQuery, ProvincesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProvincesQuery, ProvincesQueryVariables>(ProvincesDocument, options);
+      }
+export function useProvincesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProvincesQuery, ProvincesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProvincesQuery, ProvincesQueryVariables>(ProvincesDocument, options);
+        }
+export type ProvincesQueryHookResult = ReturnType<typeof useProvincesQuery>;
+export type ProvincesLazyQueryHookResult = ReturnType<typeof useProvincesLazyQuery>;
+export type ProvincesQueryResult = Apollo.QueryResult<ProvincesQuery, ProvincesQueryVariables>;
+export const RoomDocument = gql`
+    query Room($roomId: String!) {
+  room(id: $roomId) {
+    code
+    success
+    message
+    room {
+      ...roomInfo
+    }
+  }
+}
+    ${RoomInfoFragmentDoc}`;
+
+/**
+ * __useRoomQuery__
+ *
+ * To run a query within a React component, call `useRoomQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRoomQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRoomQuery({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *   },
+ * });
+ */
+export function useRoomQuery(baseOptions: Apollo.QueryHookOptions<RoomQuery, RoomQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RoomQuery, RoomQueryVariables>(RoomDocument, options);
+      }
+export function useRoomLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RoomQuery, RoomQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RoomQuery, RoomQueryVariables>(RoomDocument, options);
+        }
+export type RoomQueryHookResult = ReturnType<typeof useRoomQuery>;
+export type RoomLazyQueryHookResult = ReturnType<typeof useRoomLazyQuery>;
+export type RoomQueryResult = Apollo.QueryResult<RoomQuery, RoomQueryVariables>;
 export const RoomsDocument = gql`
     query Rooms($page: Float!, $limit: Float!, $orderBy: RoomOrderByInput, $filter: RoomFilterInput) {
   rooms(page: $page, limit: $limit, orderBy: $orderBy, filter: $filter) {

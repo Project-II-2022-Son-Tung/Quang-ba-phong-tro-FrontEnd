@@ -1,0 +1,54 @@
+fragment roomInfo on Room {
+    id
+    title
+    price
+    description
+    rate
+    size
+    floor
+    maxOccupancy
+    liveWithHost
+    petsAllowed
+    electricPrice
+    waterPrice
+    parking
+    parkingFee
+    waterHeating
+    airConditioning
+    province {
+      code
+      name
+      full_name
+    }
+    district {
+      code
+      name
+      full_name
+    }
+    ward {
+      code
+      name
+      full_name
+    }
+    wifi
+    wifiFee
+    lift
+    numberOfFloors
+    available
+    owner {
+      id
+      email
+      fullName
+      phoneNumber
+      avatarUrl
+    }
+    images {
+      imageUrl
+      caption
+    }
+    address
+    enclosed
+    province {
+      code
+    }
+}

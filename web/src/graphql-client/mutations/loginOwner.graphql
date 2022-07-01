@@ -1,0 +1,10 @@
+mutation LoginOwner($loginInput: LoginInput!) {
+  loginOwner(loginInput: $loginInput) {
+    code
+    success
+    message
+    owner {
+      username
+    }
+  }
+}

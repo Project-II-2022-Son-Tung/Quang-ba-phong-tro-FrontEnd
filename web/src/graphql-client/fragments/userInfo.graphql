@@ -1,0 +1,18 @@
+fragment userInfo on User {
+    username
+    id
+    fullName
+    email
+    address
+    avatarUrl
+    wallet {
+      id
+      availableBalance
+      balance
+    }
+    identification {
+      serial
+      issuedBy
+      issueDate
+    }
+}
