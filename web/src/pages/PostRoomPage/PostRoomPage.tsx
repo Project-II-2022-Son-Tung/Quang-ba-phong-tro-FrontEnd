@@ -11,6 +11,9 @@ const PostRoomPage = () => {
   const [provinces, setProvinces] = useState([])
   const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
+  const [wifi, setWifi] = useState(false)
+  const [selectedFile, setSelectedFile] = useState();
+
 
   const [getProvince, { loading: _getProvinceLoading, error }] = useProvincesLazyQuery(
     {
@@ -51,6 +54,14 @@ const PostRoomPage = () => {
     const districtId = event.target.value
     const district = districts.find(district => district.code === districtId)
     setWards(district.wards)
+  }
+  const toggleWifi = (event) => {
+    setWifi(event.target.checked)
+  }
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0])
+    console.log(event.target.files)
   }
 
   const renderForm = (
@@ -96,12 +107,63 @@ const PostRoomPage = () => {
         <div className="input-container">
           <label>Địa chỉ</label>
           <input type="text" name="address" required />
-          {/* {renderErrorMessage("uname")} */}
         </div>
         <div className="input-container">
-          <label>Mật khẩu </label>
-          <input type="password" name="pass" required />
-          {/* {renderErrorMessage("pass")} */}
+          <label>Hình ảnh minh họa</label>
+          <input type="file" name="file" onChange={handleFileChange} />
+        </div>
+        <div className="input-container">
+          <label>Chiều rộng (mét vuông)</label>
+          <input type="text" name="size" required />
+        </div>
+        <div className="input-container">
+          <label>Tầng thứ:</label>
+          <input type="text" name="floor" required />
+        </div>
+        <div className="input-container">
+          <label>Số tầng của tòa nhà</label>
+          <input type="text" name="numberOfFloors" required />
+        </div>
+        <div className="input-container">
+          <label>Số người tối đa</label>
+          <input type="text" name="maxOccupancy" required />
+        </div>
+        <div className="input-container">
+          <label>Giá tiền điện mỗi số</label>
+          <input type="text" name="electricPrice" required />
+        </div>
+        <div className="input-container">
+          <label>Giá nước mỗi người/tháng</label>
+          <input type="text" name="waterPrice" required />
+        </div>
+        <div className="input-container">
+          <label>Giá tiền phòng mỗi tháng</label>
+          <input type="text" name="price" required />
+        </div>
+        <div className="input-container2">
+          <label style={{float: "left", marginTop: "auto" }}>Trọ chung chủ</label>
+          <input type="checkbox" name="liveWithHost" required style={{alignSelf: "center"}}/>
+          <label style={{float: "left", marginTop: "auto" }}>Khép kín</label>
+          <input type="checkbox" name="enclosed" required style={{alignSelf: "center"}}/>
+          <label style={{float: "left", marginTop: "auto" }}>Cho phép động vật</label>
+          <input type="checkbox" name="petsAllowed" required style={{alignSelf: "center"}}/>
+          <label style={{float: "left", marginTop: "auto" }}>Wifi</label>
+          <input type="checkbox" name="wifi" onChange={toggleWifi} required style={{alignSelf: "center"}}/>
+        </div>
+        <div className="input-container">
+          <label>Phí wifi mỗi phòng/tháng</label>
+          <input type="text" name="wifiFee" required disabled={!wifi} />
+        </div>
+
+        <div className="input-container2">
+          <label style={{float: "left", marginTop: "auto" }}>Chỗ để xe</label>
+          <input type="checkbox" name="parking" required style={{alignSelf: "center"}}/>
+          <label style={{float: "left", marginTop: "auto" }}>Nóng lạnh</label>
+          <input type="checkbox" name="waterHeating" required style={{alignSelf: "center"}}/>
+          <label style={{float: "left", marginTop: "auto" }}>Điều hòa</label>
+          <input type="checkbox" name="airConditioning" required style={{alignSelf: "center"}}/>
+          <label style={{float: "left", marginTop: "auto" }}>Thang máy</label>
+          <input type="checkbox" name="lift" required style={{alignSelf: "center"}}/>
         </div>
         <div className="button-container">
           <input type="submit" />
