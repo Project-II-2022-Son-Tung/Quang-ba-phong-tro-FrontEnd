@@ -139,15 +139,33 @@ export type Identification = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type InvitationMutationResponse = IMutationResponse & {
+  __typename?: 'InvitationMutationResponse';
+  code: Scalars['Float'];
+  errors?: Maybe<Array<FieldError>>;
+  invite?: Maybe<Invite>;
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+};
+
 export type Invite = {
   __typename?: 'Invite';
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   owner: Owner;
+  ownerId: Scalars['String'];
   room: Room;
+  roomId: Scalars['String'];
   status: Scalars['String'];
   timeOfCheck: Scalars['DateTime'];
   user: User;
+  userId: Scalars['String'];
+};
+
+export type InviteInput = {
+  roomId: Scalars['String'];
+  timeOfCheck: Scalars['DateTime'];
+  userId: Scalars['String'];
 };
 
 export type LoginInput = {
@@ -157,6 +175,7 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptInvite: InvitationMutationResponse;
   changePassword: UserMutationResponse;
   changePasswordOwner: OwnerMutationResponse;
   createRoom: RoomMutationResponse;
@@ -164,6 +183,7 @@ export type Mutation = {
   deleteRoomFavourite: RoomFavouriteMutationResponse;
   forgotPassword: Scalars['Boolean'];
   forgotPasswordOwner: Scalars['Boolean'];
+  invite: InvitationMutationResponse;
   login: UserMutationResponse;
   loginAdmin: AdminMutationResponse;
   loginOwner: OwnerMutationResponse;
@@ -171,8 +191,14 @@ export type Mutation = {
   register: UserMutationResponse;
   registerAdmin: AdminMutationResponse;
   registerOwner: OwnerMutationResponse;
+  rejectInvite: InvitationMutationResponse;
   updateOwner?: Maybe<OwnerMutationResponse>;
   updateUser?: Maybe<UserMutationResponse>;
+};
+
+
+export type MutationAcceptInviteArgs = {
+  inviteId: Scalars['String'];
 };
 
 
@@ -201,7 +227,7 @@ export type MutationCreateRoomFavouriteArgs = {
 
 
 export type MutationDeleteRoomFavouriteArgs = {
-  id: Scalars['String'];
+  roomId: Scalars['String'];
 };
 
 
@@ -212,6 +238,11 @@ export type MutationForgotPasswordArgs = {
 
 export type MutationForgotPasswordOwnerArgs = {
   forgotPasswordInput: ForgotPasswordInput;
+};
+
+
+export type MutationInviteArgs = {
+  inviteInput: InviteInput;
 };
 
 
@@ -242,6 +273,11 @@ export type MutationRegisterAdminArgs = {
 
 export type MutationRegisterOwnerArgs = {
   registerInput: OwnerRegisterInput;
+};
+
+
+export type MutationRejectInviteArgs = {
+  inviteId: Scalars['String'];
 };
 
 
@@ -337,10 +373,13 @@ export type Query = {
   countRoomFavourites: Scalars['Float'];
   districts: Array<Districts>;
   districtsOfProvince: Array<Districts>;
+  getUsersFavourited?: Maybe<Array<User>>;
+  invitationsToMe?: Maybe<Array<Invite>>;
   isRoomFavourited: Scalars['Boolean'];
   me?: Maybe<User>;
   meAdmin?: Maybe<Admin>;
   meOwner?: Maybe<Owner>;
+  myInvitations?: Maybe<Array<Invite>>;
   provinces: Array<Provinces>;
   room?: Maybe<RoomMutationResponse>;
   rooms: Array<Room>;
@@ -356,6 +395,11 @@ export type QueryCountRoomFavouritesArgs = {
 
 export type QueryDistrictsOfProvinceArgs = {
   provinceCode: Scalars['String'];
+};
+
+
+export type QueryGetUsersFavouritedArgs = {
+  roomId: Scalars['String'];
 };
 
 
@@ -387,6 +431,7 @@ export type RateImage = {
   id: Scalars['ID'];
   imageUrl: Scalars['String'];
   rate: RoomRate;
+  rateId: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
@@ -411,6 +456,7 @@ export type Room = {
   maxOccupancy: Scalars['Float'];
   numberOfFloors: Scalars['Float'];
   owner: Owner;
+  ownerId: Scalars['String'];
   parking: Scalars['Boolean'];
   parkingFee?: Maybe<Scalars['Float']>;
   petsAllowed: Scalars['Boolean'];
@@ -509,8 +555,10 @@ export type RoomRate = {
   images: Array<RateImage>;
   rate: Scalars['Float'];
   room: Room;
+  roomId: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   user: User;
+  userId: Scalars['String'];
 };
 
 export type UpdateUiInput = {
@@ -605,12 +653,26 @@ export type RoomInfoFragment = { __typename?: 'Room', id: string, title: string,
 
 export type UserInfoFragment = { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
 
+export type AcceptInviteMutationVariables = Exact<{
+  inviteId: Scalars['String'];
+}>;
+
+
+export type AcceptInviteMutation = { __typename?: 'Mutation', acceptInvite: { __typename?: 'InvitationMutationResponse', code: number, success: boolean, message?: string | null | undefined, invite?: { __typename?: 'Invite', id: string, status: string, timeOfCheck: any, room: { __typename?: 'Room', title: string, address: string, description: string }, owner: { __typename?: 'Owner', fullName: string, phoneNumber: string, email: string, avatarUrl: string } } | null | undefined } };
+
 export type AddRoomToFavouriteMutationVariables = Exact<{
   roomId: Scalars['String'];
 }>;
 
 
 export type AddRoomToFavouriteMutation = { __typename?: 'Mutation', createRoomFavourite: { __typename?: 'RoomFavouriteMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
+
+export type InviteMutationVariables = Exact<{
+  inviteInput: InviteInput;
+}>;
+
+
+export type InviteMutation = { __typename?: 'Mutation', invite: { __typename?: 'InvitationMutationResponse', code: number, success: boolean, message?: string | null | undefined, invite?: { __typename?: 'Invite', userId: string, roomId: string, timeOfCheck: any } | null | undefined } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
@@ -640,6 +702,20 @@ export type OwnerRegisterMutationVariables = Exact<{
 
 export type OwnerRegisterMutation = { __typename?: 'Mutation', registerOwner: { __typename?: 'OwnerMutationResponse', success: boolean, code: number, message?: string | null | undefined, owner?: { __typename?: 'Owner', username: string } | null | undefined } };
 
+export type RejectInviteMutationVariables = Exact<{
+  inviteId: Scalars['String'];
+}>;
+
+
+export type RejectInviteMutation = { __typename?: 'Mutation', rejectInvite: { __typename?: 'InvitationMutationResponse', code: number, success: boolean, message?: string | null | undefined, invite?: { __typename?: 'Invite', id: string, status: string, timeOfCheck: any, room: { __typename?: 'Room', title: string, address: string, description: string }, owner: { __typename?: 'Owner', fullName: string, phoneNumber: string, email: string, avatarUrl: string } } | null | undefined } };
+
+export type RemoveRoomFromFavouritesMutationVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type RemoveRoomFromFavouritesMutation = { __typename?: 'Mutation', deleteRoomFavourite: { __typename?: 'RoomFavouriteMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
+
 export type UpdateUserMutationVariables = Exact<{
   updateUserInput: UpdateUiInput;
 }>;
@@ -659,6 +735,18 @@ export type GetMyFavouritesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetMyFavouritesQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, roomFavourites?: Array<{ __typename?: 'RoomFavourite', room: { __typename?: 'Room', id: string, title: string, address: string, images: Array<{ __typename?: 'RoomImage', imageUrl: string }> } }> | null | undefined } | null | undefined };
 
+export type GetUsersFavouritedQueryVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type GetUsersFavouritedQuery = { __typename?: 'Query', getUsersFavourited?: Array<{ __typename?: 'User', id: string, fullName: string, avatarUrl: string, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } }> | null | undefined };
+
+export type InvitationsToMeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type InvitationsToMeQuery = { __typename?: 'Query', invitationsToMe?: Array<{ __typename?: 'Invite', id: string, status: string, timeOfCheck: any, room: { __typename?: 'Room', title: string, address: string, description: string }, owner: { __typename?: 'Owner', fullName: string, phoneNumber: string, email: string, avatarUrl: string } }> | null | undefined };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -674,6 +762,11 @@ export type MeOwnerQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeOwnerQuery = { __typename?: 'Query', meOwner?: { __typename?: 'Owner', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
 
+export type MyInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyInvitationsQuery = { __typename?: 'Query', myInvitations?: Array<{ __typename?: 'Invite', id: string, status: string, timeOfCheck: any, user: { __typename?: 'User', fullName: string, email: string, phoneNumber: string, address: string, avatarUrl: string }, room: { __typename?: 'Room', title: string, address: string, description: string } }> | null | undefined };
+
 export type ProvincesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -684,7 +777,7 @@ export type RoomQueryVariables = Exact<{
 }>;
 
 
-export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
+export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, rates: Array<{ __typename?: 'RoomRate', id: string, comment: string, rate: number, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string } }>, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
 
 export type RoomsQueryVariables = Exact<{
   page: Scalars['Float'];
@@ -792,6 +885,57 @@ export const UserInfoFragmentDoc = gql`
   }
 }
     `;
+export const AcceptInviteDocument = gql`
+    mutation AcceptInvite($inviteId: String!) {
+  acceptInvite(inviteId: $inviteId) {
+    code
+    success
+    message
+    invite {
+      id
+      room {
+        title
+        address
+        description
+      }
+      owner {
+        fullName
+        phoneNumber
+        email
+        avatarUrl
+      }
+      status
+      timeOfCheck
+    }
+  }
+}
+    `;
+export type AcceptInviteMutationFn = Apollo.MutationFunction<AcceptInviteMutation, AcceptInviteMutationVariables>;
+
+/**
+ * __useAcceptInviteMutation__
+ *
+ * To run a mutation, you first call `useAcceptInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptInviteMutation, { data, loading, error }] = useAcceptInviteMutation({
+ *   variables: {
+ *      inviteId: // value for 'inviteId'
+ *   },
+ * });
+ */
+export function useAcceptInviteMutation(baseOptions?: Apollo.MutationHookOptions<AcceptInviteMutation, AcceptInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptInviteMutation, AcceptInviteMutationVariables>(AcceptInviteDocument, options);
+      }
+export type AcceptInviteMutationHookResult = ReturnType<typeof useAcceptInviteMutation>;
+export type AcceptInviteMutationResult = Apollo.MutationResult<AcceptInviteMutation>;
+export type AcceptInviteMutationOptions = Apollo.BaseMutationOptions<AcceptInviteMutation, AcceptInviteMutationVariables>;
 export const AddRoomToFavouriteDocument = gql`
     mutation AddRoomToFavourite($roomId: String!) {
   createRoomFavourite(roomId: $roomId) {
@@ -827,6 +971,46 @@ export function useAddRoomToFavouriteMutation(baseOptions?: Apollo.MutationHookO
 export type AddRoomToFavouriteMutationHookResult = ReturnType<typeof useAddRoomToFavouriteMutation>;
 export type AddRoomToFavouriteMutationResult = Apollo.MutationResult<AddRoomToFavouriteMutation>;
 export type AddRoomToFavouriteMutationOptions = Apollo.BaseMutationOptions<AddRoomToFavouriteMutation, AddRoomToFavouriteMutationVariables>;
+export const InviteDocument = gql`
+    mutation Invite($inviteInput: InviteInput!) {
+  invite(inviteInput: $inviteInput) {
+    code
+    success
+    message
+    invite {
+      userId
+      roomId
+      timeOfCheck
+    }
+  }
+}
+    `;
+export type InviteMutationFn = Apollo.MutationFunction<InviteMutation, InviteMutationVariables>;
+
+/**
+ * __useInviteMutation__
+ *
+ * To run a mutation, you first call `useInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [inviteMutation, { data, loading, error }] = useInviteMutation({
+ *   variables: {
+ *      inviteInput: // value for 'inviteInput'
+ *   },
+ * });
+ */
+export function useInviteMutation(baseOptions?: Apollo.MutationHookOptions<InviteMutation, InviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InviteMutation, InviteMutationVariables>(InviteDocument, options);
+      }
+export type InviteMutationHookResult = ReturnType<typeof useInviteMutation>;
+export type InviteMutationResult = Apollo.MutationResult<InviteMutation>;
+export type InviteMutationOptions = Apollo.BaseMutationOptions<InviteMutation, InviteMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
@@ -981,6 +1165,92 @@ export function useOwnerRegisterMutation(baseOptions?: Apollo.MutationHookOption
 export type OwnerRegisterMutationHookResult = ReturnType<typeof useOwnerRegisterMutation>;
 export type OwnerRegisterMutationResult = Apollo.MutationResult<OwnerRegisterMutation>;
 export type OwnerRegisterMutationOptions = Apollo.BaseMutationOptions<OwnerRegisterMutation, OwnerRegisterMutationVariables>;
+export const RejectInviteDocument = gql`
+    mutation RejectInvite($inviteId: String!) {
+  rejectInvite(inviteId: $inviteId) {
+    code
+    success
+    message
+    invite {
+      id
+      room {
+        title
+        address
+        description
+      }
+      owner {
+        fullName
+        phoneNumber
+        email
+        avatarUrl
+      }
+      status
+      timeOfCheck
+    }
+  }
+}
+    `;
+export type RejectInviteMutationFn = Apollo.MutationFunction<RejectInviteMutation, RejectInviteMutationVariables>;
+
+/**
+ * __useRejectInviteMutation__
+ *
+ * To run a mutation, you first call `useRejectInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRejectInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rejectInviteMutation, { data, loading, error }] = useRejectInviteMutation({
+ *   variables: {
+ *      inviteId: // value for 'inviteId'
+ *   },
+ * });
+ */
+export function useRejectInviteMutation(baseOptions?: Apollo.MutationHookOptions<RejectInviteMutation, RejectInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RejectInviteMutation, RejectInviteMutationVariables>(RejectInviteDocument, options);
+      }
+export type RejectInviteMutationHookResult = ReturnType<typeof useRejectInviteMutation>;
+export type RejectInviteMutationResult = Apollo.MutationResult<RejectInviteMutation>;
+export type RejectInviteMutationOptions = Apollo.BaseMutationOptions<RejectInviteMutation, RejectInviteMutationVariables>;
+export const RemoveRoomFromFavouritesDocument = gql`
+    mutation RemoveRoomFromFavourites($roomId: String!) {
+  deleteRoomFavourite(roomId: $roomId) {
+    code
+    success
+    message
+  }
+}
+    `;
+export type RemoveRoomFromFavouritesMutationFn = Apollo.MutationFunction<RemoveRoomFromFavouritesMutation, RemoveRoomFromFavouritesMutationVariables>;
+
+/**
+ * __useRemoveRoomFromFavouritesMutation__
+ *
+ * To run a mutation, you first call `useRemoveRoomFromFavouritesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveRoomFromFavouritesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeRoomFromFavouritesMutation, { data, loading, error }] = useRemoveRoomFromFavouritesMutation({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *   },
+ * });
+ */
+export function useRemoveRoomFromFavouritesMutation(baseOptions?: Apollo.MutationHookOptions<RemoveRoomFromFavouritesMutation, RemoveRoomFromFavouritesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveRoomFromFavouritesMutation, RemoveRoomFromFavouritesMutationVariables>(RemoveRoomFromFavouritesDocument, options);
+      }
+export type RemoveRoomFromFavouritesMutationHookResult = ReturnType<typeof useRemoveRoomFromFavouritesMutation>;
+export type RemoveRoomFromFavouritesMutationResult = Apollo.MutationResult<RemoveRoomFromFavouritesMutation>;
+export type RemoveRoomFromFavouritesMutationOptions = Apollo.BaseMutationOptions<RemoveRoomFromFavouritesMutation, RemoveRoomFromFavouritesMutationVariables>;
 export const UpdateUserDocument = gql`
     mutation UpdateUser($updateUserInput: UpdateUIInput!) {
   updateUser(updateUserInput: $updateUserInput) {
@@ -1101,6 +1371,95 @@ export function useGetMyFavouritesLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetMyFavouritesQueryHookResult = ReturnType<typeof useGetMyFavouritesQuery>;
 export type GetMyFavouritesLazyQueryHookResult = ReturnType<typeof useGetMyFavouritesLazyQuery>;
 export type GetMyFavouritesQueryResult = Apollo.QueryResult<GetMyFavouritesQuery, GetMyFavouritesQueryVariables>;
+export const GetUsersFavouritedDocument = gql`
+    query GetUsersFavourited($roomId: String!) {
+  getUsersFavourited(roomId: $roomId) {
+    id
+    fullName
+    avatarUrl
+    identification {
+      serial
+      issuedBy
+      issueDate
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUsersFavouritedQuery__
+ *
+ * To run a query within a React component, call `useGetUsersFavouritedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersFavouritedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersFavouritedQuery({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *   },
+ * });
+ */
+export function useGetUsersFavouritedQuery(baseOptions: Apollo.QueryHookOptions<GetUsersFavouritedQuery, GetUsersFavouritedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersFavouritedQuery, GetUsersFavouritedQueryVariables>(GetUsersFavouritedDocument, options);
+      }
+export function useGetUsersFavouritedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersFavouritedQuery, GetUsersFavouritedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersFavouritedQuery, GetUsersFavouritedQueryVariables>(GetUsersFavouritedDocument, options);
+        }
+export type GetUsersFavouritedQueryHookResult = ReturnType<typeof useGetUsersFavouritedQuery>;
+export type GetUsersFavouritedLazyQueryHookResult = ReturnType<typeof useGetUsersFavouritedLazyQuery>;
+export type GetUsersFavouritedQueryResult = Apollo.QueryResult<GetUsersFavouritedQuery, GetUsersFavouritedQueryVariables>;
+export const InvitationsToMeDocument = gql`
+    query InvitationsToMe {
+  invitationsToMe {
+    id
+    room {
+      title
+      address
+      description
+    }
+    owner {
+      fullName
+      phoneNumber
+      email
+      avatarUrl
+    }
+    status
+    timeOfCheck
+  }
+}
+    `;
+
+/**
+ * __useInvitationsToMeQuery__
+ *
+ * To run a query within a React component, call `useInvitationsToMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInvitationsToMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInvitationsToMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useInvitationsToMeQuery(baseOptions?: Apollo.QueryHookOptions<InvitationsToMeQuery, InvitationsToMeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InvitationsToMeQuery, InvitationsToMeQueryVariables>(InvitationsToMeDocument, options);
+      }
+export function useInvitationsToMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InvitationsToMeQuery, InvitationsToMeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InvitationsToMeQuery, InvitationsToMeQueryVariables>(InvitationsToMeDocument, options);
+        }
+export type InvitationsToMeQueryHookResult = ReturnType<typeof useInvitationsToMeQuery>;
+export type InvitationsToMeLazyQueryHookResult = ReturnType<typeof useInvitationsToMeLazyQuery>;
+export type InvitationsToMeQueryResult = Apollo.QueryResult<InvitationsToMeQuery, InvitationsToMeQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -1206,6 +1565,54 @@ export function useMeOwnerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Me
 export type MeOwnerQueryHookResult = ReturnType<typeof useMeOwnerQuery>;
 export type MeOwnerLazyQueryHookResult = ReturnType<typeof useMeOwnerLazyQuery>;
 export type MeOwnerQueryResult = Apollo.QueryResult<MeOwnerQuery, MeOwnerQueryVariables>;
+export const MyInvitationsDocument = gql`
+    query MyInvitations {
+  myInvitations {
+    id
+    user {
+      fullName
+      email
+      phoneNumber
+      address
+      avatarUrl
+    }
+    room {
+      title
+      address
+      description
+    }
+    status
+    timeOfCheck
+  }
+}
+    `;
+
+/**
+ * __useMyInvitationsQuery__
+ *
+ * To run a query within a React component, call `useMyInvitationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyInvitationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyInvitationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyInvitationsQuery(baseOptions?: Apollo.QueryHookOptions<MyInvitationsQuery, MyInvitationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyInvitationsQuery, MyInvitationsQueryVariables>(MyInvitationsDocument, options);
+      }
+export function useMyInvitationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyInvitationsQuery, MyInvitationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyInvitationsQuery, MyInvitationsQueryVariables>(MyInvitationsDocument, options);
+        }
+export type MyInvitationsQueryHookResult = ReturnType<typeof useMyInvitationsQuery>;
+export type MyInvitationsLazyQueryHookResult = ReturnType<typeof useMyInvitationsLazyQuery>;
+export type MyInvitationsQueryResult = Apollo.QueryResult<MyInvitationsQuery, MyInvitationsQueryVariables>;
 export const ProvincesDocument = gql`
     query Provinces {
   provinces {
@@ -1260,6 +1667,16 @@ export const RoomDocument = gql`
     message
     room {
       ...roomInfo
+      rates {
+        id
+        comment
+        rate
+        user {
+          id
+          fullName
+          avatarUrl
+        }
+      }
     }
   }
 }
