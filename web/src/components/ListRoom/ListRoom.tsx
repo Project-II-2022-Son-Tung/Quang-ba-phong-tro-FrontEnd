@@ -36,6 +36,7 @@ const ListRoom = () => {
             owner={room.owner}
             address={room.address}
             room_images={room.images}
+            key={room.id}
 
           />
         )
