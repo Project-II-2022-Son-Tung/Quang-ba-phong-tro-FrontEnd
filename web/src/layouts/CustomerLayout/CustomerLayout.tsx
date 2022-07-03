@@ -16,6 +16,9 @@ const CustomerLayout = ({ children }) => {
             <li>
               <Link className='nav_text' to={routes.about()}>Phòng trọ đã lưu</Link>
             </li>
+            <li>
+              <Link className='nav_text' to={routes.postroom()}>Đăng phòng</Link>
+            </li>
           </ul>
         </nav>
       </header>
