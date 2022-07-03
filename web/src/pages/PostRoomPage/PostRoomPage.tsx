@@ -16,6 +16,7 @@ const PostRoomPage = () => {
     {
       onCompleted: (data) => {
         setProvinces(data.provinces)
+      console.log(data.provinces)
       }
     }
   )

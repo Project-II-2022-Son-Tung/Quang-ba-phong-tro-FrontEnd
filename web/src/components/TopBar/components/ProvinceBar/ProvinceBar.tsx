@@ -13,6 +13,7 @@ const ProvinceBar = () => {
   const [cities, setCities] = useState(cityData[provinceData[0]]);
   const [secondCity, setSecondCity] = useState(cityData[provinceData[0]][0]);
 
+
   const handleProvinceChange = (value) => {
     setCities(cityData[value]);
     setSecondCity(cityData[value][0]);
@@ -38,7 +39,7 @@ const ProvinceBar = () => {
       </Select>
       <Select
         style={{
-          width: '25%',
+          width:'25%' ,
         }}
         value={secondCity}
         onChange={onSecondCityChange}
