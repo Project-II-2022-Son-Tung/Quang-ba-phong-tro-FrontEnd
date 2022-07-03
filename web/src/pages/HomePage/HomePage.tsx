@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import ListRoom from 'src/components/ListRoom/ListRoom'
 import { useRoomsQuery } from 'src/generated/graphql'
 import { useState } from 'react'
-
+import TopBar from 'src/components/TopBar/TopBar'
 const HomePage = () => {
 
 
@@ -12,6 +12,7 @@ const HomePage = () => {
       <MetaTags title="Home" description="Home page" />
 
       <div style={{marginTop:'50px'}}>
+      <TopBar/>
       <ListRoom />
       </div>
 

@@ -21,7 +21,7 @@ const ListRoom = () => {
   }
 
   return (
-    <div style={{justifyContent: 'center', alignItems: 'center'}}>
+    <div style={{justifyContent: 'center', alignItems: 'center', marginTop:50}}>
       {data.rooms.map((room) => {
         return (
           <RoomInfo
