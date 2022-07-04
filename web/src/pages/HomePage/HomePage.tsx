@@ -20,10 +20,10 @@ const HomePage = () => {
     <>
       <MetaTags title="Home" description="Home page" />
 
-      <div style={{marginTop:'50px'}}>
+
       <TopBar onFilter={onFilter}/>
       <ListRoom filter={filter} />
-      </div>
+
 
     </>
   )

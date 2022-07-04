@@ -1,23 +1,62 @@
-import { Link, routes } from '@redwoodjs/router'
-import "./index.css"
+import { Link } from '@redwoodjs/router'
+import './index.css'
+import { Button } from 'antd'
+import { navigate, routes } from '@redwoodjs/router'
+
 const CustomerLayout = ({ children }) => {
   return (
     <div>
-      <header style={{}}>
-        <h1 style={{textAlign: 'center'}}>
-          <Link to={routes.home()}>House Rental</Link>
-        </h1>
-        <nav >
-          <ul className="nav_bar">
-            <li style={{color:'#ffffff'}}>
+      <header style={{ marginTop: '16px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <div style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <text
+              style={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: '30px',
 
-              <Link className='nav_text' to={routes.home()}>Trang chủ</Link>
+              }}
+            >
+              <Link to={routes.home()} >House Rental</Link>
+            </text>
+          </div>
+
+          <div style={{ position: 'absolute', right: '20px' }}>
+            <Button
+              onClick={() => {
+                navigate(routes.login())
+              }}
+              style={{ width: '200px', height: '40px', borderRadius: '30px' }}
+              type="primary"
+            >
+              {' '}
+              Đăng xuất
+            </Button>
+          </div>
+        </div>
+
+        <nav>
+          <ul className="nav_bar">
+            <li style={{ color: '#ffffff' }}>
+              <Link className="nav_text" to={routes.home()}>
+                Trang chủ
+              </Link>
             </li>
             <li>
-              <Link className='nav_text' to={routes.about()}>Phòng trọ đã lưu</Link>
+              <Link className="nav_text" to={routes.about()}>
+                Phòng trọ đã lưu
+              </Link>
             </li>
             <li>
-              <Link className='nav_text' to={routes.postroom()}>Đăng phòng</Link>
+              <Link className="nav_text" to={routes.postroom()}>
+                Đăng phòng
+              </Link>
             </li>
           </ul>
         </nav>
