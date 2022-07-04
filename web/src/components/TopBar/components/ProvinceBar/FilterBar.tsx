@@ -8,7 +8,7 @@ const { Option } = Select
 
 const provinceData = provinces
 
-const ProvinceBar = (props) => {
+const FilterBar = (props) => {
 
 
   const onFinish = (values) => {
@@ -160,4 +160,4 @@ const ProvinceBar = (props) => {
   )
 }
 
-export default ProvinceBar
+export default FilterBar
