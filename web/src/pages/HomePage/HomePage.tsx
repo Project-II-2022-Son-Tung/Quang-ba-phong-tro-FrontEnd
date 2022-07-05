@@ -9,7 +9,7 @@ const HomePage = () => {
   const [filter, setFilter] = useState()
 
   const onFilter=(values)=>{
-    console.log(values);
+    console.log("HomePage" + values);
     setFilter(values);
 
 

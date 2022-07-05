@@ -109,7 +109,7 @@ const FilterBar = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <Form.Item>
+          <Form.Item name='province'>
             <Select
               size="large"
               placeholder="Chọn Tỉnh"
@@ -127,7 +127,7 @@ const FilterBar = (props) => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item>
+          <Form.Item name='district'>
             <Select
               size="large"
               placeholder="Chọn Quận, Huyện"
@@ -143,7 +143,7 @@ const FilterBar = (props) => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item>
+          <Form.Item name='ward'>
             <Select
               size="large"
               placeholder="Chọn Phường, Xã"
@@ -158,7 +158,7 @@ const FilterBar = (props) => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item>
+          <Form.Item name="advanced">
             <Select
               size="large"
               mode="multiple"
@@ -173,7 +173,7 @@ const FilterBar = (props) => {
               options={options}
             />
           </Form.Item>
-          <Form.Item>
+          <Form.Item >
             <Button
               type="primary"
               htmlType="submit"

@@ -15,7 +15,7 @@ const CustomerLayout = ({ children }) => {
           }}
         >
           <div style={{ alignItems: 'center', justifyContent: 'center' }}>
-            <text
+            <p
               style={{
                 textAlign: 'center',
                 fontWeight: 'bold',
@@ -24,7 +24,7 @@ const CustomerLayout = ({ children }) => {
               }}
             >
               <Link to={routes.home()} >House Rental</Link>
-            </text>
+            </p>
           </div>
 
           <div style={{ position: 'absolute', right: '20px' }}>
