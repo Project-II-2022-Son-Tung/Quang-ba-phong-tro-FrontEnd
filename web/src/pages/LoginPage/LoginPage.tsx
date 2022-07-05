@@ -42,13 +42,21 @@ const LoginPage = () => {
       })
     console.log(response)
 
-    const userData = response.data.login.success
+    const userData =(response.data.login)?response.data.login.success: false
+
+    const ownerData = (response.data.loginOwner) ? response.data.loginOwner.success : false
 
     // Compare user info
     if (userData) {
       setIsSubmitted(true)
       navigate(routes.home())
-    } else {
+    }
+    else if (ownerData) {
+      setIsSubmitted(true)
+      navigate(routes.home())
+
+    }
+     else {
       setIsSubmitted(false)
       // Username not found
     }
@@ -72,7 +80,7 @@ const LoginPage = () => {
           {/* {renderErrorMessage("pass")} */}
         </div>
         <div style={{ display: 'float' }}>
-          <input type="checkbox" name="isOwner" required />{' '}
+          <input type="checkbox" name="isOwner"  />{' '}
           <label>Tôi là người đăng tin </label>
         </div>
 

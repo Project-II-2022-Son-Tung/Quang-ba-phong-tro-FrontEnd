@@ -51,6 +51,7 @@ const ListRoom = (props) => {
       style={{ justifyContent: 'center', alignItems: 'center', marginTop: 50 }}
     >
       {data.rooms.map((room) => {
+
         return (
           <RoomInfo
             id={room.id}
