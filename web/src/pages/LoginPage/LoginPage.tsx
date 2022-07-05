@@ -1,15 +1,15 @@
 import { MetaTags } from '@redwoodjs/web'
 import React, { useState } from 'react'
+import { Checkbox } from 'antd'
 import './index.css'
 
-import { useLoginMutation } from '../../generated/graphql'
+import { useLoginMutation, useLoginOwnerMutation } from '../../generated/graphql'
 import { navigate, routes } from '@redwoodjs/router'
 
-
-
 const LoginPage = () => {
+  const [loginUser, { loading: _loginUserLoading }] = useLoginMutation()
 
-  const [loginUser, { loading: _loginUserLoading, error }] = useLoginMutation()
+  const [loginOwner, { loading: _loginOwnerLoading}] = useLoginOwnerMutation()
 
   // const [mutate] =useMutation(mutation)
 
@@ -24,25 +24,38 @@ const LoginPage = () => {
     const uname = event.target.uname.value
     const pass = event.target.pass.value
 
+    let response ;
+
     console.log(uname + '__' + pass + '')
 
-    const response = await loginUser({
-      variables: {
-        loginInput: { usernameOrEmail: uname, password: pass },
-      },
-    })
+    if (event.target.isOwner.checked) {
+      response = await loginOwner({
+        variables: {
+          loginInput: { usernameOrEmail: uname, password: pass },
+        },
+      })
+    } else
+      response = await loginUser({
+        variables: {
+          loginInput: { usernameOrEmail: uname, password: pass },
+        },
+      })
     console.log(response)
 
     const userData = response.data.login.success
 
     // Compare user info
     if (userData) {
-      setIsSubmitted(true);
+      setIsSubmitted(true)
       navigate(routes.home())
     } else {
       setIsSubmitted(false)
       // Username not found
     }
+  }
+
+  const onChangeCheckbox = (e) => {
+    console.log(`checked = ${e.target.checked}`)
   }
 
   const renderForm = (
@@ -58,6 +71,11 @@ const LoginPage = () => {
           <input type="password" name="pass" required />
           {/* {renderErrorMessage("pass")} */}
         </div>
+        <div style={{ display: 'float' }}>
+          <input type="checkbox" name="isOwner" required />{' '}
+          <label>Tôi là người đăng tin </label>
+        </div>
+
         <div className="button-container">
           <input type="submit" />
         </div>
@@ -73,10 +91,9 @@ const LoginPage = () => {
           <div className="title">Đăng nhập</div>
           {isSubmitted ? (
             <>
-            <div>Người dùng đã đăng nhập thành công</div>
+              <div>Người dùng đã đăng nhập thành công</div>
             </>
           ) : (
-
             renderForm
           )}
         </div>
