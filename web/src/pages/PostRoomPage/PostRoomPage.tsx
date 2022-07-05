@@ -1,53 +1,38 @@
 import { MetaTags } from '@redwoodjs/web'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './index.css'
 
-import { useProvincesLazyQuery } from '../../generated/graphql'
-import { navigate, routes } from '@redwoodjs/router'
+import provinces from '../../provinceData'
 
 
 
 const PostRoomPage = () => {
-  const [provinces, setProvinces] = useState([])
+  const [provinceDatas, setProvinces] = useState(provinces)
   const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
   const [wifi, setWifi] = useState(false)
-  const [selectedFile, setSelectedFile] = useState();
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [caption, setCaption] = useState("");
 
-
-  const [getProvince, { loading: _getProvinceLoading, error }] = useProvincesLazyQuery(
-    {
-      onCompleted: (data) => {
-        setProvinces(data.provinces)
-      console.log(data.provinces)
-      }
-    }
-  )
 
   // const [mutate] =useMutation(mutation)
 
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   // User PostRoom info
-  useEffect(() => {
-    getProvince()
-  } , [])
 
   const handleSubmit = async (event) => {
     //Prevent page reload
     event.preventDefault()
 
-    const uname = event.target.uname.value
-    const pass = event.target.pass.value
 
-    console.log(uname + '__' + pass + '')
 
 
   }
 
   const handleProvinceChange = (event) => {
     const provinceId = event.target.value
-    const province = provinces.find(province => province.code === provinceId)
+    const province = provinceDatas.find(province => province.code === provinceId)
     setDistricts(province.districts)
   }
 
@@ -59,10 +44,12 @@ const PostRoomPage = () => {
   const toggleWifi = (event) => {
     setWifi(event.target.checked)
   }
+  const setNewCaption = (event) => {
+    setCaption(event.target.value)
+  }
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0])
-    console.log(event.target.files)
+    setSelectedFiles([...selectedFiles, [URL.createObjectURL(event.target.files[0]), caption]])
   }
 
   const renderForm = (
@@ -82,7 +69,7 @@ const PostRoomPage = () => {
           <label>Tỉnh/Thành phố</label>
           <select name="province" id="province" defaultValue={''} onChange={handleProvinceChange}>
             <option value="" >Chọn tỉnh/thành phố</option>
-            {provinces.map(province => (
+            {provinceDatas.map(province => (
               <option key={province.code} value={province.code} id={province.code}>{province.name}</option>
             ))}
           </select>
@@ -109,9 +96,17 @@ const PostRoomPage = () => {
           <label>Địa chỉ</label>
           <input type="text" name="address" required />
         </div>
+        <div className="multi-preview">
+            {(selectedFiles).map(image => (
+                <img key={image[0]} style={{float: "left", marginTop: "auto", maxWidth: "10vw", maxHeight: "10vh" }} src={image[0]} alt={image[1]}  />
+            ))}
+        </div>
         <div className="input-container">
           <label>Hình ảnh minh họa</label>
-          <input type="file" name="file" onChange={handleFileChange} />
+          <div style={{display: "flex", flexDirection: "row", gap: "8px"}}>
+          <input type="text" name="address" placeholder='Tiêu đề ảnh...' onChange={setNewCaption}/>
+          <input type="file" name="file" accept="image/*" onChange={handleFileChange} />
+          </div>
         </div>
         <div className="input-container">
           <label>Chiều rộng (mét vuông)</label>

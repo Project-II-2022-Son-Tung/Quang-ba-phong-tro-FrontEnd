@@ -67,6 +67,12 @@ input[type="submit"]:hover {
   gap: 8px;
   margin: 10px;
 }
+.multi-preview{
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin: 10px;
+}
 .header{
   text-align: center;
 
