@@ -649,7 +649,7 @@ export type Wards = {
 
 export type OwnerInfoFragment = { __typename?: 'Owner', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
 
-export type RoomInfoFragment = { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> };
+export type RoomInfoFragment = { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> };
 
 export type UserInfoFragment = { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
 
@@ -666,6 +666,13 @@ export type AddRoomToFavouriteMutationVariables = Exact<{
 
 
 export type AddRoomToFavouriteMutation = { __typename?: 'Mutation', createRoomFavourite: { __typename?: 'RoomFavouriteMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
+
+export type CreateRoomMutationVariables = Exact<{
+  roomInput: CreateRoomInput;
+}>;
+
+
+export type CreateRoomMutation = { __typename?: 'Mutation', createRoom: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
 
 export type InviteMutationVariables = Exact<{
   inviteInput: InviteInput;
@@ -777,7 +784,7 @@ export type RoomQueryVariables = Exact<{
 }>;
 
 
-export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, rates: Array<{ __typename?: 'RoomRate', id: string, comment: string, rate: number, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string } }>, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
+export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, rates: Array<{ __typename?: 'RoomRate', id: string, comment: string, rate: number, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string } }>, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
 
 export type RoomsQueryVariables = Exact<{
   page: Scalars['Float'];
@@ -787,7 +794,7 @@ export type RoomsQueryVariables = Exact<{
 }>;
 
 
-export type RoomsQuery = { __typename?: 'Query', rooms: Array<{ __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> }> };
+export type RoomsQuery = { __typename?: 'Query', rooms: Array<{ __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> }> };
 
 export const OwnerInfoFragmentDoc = gql`
     fragment ownerInfo on Owner {
@@ -827,6 +834,7 @@ export const RoomInfoFragmentDoc = gql`
   parkingFee
   waterHeating
   airConditioning
+  createdAt
   province {
     code
     name
@@ -971,6 +979,41 @@ export function useAddRoomToFavouriteMutation(baseOptions?: Apollo.MutationHookO
 export type AddRoomToFavouriteMutationHookResult = ReturnType<typeof useAddRoomToFavouriteMutation>;
 export type AddRoomToFavouriteMutationResult = Apollo.MutationResult<AddRoomToFavouriteMutation>;
 export type AddRoomToFavouriteMutationOptions = Apollo.BaseMutationOptions<AddRoomToFavouriteMutation, AddRoomToFavouriteMutationVariables>;
+export const CreateRoomDocument = gql`
+    mutation CreateRoom($roomInput: CreateRoomInput!) {
+  createRoom(roomInput: $roomInput) {
+    code
+    success
+    message
+  }
+}
+    `;
+export type CreateRoomMutationFn = Apollo.MutationFunction<CreateRoomMutation, CreateRoomMutationVariables>;
+
+/**
+ * __useCreateRoomMutation__
+ *
+ * To run a mutation, you first call `useCreateRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRoomMutation, { data, loading, error }] = useCreateRoomMutation({
+ *   variables: {
+ *      roomInput: // value for 'roomInput'
+ *   },
+ * });
+ */
+export function useCreateRoomMutation(baseOptions?: Apollo.MutationHookOptions<CreateRoomMutation, CreateRoomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRoomMutation, CreateRoomMutationVariables>(CreateRoomDocument, options);
+      }
+export type CreateRoomMutationHookResult = ReturnType<typeof useCreateRoomMutation>;
+export type CreateRoomMutationResult = Apollo.MutationResult<CreateRoomMutation>;
+export type CreateRoomMutationOptions = Apollo.BaseMutationOptions<CreateRoomMutation, CreateRoomMutationVariables>;
 export const InviteDocument = gql`
     mutation Invite($inviteInput: InviteInput!) {
   invite(inviteInput: $inviteInput) {

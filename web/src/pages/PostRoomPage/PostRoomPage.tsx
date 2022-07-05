@@ -3,16 +3,19 @@ import React, { useState } from 'react'
 import './index.css'
 
 import provinces from '../../provinceData'
+import { useCreateRoomMutation } from 'src/generated/graphql'
 
 
 
 const PostRoomPage = () => {
+  const [createRoom, { loading: _createRoomLoading, error }] = useCreateRoomMutation()
   const [provinceDatas, setProvinces] = useState(provinces)
   const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
   const [wifi, setWifi] = useState(false)
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [caption, setCaption] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
 
   // const [mutate] =useMutation(mutation)
@@ -31,9 +34,58 @@ const PostRoomPage = () => {
     //     value: file.base64
     //   }
     // })
+    setUploadedFiles([]);
+
     selectedFiles.forEach(async file => {
-      console.log(file)
+      let formData = new FormData();
+      console.log(file[0])
+      formData.append("file", file[0]);
+      fetch("https://quang-ba-phong-tro.herokuapp.com/uploadImages", {
+        method: "POST",
+        body: formData,
+      })
+      .then(response => response.text())
+      .then(result => uploadedFiles.push({fileUrl: result, caption: file[1]}))
+      .catch(error => console.log('error', error));
+    });
+    const room = {
+      title: event.target.title.value,
+      description: event.target.description.value,
+      province: event.target.province.value,
+      district: event.target.district.value,
+      ward: event.target.ward.value,
+      address: event.target.address.value,
+      size: parseInt(event.target.size.value),
+      floor: parseInt(event.target.floor.value),
+      numberOfFloors: parseInt(event.target.numberOfFloors.value),
+      waterPrice: parseInt(event.target.waterPrice.value),
+      price: parseInt(event.target.price.value),
+      maxOccupancy: parseInt(event.target.maxOccupancy.value),
+      liveWithHost: event.target.liveWithHost.checked as boolean,
+      enclosed: event.target.enclosed.checked as boolean,
+      petsAllowed: event.target.petsAllowed.checked as boolean,
+      parking: event.target.parking.checked as boolean,
+      waterHeating: event.target.waterHeating.checked as boolean,
+      airConditioning: event.target.airConditioning.checked as boolean,
+      lift: event.target.lift.checked as boolean,
+      wifi: event.target.wifi.checked as boolean,
+      wifiFee: parseInt(event.target.wifiFee.value),
+      electricPrice: parseInt(event.target.electricPrice.value),
+      images : uploadedFiles,
+    };
+    createRoom({
+      variables: {
+        roomInput: room,
+      },
     })
+    .then((response) => {
+      console.log(response)
+      setIsSubmitted(true)
+    })
+    .catch((error) => {
+      console.log(JSON.stringify(error))
+    }
+    )
 
 
 
@@ -52,13 +104,14 @@ const PostRoomPage = () => {
   }
   const toggleWifi = (event) => {
     setWifi(event.target.checked)
+    document.forms[0].wifiFee.value = ""
   }
   const setNewCaption = (event) => {
     setCaption(event.target.value)
   }
 
   const handleFileChange = (event) => {
-    setSelectedFiles([...selectedFiles, [URL.createObjectURL(event.target.files[0]), caption]])
+    setSelectedFiles([...selectedFiles, [event.target.files[0], caption]])
   }
 
   const renderForm = (
@@ -113,33 +166,33 @@ const PostRoomPage = () => {
         <div className="input-container">
           <label>Hình ảnh minh họa</label>
           <div style={{display: "flex", flexDirection: "row", gap: "8px"}}>
-          <input type="text" name="address" placeholder='Tiêu đề ảnh...' onChange={setNewCaption}/>
+          <input type="text" name="caption" placeholder='Tiêu đề ảnh...' onChange={setNewCaption}/>
           <input type="file" name="file" accept="image/*" onChange={handleFileChange} />
           </div>
         </div>
         <div className="input-container">
           <label>Chiều rộng (mét vuông)</label>
-          <input type="text" name="size" required />
+          <input type="text" name="size" />
         </div>
         <div className="input-container">
           <label>Tầng thứ:</label>
-          <input type="text" name="floor" required />
+          <input type="text" name="floor" />
         </div>
         <div className="input-container">
           <label>Số tầng của tòa nhà</label>
-          <input type="text" name="numberOfFloors" required />
+          <input type="text" name="numberOfFloors" />
         </div>
         <div className="input-container">
           <label>Số người tối đa</label>
-          <input type="text" name="maxOccupancy" required />
+          <input type="text" name="maxOccupancy" />
         </div>
         <div className="input-container">
           <label>Giá tiền điện mỗi số</label>
-          <input type="text" name="electricPrice" required />
+          <input type="text" name="electricPrice" />
         </div>
         <div className="input-container">
           <label>Giá nước mỗi người/tháng</label>
-          <input type="text" name="waterPrice" required />
+          <input type="text" name="waterPrice" />
         </div>
         <div className="input-container">
           <label>Giá tiền phòng mỗi tháng</label>
@@ -147,28 +200,28 @@ const PostRoomPage = () => {
         </div>
         <div className="input-container2">
           <label style={{float: "left", marginTop: "auto" }}>Trọ chung chủ</label>
-          <input type="checkbox" name="liveWithHost" required style={{alignSelf: "center"}}/>
+          <input type="checkbox" name="liveWithHost" style={{alignSelf: "center"}}/>
           <label style={{float: "left", marginTop: "auto" }}>Khép kín</label>
-          <input type="checkbox" name="enclosed" required style={{alignSelf: "center"}}/>
+          <input type="checkbox" name="enclosed" style={{alignSelf: "center"}}/>
           <label style={{float: "left", marginTop: "auto" }}>Cho phép động vật</label>
-          <input type="checkbox" name="petsAllowed" required style={{alignSelf: "center"}}/>
+          <input type="checkbox" name="petsAllowed" style={{alignSelf: "center"}}/>
           <label style={{float: "left", marginTop: "auto" }}>Wifi</label>
-          <input type="checkbox" name="wifi" onChange={toggleWifi} required style={{alignSelf: "center"}}/>
+          <input type="checkbox" name="wifi" onChange={toggleWifi} style={{alignSelf: "center"}}/>
         </div>
         <div className="input-container">
           <label>Phí wifi mỗi phòng/tháng</label>
-          <input type="text" name="wifiFee" required disabled={!wifi} />
+          <input type="text" name="wifiFee" disabled={!wifi} />
         </div>
 
         <div className="input-container2">
           <label style={{float: "left", marginTop: "auto" }}>Chỗ để xe</label>
-          <input type="checkbox" name="parking" required style={{alignSelf: "center"}}/>
+          <input type="checkbox" name="parking" style={{alignSelf: "center"}}/>
           <label style={{float: "left", marginTop: "auto" }}>Nóng lạnh</label>
-          <input type="checkbox" name="waterHeating" required style={{alignSelf: "center"}}/>
+          <input type="checkbox" name="waterHeating" style={{alignSelf: "center"}}/>
           <label style={{float: "left", marginTop: "auto" }}>Điều hòa</label>
-          <input type="checkbox" name="airConditioning" required style={{alignSelf: "center"}}/>
+          <input type="checkbox" name="airConditioning" style={{alignSelf: "center"}}/>
           <label style={{float: "left", marginTop: "auto" }}>Thang máy</label>
-          <input type="checkbox" name="lift" required style={{alignSelf: "center"}}/>
+          <input type="checkbox" name="lift" style={{alignSelf: "center"}}/>
         </div>
         <div className="button-container">
           <input type="submit" />
