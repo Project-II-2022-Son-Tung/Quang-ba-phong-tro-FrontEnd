@@ -3,6 +3,7 @@ import { MetaTags } from '@redwoodjs/web'
 import './room_detail.css'
 import { useRoomQuery } from 'src/generated/graphql'
 import { useParams } from '@redwoodjs/router'
+import LoadingComponent from '../../helper/LoadingComponent'
 type RoomDetailProps = { id: string; title: string }
 const RoomDetailsPage = ({ id }: RoomDetailProps) => {
   const { data, loading, error } = useRoomQuery({
@@ -12,7 +13,7 @@ const RoomDetailsPage = ({ id }: RoomDetailProps) => {
   })
 
   if (loading) {
-    return <p>Loading</p>
+    return <LoadingComponent/>
   } else {
     if (error) {
       console.log(error)

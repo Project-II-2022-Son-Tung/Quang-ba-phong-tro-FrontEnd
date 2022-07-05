@@ -34,6 +34,7 @@ const FilterBar = (props) => {
 
   // Chọn nâng cao
   const options = [
+
     {
       value: 'Khép kín',
     },
@@ -92,7 +93,7 @@ const FilterBar = (props) => {
           justifyContent: 'center',
           alignItems: 'center',
           margin: '0 auto',
-          width: '60%',
+          width: '85vw',
 
           borderRadius: '30px',
         }}

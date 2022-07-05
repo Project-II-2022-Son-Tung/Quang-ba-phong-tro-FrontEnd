@@ -168,6 +168,12 @@ export type InviteInput = {
   userId: Scalars['String'];
 };
 
+export type ListRoomResponse = {
+  __typename?: 'ListRoomResponse';
+  rooms: Array<Room>;
+  totalPages: Scalars['Float'];
+};
+
 export type LoginInput = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
@@ -382,7 +388,7 @@ export type Query = {
   myInvitations?: Maybe<Array<Invite>>;
   provinces: Array<Provinces>;
   room?: Maybe<RoomMutationResponse>;
-  rooms: Array<Room>;
+  rooms: ListRoomResponse;
   wards: Array<Wards>;
   wardsOfDistrict: Array<Wards>;
 };
@@ -794,7 +800,7 @@ export type RoomsQueryVariables = Exact<{
 }>;
 
 
-export type RoomsQuery = { __typename?: 'Query', rooms: Array<{ __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> }> };
+export type RoomsQuery = { __typename?: 'Query', rooms: { __typename?: 'ListRoomResponse', totalPages: number, rooms: Array<{ __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> }> } };
 
 export const OwnerInfoFragmentDoc = gql`
     fragment ownerInfo on Owner {
@@ -1755,7 +1761,10 @@ export type RoomQueryResult = Apollo.QueryResult<RoomQuery, RoomQueryVariables>;
 export const RoomsDocument = gql`
     query Rooms($page: Float!, $limit: Float!, $orderBy: RoomOrderByInput, $filter: RoomFilterInput) {
   rooms(page: $page, limit: $limit, orderBy: $orderBy, filter: $filter) {
-    ...roomInfo
+    totalPages
+    rooms {
+      ...roomInfo
+    }
   }
 }
     ${RoomInfoFragmentDoc}`;
