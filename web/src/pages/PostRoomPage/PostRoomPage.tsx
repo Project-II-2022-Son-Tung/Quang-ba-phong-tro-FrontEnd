@@ -24,7 +24,16 @@ const PostRoomPage = () => {
   const handleSubmit = async (event) => {
     //Prevent page reload
     event.preventDefault()
-
+    // let images = selectedFiles.map(async file => {
+    //   return {
+    //     filename: file.name,
+    //     filetype: file.type,
+    //     value: file.base64
+    //   }
+    // })
+    selectedFiles.forEach(async file => {
+      console.log(file)
+    })
 
 
 
