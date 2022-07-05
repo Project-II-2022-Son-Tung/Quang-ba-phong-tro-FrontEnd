@@ -1,10 +1,14 @@
 import React from 'react'
 import './index.css'
 import images from 'src/assets/images'
+import { navigate, routes } from '@redwoodjs/router'
+import { useParams } from '@redwoodjs/router'
 // import images from 'src/assets/images'
 const RoomInfo = (props) => {
-  const { title, price, size, district, province, description, owner, room_images } = props
+  const {id, title, price, size, district, province, description, owner, room_images } = props
 
+
+  // const room_id = useParams()
   const fixed_price =
     price % 1000000 == 0 ? price / 1000000 : (price / 1000000).toFixed(1)
 
@@ -14,6 +18,9 @@ const RoomInfo = (props) => {
 
   const img_src = ((!room_images) || room_images.length == 0  ) ? images.room : room_images[0].imageUrl
 
+  // const onTitleClick = () =>{
+  //   navigate('/room-detail/'+id)
+  // }
 
   return (
     <div className="container">
@@ -24,7 +31,7 @@ const RoomInfo = (props) => {
       </div>
       <div className="info_container">
         <div className="title">
-          <a className="title_text">{title}</a>
+          <a  className="title_text">{title}</a>
         </div>
         <div className="sub_info">
           <div>

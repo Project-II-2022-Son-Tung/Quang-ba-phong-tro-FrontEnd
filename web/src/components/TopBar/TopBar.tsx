@@ -1,13 +1,13 @@
 import React from "react";
-import SelectBar from  './components/SelectBar/SelectBar'
-import ProvinceBar from './components/ProvinceBar/ProvinceBar'
+import FilterBar from './components/ProvinceBar/FilterBar'
 
-const TopBar =()=>{
+const TopBar =(props)=>{
+
   return(
 
     <>
-    <ProvinceBar/>
-    <SelectBar/></>
+    <FilterBar onFilter={props.onFilter}/>
+</>
   )
 
 }

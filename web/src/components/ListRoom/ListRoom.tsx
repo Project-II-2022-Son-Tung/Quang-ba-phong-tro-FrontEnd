@@ -2,7 +2,7 @@ import React from 'react'
 import { useRoomsQuery } from 'src/generated/graphql'
 import RoomInfo from './component/RoomInfo/RoomInfo'
 import './index.css'
-const ListRoom = () => {
+const ListRoom = (props) => {
   const { data, loading, error } = useRoomsQuery({
     variables: {
       page: 1, // value for 'page'

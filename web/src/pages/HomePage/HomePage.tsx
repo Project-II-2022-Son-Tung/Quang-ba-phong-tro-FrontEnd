@@ -6,15 +6,24 @@ import { useState } from 'react'
 import TopBar from 'src/components/TopBar/TopBar'
 const HomePage = () => {
 
+  const [filter, setFilter] = useState()
+
+  const onFilter=(values)=>{
+    console.log(values);
+    setFilter(values);
+
+
+
+  }
 
   return (
     <>
       <MetaTags title="Home" description="Home page" />
 
-      <div style={{marginTop:'50px'}}>
-      <TopBar/>
-      <ListRoom />
-      </div>
+
+      <TopBar onFilter={onFilter}/>
+      <ListRoom filter={filter} />
+
 
     </>
   )

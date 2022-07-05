@@ -58366,4 +58366,4 @@ const provinces = [
         ]
       }
     ];
-export default provinces;
+export default provinces
