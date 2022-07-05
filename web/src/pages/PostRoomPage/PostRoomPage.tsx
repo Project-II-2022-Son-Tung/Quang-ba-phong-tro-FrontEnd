@@ -14,6 +14,7 @@ const PostRoomPage = () => {
   const [wards, setWards] = useState([])
   const [wifi, setWifi] = useState(false)
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
   const [caption, setCaption] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -112,6 +113,7 @@ const PostRoomPage = () => {
 
   const handleFileChange = (event) => {
     setSelectedFiles([...selectedFiles, [event.target.files[0], caption]])
+    setSelectedImages([...selectedImages, [URL.createObjectURL(event.target.files[0]), caption]])
   }
 
   const renderForm = (
@@ -159,7 +161,7 @@ const PostRoomPage = () => {
           <input type="text" name="address" required />
         </div>
         <div className="multi-preview">
-            {(selectedFiles).map(image => (
+            {(selectedImages).map(image => (
                 <img key={image[0]} style={{float: "left", marginTop: "auto", maxWidth: "10vw", maxHeight: "10vh" }} src={image[0]} alt={image[1]}  />
             ))}
         </div>
