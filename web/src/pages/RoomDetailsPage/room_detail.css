@@ -1,0 +1,46 @@
+.roomDetails .left_column{
+
+  float: left;
+  width: 50%;
+  margin-left: 10%;
+}
+
+.roomDetails .right_column{
+  width: 30%;
+  float: left;
+  height: 10000px;
+  background-color: yellow;
+}
+
+.roomDetails .slider {
+  width: 50vw;
+  height: 500px;
+  background-color:red
+}
+.roomDetails .room_detail{
+  width: 100%;
+  height: 5000px;
+  /* background-color:blue */
+}
+.roomDetails .contact_container{
+  width: 100% - 30px;
+  margin-top:0px;
+  height : 500px;
+  background-color:gray;
+  margin-left: 30px;
+}
+.roomDetails .title_text{
+  color: #E13427;
+  font-size: 34px;
+  font-weight: bold;
+  font-family :Arial,Helvetica,sans-serif
+
+}
+
+.roomDetails .address_text{
+  font-size: 20px;
+  font-family :Arial,Helvetica,sans-serif;
+  line-height: 1.15;
+  color: #333
+}
+

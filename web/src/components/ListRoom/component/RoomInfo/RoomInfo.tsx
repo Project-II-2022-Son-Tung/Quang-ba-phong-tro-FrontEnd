@@ -16,6 +16,7 @@ const RoomInfo = (props) => {
     description,
     owner,
     room_images,
+    address,
   } = props
 
   // const room_id = useParams()
@@ -32,39 +33,41 @@ const RoomInfo = (props) => {
   // }
 
   return (
-    <div className="container">
-      <div className="image_container">
-        <img className="img" src={img_src} />
-      </div>
-      <div className="info_container">
-        <div className="title">
-          {/* <a  className="title_text">{title}</a> */}
-          <Link to={routes.roomDetails({ id: id })}>
-            <p className="title_text">{title}</p>
-          </Link>
+    <div className="roomInfo">
+      <div className="container">
+        <div className="image_container">
+          <img className="img" src={img_src} />
         </div>
-        <div className="sub_info">
-          <div>
-            <p className="price_text">{fixed_price} triệu/tháng</p>
+        <div className="info_container">
+          <div className="title">
+            {/* <a  className="title_text">{title}</a> */}
+            <Link to={routes.roomDetails({ id: id })}>
+              <p className="title_text">{title}</p>
+            </Link>
           </div>
-          <div>
-            <p className="size_text">{size} m²</p>
+          <div className="sub_info">
+            <div>
+              <p className="price_text">{fixed_price} triệu/tháng</p>
+            </div>
+            <div>
+              <p className="size_text">{size} m²</p>
+            </div>
+            <div>
+              <p className="district_text">
+                {district.full_name}, {province.name}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="district_text">
-              {district.full_name}, {province.name}
-            </p>
+          <div className="description_container">
+            <p className="description_text">{description}</p>
           </div>
-        </div>
-        <div className="description_container">
-          <p className="description_text">{description}</p>
-        </div>
-        <div className="contact_container">
-          <div>
-            <img className="avt_img" src={owner.avatarUrl} />
-          </div>
-          <div>
-            <p className="owner_name">{owner.fullName}</p>
+          <div className="contact_container">
+            <div>
+              <img className="avt_img" src={owner.avatarUrl} />
+            </div>
+            <div style={{textAlign: 'center', justifyContent: 'center', height: '28px', marginLeft: '10px'}} >
+              <p className="owner_name">{owner.fullName}</p>
+            </div>
           </div>
         </div>
       </div>
