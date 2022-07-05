@@ -42,12 +42,12 @@ const RoomDetailsPage = ({ id }: RoomDetailProps) => {
             <div>
               <p className="address_text">{room.address}</p>
             </div>
-            <div style={{ display: 'flex' }}>
-              <div>
-                <p>{fixed_price} triệu </p>
+            <div className="flex_info">
+              <div >
+                <p className='price_text'>{fixed_price} triệu </p>
               </div>
-              <div>
-                <p>{room.size} m²</p>
+              <div style={{}}>
+                <p className='size_text'>{room.size}m²</p>
               </div>
             </div>
           </div>
