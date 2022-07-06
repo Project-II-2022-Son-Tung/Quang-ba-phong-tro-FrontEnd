@@ -13,7 +13,7 @@ const RoomDetailsPage = ({ id }: RoomDetailProps) => {
   })
 
   if (loading) {
-    return <LoadingComponent/>
+    return <LoadingComponent />
   } else {
     if (error) {
       console.log(error)
@@ -25,8 +25,12 @@ const RoomDetailsPage = ({ id }: RoomDetailProps) => {
   const room = data.room.room
 
   const fixed_price =
-    room.price % 1000000 == 0 ? room.price / 1000000 : (room.price / 1000000).toFixed(1)
+    room.price % 1000000 == 0
+      ? room.price / 1000000
+      : (room.price / 1000000).toFixed(1)
 
+  const createdAt = JSON.stringify(room.createdAt).substring(1, 10)
+  console.log('created at....' + createdAt)
   return (
     <>
       <MetaTags title="RoomDetails" description="RoomDetails page" />
@@ -44,18 +48,28 @@ const RoomDetailsPage = ({ id }: RoomDetailProps) => {
               <p className="address_text">{room.address}</p>
             </div>
             <div className="flex_info">
-              <div >
-                <p className='price_text'>{fixed_price} triệu </p>
+              <div>
+                <p className="price_text">{fixed_price} triệu </p>
               </div>
-              <div style={{}}>
-                <p className='size_text'>{room.size}m²</p>
+              <div style={{ marginLeft: '60px' }}>
+                <p className="size_text">{room.size}m²</p>
               </div>
+              <div style={{ marginLeft: '60px' }}>
+                <p className="createdAt_text">{createdAt}</p>
+              </div>
+            </div>
+            <div className="description">
+              <p className="description_text">{room.description}</p>
+
             </div>
           </div>
         </div>
 
         <div className="right_column">
-          <div className="contact_container"></div>
+          <div className="contact_container">
+            <div className='avt'><img className= 'avt_img' src={room.owner.avatarUrl}/></div>
+            <div className='phone'><p className='phone_text'>{room.owner.phoneNumber}</p></div>
+          </div>
         </div>
       </div>
     </>

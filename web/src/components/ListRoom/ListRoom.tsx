@@ -62,14 +62,7 @@ const ListRoom = (props) => {
     variables: {
       page: currentPage, // value for 'page'
       limit: 10, // value for 'limit'
-      filter: finalFilter,
-      // ? {
-      //     provinceCode: [props.filter.province],
-      //     districtCode: [props.filter.district],
-      //     wardCode: [props.filter.ward],
-      //     // ...props.filter.advanced,
-      //   }
-      // : {}, // value for 'filter'
+      filter: finalFilter
     },
   })
 
@@ -85,6 +78,8 @@ const ListRoom = (props) => {
   const totalPages = data.rooms.totalPages
 
   console.log(totalPages)
+
+
 
   return (
     <div
@@ -106,6 +101,7 @@ const ListRoom = (props) => {
               address={room.address}
               room_images={room.images}
               key={room.id}
+
             />
           </>
         )
