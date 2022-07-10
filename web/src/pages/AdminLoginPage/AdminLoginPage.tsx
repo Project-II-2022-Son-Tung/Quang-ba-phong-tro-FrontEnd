@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 import { Checkbox } from 'antd'
 import './index.css'
 
-import { useLoginMutation, useLoginOwnerMutation } from '../../generated/graphql'
+import { useLoginAdminMutation} from '../../generated/graphql'
 import { navigate, routes } from '@redwoodjs/router'
 
-const LoginPage = () => {
-  const [loginUser, { loading: _loginUserLoading }] = useLoginMutation()
+const AdminLoginPage = () => {
+  const [loginAdmin, { loading: _loginAdminLoading }] = useLoginAdminMutation()
 
-  const [loginOwner, { loading: _loginOwnerLoading}] = useLoginOwnerMutation()
+
 
   // const [mutate] =useMutation(mutation)
 
@@ -24,36 +24,25 @@ const LoginPage = () => {
     const uname = event.target.uname.value
     const pass = event.target.pass.value
 
-    let response ;
+    let  response = await loginAdmin({
+      variables: {
+        loginInput: { usernameOrEmail: uname, password: pass },
+      },
+    })
 
-    // console.log(uname + '__' + pass + '')
+    console.log(uname + '__' + pass + '')
 
-    if (event.target.isOwner.checked) {
-      response = await loginOwner({
-        variables: {
-          loginInput: { usernameOrEmail: uname, password: pass },
-        },
-      })
-    } else
-      response = await loginUser({
-        variables: {
-          loginInput: { usernameOrEmail: uname, password: pass },
-        },
-      })
-    console.log(response)
 
-    const userData =(response.data.login)?response.data.login.success: false
 
-    const ownerData = (response.data.loginOwner) ? response.data.loginOwner.success : false
+
+
+    const adminData = (response.data.loginAdmin) ? response.data.loginAdmin.success : false
 
     // Compare user info
-    if (userData) {
+    if (adminData) {
       setIsSubmitted(true)
-      navigate(routes.home())
-    }
-    else if (ownerData) {
-      setIsSubmitted(true)
-      navigate(routes.home())
+      // navigate(routes.home())
+      alert('Admin đã đăng nhập')
 
     }
      else {
@@ -78,10 +67,6 @@ const LoginPage = () => {
           <label>Mật khẩu </label>
           <input type="password" name="pass" required />
           {/* {renderErrorMessage("pass")} */}
-        </div>
-        <div style={{ display: 'float' }}>
-          <input type="checkbox" name="isOwner" onChange={onChangeCheckbox}  />{' '}
-          <label>Tôi là người đăng tin </label>
         </div>
 
         <div className="button-container">
@@ -110,4 +95,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default AdminLoginPage

@@ -24,14 +24,14 @@ const LoginPage = () => {
     const uname = event.target.uname.value
     const pass = event.target.pass.value
 
-    console.log(uname + '__' + pass + '')
+    // console.log(uname + '__' + pass + '')
 
     const response = await loginUser({
       variables: {
         loginInput: { usernameOrEmail: uname, password: pass },
       },
     })
-    console.log(response)
+    // console.log(response)
 
     const userData = response.data.login.success
 

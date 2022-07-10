@@ -2,8 +2,8 @@ import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import './room_detail.css'
 import { useRoomQuery } from 'src/generated/graphql'
-import { useParams } from '@redwoodjs/router'
 import LoadingComponent from '../../helper/LoadingComponent'
+import ImageSlider from './ImageSlider'
 type RoomDetailProps = { id: string; title: string }
 const RoomDetailsPage = ({ id }: RoomDetailProps) => {
   const { data, loading, error } = useRoomQuery({
@@ -30,16 +30,15 @@ const RoomDetailsPage = ({ id }: RoomDetailProps) => {
       : (room.price / 1000000).toFixed(1)
 
   const createdAt = JSON.stringify(room.createdAt).substring(1, 10)
-  console.log('created at....' + createdAt)
+  // console.log('created at....' + createdAt)
   return (
     <>
       <MetaTags title="RoomDetails" description="RoomDetails page" />
 
       <div className="roomDetails">
         <div className="left_column">
-          <div className="slider">
-            <h1>Hình ảnh </h1>
-          </div>
+          <ImageSlider images={room.images} />
+
           <div className="room_detail">
             <div>
               <p className="title_text">{room.title}</p>
@@ -60,15 +59,32 @@ const RoomDetailsPage = ({ id }: RoomDetailProps) => {
             </div>
             <div className="description">
               <p className="description_text">{room.description}</p>
-
             </div>
           </div>
         </div>
 
         <div className="right_column">
           <div className="contact_container">
-            <div className='avt'><img className= 'avt_img' src={room.owner.avatarUrl}/></div>
-            <div className='phone'><p className='phone_text'>{room.owner.phoneNumber}</p></div>
+            <div className="avt">
+              <img className="avt_img" src={room.owner.avatarUrl} />
+            </div>
+            <button className="phone">
+              <p className="phone_text">{room.owner.phoneNumber}</p>
+            </button>
+            <button className="zalo_and_favourite">
+              <p
+                className="zalo_favourite_text"
+                onClick={() => {
+                  window.open('https://zalo.me/' + room.owner.phoneNumber)
+                }}
+              >
+                Liên hệ Zalo
+              </p>
+            </button>
+
+            <button className="zalo_and_favourite">
+              <p className="zalo_favourite_text">Thêm vào danh sách yêu thích</p>
+            </button>
           </div>
         </div>
       </div>

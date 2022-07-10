@@ -6,6 +6,7 @@ import RoomDetailsPage from './pages/RoomDetailsPage/RoomDetailsPage'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/admin/login" page={AdminLoginPage} name="adminLogin" />
       <Set wrap={CustomerLayout}>
         <Route path="/about" page={AboutPage} name="about" />
         <Route path="/" page={HomePage} name="home" />

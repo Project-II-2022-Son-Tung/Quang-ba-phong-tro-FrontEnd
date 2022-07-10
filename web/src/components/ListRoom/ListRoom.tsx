@@ -53,11 +53,10 @@ const ListRoom = (props) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const onChangePage = (page) => {
-    console.log(page)
     setCurrentPage(page)
   }
 
-  console.log(props.filter)
+  // console.log(props.filter)
   const { data, loading, error } = useRoomsQuery({
     variables: {
       page: currentPage, // value for 'page'
@@ -75,9 +74,9 @@ const ListRoom = (props) => {
 
     console.log(data)
   }
-  const totalPages = data.rooms.totalPages
+  // const totalPages = data.rooms.totalPages
 
-  console.log(totalPages)
+  // console.log(totalPages)
 
 
 
@@ -120,7 +119,7 @@ const ListRoom = (props) => {
 
           current={currentPage}
           onChange={onChangePage}
-          total={totalPages * 10}
+          // total={totalPages * 10}
         />
       </div>
     </div>
