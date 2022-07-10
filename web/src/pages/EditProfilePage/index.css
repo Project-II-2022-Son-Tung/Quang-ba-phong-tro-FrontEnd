@@ -1,0 +1,21 @@
+.edit-profile{
+  width: 100%;
+
+  justify-content:'center';
+  align-items: center
+
+}
+
+.edit-profile .form{
+  width: 50%;
+  margin-left:25%
+}
+
+.edit-profile .label{
+ font-size:30px;
+}
+
+.edit-profile .input{
+
+  width : 200px;
+}

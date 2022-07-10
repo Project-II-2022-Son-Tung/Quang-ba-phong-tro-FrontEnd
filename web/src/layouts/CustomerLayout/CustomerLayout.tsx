@@ -2,7 +2,7 @@ import { Link } from '@redwoodjs/router'
 import './index.css'
 import { Button } from 'antd'
 import { navigate, routes } from '@redwoodjs/router'
-
+import {UserOutlined} from '@ant-design/icons'
 const CustomerLayout = ({ children }) => {
   return (
     <div>
@@ -26,6 +26,7 @@ const CustomerLayout = ({ children }) => {
               <Link to={routes.home()} >House Rental</Link>
             </p>
           </div>
+
 
           <div style={{ position: 'absolute', right: '20px' }}>
             <Button
@@ -58,6 +59,12 @@ const CustomerLayout = ({ children }) => {
                 Đăng phòng
               </Link>
             </li>
+            <li style={{position:'absolute', right:'0'}}>
+              <Link className="nav_text" to={routes.editProfile()}>
+              <UserOutlined />
+              </Link>
+            </li>
+
           </ul>
         </nav>
       </header>
