@@ -3,7 +3,7 @@ import './index.css'
 import { Button } from 'antd'
 import { navigate, routes } from '@redwoodjs/router'
 import {UserOutlined} from '@ant-design/icons'
-const CustomerLayout = ({ children }) => {
+const OwnerLayout = ({ children }) => {
   return (
     <div>
       <header style={{ marginTop: '16px' }}>
@@ -44,26 +44,22 @@ const CustomerLayout = ({ children }) => {
 
         <nav>
           <ul className="nav_bar">
-            <li style={{ color: '#ffffff' }}>
-              <Link className="nav_text" to={routes.home()}>
-                Trang chủ
-              </Link>
+
+            <li>
+              {/* <Link className="nav_text" to={routes.favouriteRoom()}> */}
+                Phòng trọ của bạn
+              {/* </Link> */}
             </li>
             <li>
-              <Link className="nav_text" to={routes.favouriteRoom()}>
-                Phòng trọ đã lưu
-              </Link>
-            </li>
-            {/* <li>
-              <Link className="nav_text" to={routes.postroom()}>
+              <Link className="nav_text" to={routes.postRoom()}>
                 Đăng phòng
               </Link>
-            </li> */}
-            <li style={{position:'absolute', right:'0'}}>
+            </li>
+            {/* <li style={{position:'absolute', right:'0'}}>
               <Link className="nav_text" to={routes.editProfile()}>
               <UserOutlined />
               </Link>
-            </li>
+            </li> */}
 
           </ul>
         </nav>
@@ -73,4 +69,4 @@ const CustomerLayout = ({ children }) => {
   )
 }
 
-export default CustomerLayout
+export default OwnerLayout

@@ -14,7 +14,7 @@ const GuestLayout = ({ children }) => {
   }
   return (
     <>
-      <header className="header">
+      <header className="header" style={{backgroundColor: '#f8f9fd'}}>
         <div style={{ alignItems: 'center', justifyContent: 'center' }}>
           <text
             style={{
