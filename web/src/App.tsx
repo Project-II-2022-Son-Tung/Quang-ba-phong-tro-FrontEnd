@@ -11,7 +11,7 @@ import {
 } from '@apollo/client'
 const App = () => {
   const client = new ApolloClient({
-    uri: 'https://quang-ba-phong-tro.herokuapp.com/graphql',
+    uri: process.env.BACKEND_URL + '/graphql',
     cache: new InMemoryCache(),
     credentials: "include"
   });

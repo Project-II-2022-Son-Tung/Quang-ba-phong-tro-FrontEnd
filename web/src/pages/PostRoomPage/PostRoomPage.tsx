@@ -41,7 +41,7 @@ const PostRoomPage = () => {
       let formData = new FormData();
       console.log(file[0])
       formData.append("file", file[0]);
-      fetch("https://quang-ba-phong-tro.herokuapp.com/uploadImages", {
+      fetch(process.env.BACKEND_URL + "/uploadImages", {
         method: "POST",
         body: formData,
       })

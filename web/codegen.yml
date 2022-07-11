@@ -1,5 +1,5 @@
 overwrite: true
-schema: "https://quang-ba-phong-tro.herokuapp.com/graphql"
+schema: process.env.BACKEND_URL + "/graphql"
 documents: "src/graphql-client/**/*.graphql"
 generates:
   src/generated/graphql.tsx:
