@@ -4,6 +4,7 @@ import './room_detail.css'
 import { useRoomQuery } from 'src/generated/graphql'
 import LoadingComponent from '../../helper/LoadingComponent'
 import ImageSlider from './ImageSlider'
+import RateSection from 'src/components/RateSection'
 type RoomDetailProps = { id: string; title: string }
 const RoomDetailsPage = ({ id }: RoomDetailProps) => {
   const { data, loading, error } = useRoomQuery({
@@ -60,6 +61,7 @@ const RoomDetailsPage = ({ id }: RoomDetailProps) => {
             <div className="description">
               <p className="description_text">{room.description}</p>
             </div>
+            <RateSection service={room} />
           </div>
         </div>
 
@@ -88,6 +90,7 @@ const RoomDetailsPage = ({ id }: RoomDetailProps) => {
           </div>
         </div>
       </div>
+
     </>
   )
 }

@@ -10,6 +10,7 @@ const Routes = () => {
       <Set wrap={CustomerLayout}>
         <Route path="/user/favourite-room" page={FavouriteRoomPage} name="favouriteRoom" />
         <Route path="/user" page={HomePage} name="home" />
+        <Route path="/viewRoomDetails/{id:String}" page={ViewRoomDetailPage} name="ViewRoomDetail" />
         <Route path="/roomDetails/{id:String}" page={RoomDetailsPage} name="roomDetails" />
         <Route path="/user/edit-profile" page={EditProfilePage} name="editProfile" />
       </Set>

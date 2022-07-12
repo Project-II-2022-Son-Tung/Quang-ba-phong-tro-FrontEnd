@@ -60,10 +60,32 @@ export type Contract = {
   id: Scalars['ID'];
   leasePrice: Scalars['Float'];
   owner: Owner;
+  ownerId: Scalars['String'];
   room: Room;
+  roomId: Scalars['String'];
   status: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   user: User;
+  userId: Scalars['String'];
+};
+
+export type ContractMutationResponse = IMutationResponse & {
+  __typename?: 'ContractMutationResponse';
+  code: Scalars['Float'];
+  contract?: Maybe<Contract>;
+  errors?: Maybe<Array<FieldError>>;
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+};
+
+export type CreateContractInput = {
+  additionalAgreements: Scalars['String'];
+  contractMonths: Scalars['Float'];
+  deposit: Scalars['Float'];
+  detailAddress: Scalars['String'];
+  leasePrice?: InputMaybe<Scalars['Float']>;
+  roomId: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 export type CreateRoomInput = {
@@ -91,6 +113,19 @@ export type CreateRoomInput = {
   waterPrice?: InputMaybe<Scalars['Float']>;
   wifi: Scalars['Boolean'];
   wifiFee?: InputMaybe<Scalars['Float']>;
+};
+
+export type CreateRoomRateInput = {
+  comment: Scalars['String'];
+  images: Array<Scalars['String']>;
+  rate: Scalars['Float'];
+  roomId: Scalars['String'];
+};
+
+export type DepositInput = {
+  amount: Scalars['Float'];
+  id: Scalars['String'];
+  referenceId: Scalars['String'];
 };
 
 export type Districts = {
@@ -168,6 +203,18 @@ export type InviteInput = {
   userId: Scalars['String'];
 };
 
+export type ListContractResponse = {
+  __typename?: 'ListContractResponse';
+  contracts: Array<Contract>;
+  totalPages: Scalars['Float'];
+};
+
+export type ListRoomRateResponse = {
+  __typename?: 'ListRoomRateResponse';
+  roomRates: Array<RoomRate>;
+  totalPages: Scalars['Float'];
+};
+
 export type ListRoomResponse = {
   __typename?: 'ListRoomResponse';
   rooms: Array<Room>;
@@ -181,15 +228,21 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptContract: ContractMutationResponse;
   acceptInvite: InvitationMutationResponse;
+  acceptWithdraw: WalletMutationResponse;
   changePassword: UserMutationResponse;
   changePasswordOwner: OwnerMutationResponse;
+  createContract: ContractMutationResponse;
   createRoom: RoomMutationResponse;
   createRoomFavourite: RoomFavouriteMutationResponse;
+  createRoomRate: RoomRateMutationResponse;
   deleteRoomFavourite: RoomFavouriteMutationResponse;
+  deposit: WalletMutationResponse;
   forgotPassword: Scalars['Boolean'];
   forgotPasswordOwner: Scalars['Boolean'];
   invite: InvitationMutationResponse;
+  lockWallet: WalletMutationResponse;
   login: UserMutationResponse;
   loginAdmin: AdminMutationResponse;
   loginOwner: OwnerMutationResponse;
@@ -197,14 +250,29 @@ export type Mutation = {
   register: UserMutationResponse;
   registerAdmin: AdminMutationResponse;
   registerOwner: OwnerMutationResponse;
+  rejectContract: ContractMutationResponse;
   rejectInvite: InvitationMutationResponse;
+  unlockWallet: WalletMutationResponse;
   updateOwner?: Maybe<OwnerMutationResponse>;
+  updateRoomRate: RoomRateMutationResponse;
   updateUser?: Maybe<UserMutationResponse>;
+  withdraw: WalletMutationResponse;
+};
+
+
+export type MutationAcceptContractArgs = {
+  id: Scalars['String'];
 };
 
 
 export type MutationAcceptInviteArgs = {
   inviteId: Scalars['String'];
+};
+
+
+export type MutationAcceptWithdrawArgs = {
+  id: Scalars['String'];
+  referenceId: Scalars['String'];
 };
 
 
@@ -222,6 +290,11 @@ export type MutationChangePasswordOwnerArgs = {
 };
 
 
+export type MutationCreateContractArgs = {
+  contractInput: CreateContractInput;
+};
+
+
 export type MutationCreateRoomArgs = {
   roomInput: CreateRoomInput;
 };
@@ -232,8 +305,18 @@ export type MutationCreateRoomFavouriteArgs = {
 };
 
 
+export type MutationCreateRoomRateArgs = {
+  rateInput: CreateRoomRateInput;
+};
+
+
 export type MutationDeleteRoomFavouriteArgs = {
   roomId: Scalars['String'];
+};
+
+
+export type MutationDepositArgs = {
+  depositInput: DepositInput;
 };
 
 
@@ -282,6 +365,11 @@ export type MutationRegisterOwnerArgs = {
 };
 
 
+export type MutationRejectContractArgs = {
+  id: Scalars['String'];
+};
+
+
 export type MutationRejectInviteArgs = {
   inviteId: Scalars['String'];
 };
@@ -292,8 +380,18 @@ export type MutationUpdateOwnerArgs = {
 };
 
 
+export type MutationUpdateRoomRateArgs = {
+  rateInput: UpdateRoomRateInput;
+};
+
+
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUiInput;
+};
+
+
+export type MutationWithdrawArgs = {
+  withdrawInput: WithdrawInput;
 };
 
 export type Owner = {
@@ -316,6 +414,7 @@ export type Owner = {
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
   wallet: Wallet;
+  walletId: Scalars['String'];
 };
 
 export type OwnerHistory = {
@@ -376,21 +475,30 @@ export type Provinces = {
 
 export type Query = {
   __typename?: 'Query';
+  contract: ContractMutationResponse;
   countRoomFavourites: Scalars['Float'];
   districts: Array<Districts>;
   districtsOfProvince: Array<Districts>;
   getUsersFavourited?: Maybe<Array<User>>;
+  getWallet?: Maybe<Wallet>;
   invitationsToMe?: Maybe<Array<Invite>>;
   isRoomFavourited: Scalars['Boolean'];
   me?: Maybe<User>;
   meAdmin?: Maybe<Admin>;
   meOwner?: Maybe<Owner>;
+  myContracts?: Maybe<ListContractResponse>;
   myInvitations?: Maybe<Array<Invite>>;
   provinces: Array<Provinces>;
   room?: Maybe<RoomMutationResponse>;
+  roomRates: ListRoomRateResponse;
   rooms: ListRoomResponse;
   wards: Array<Wards>;
   wardsOfDistrict: Array<Wards>;
+};
+
+
+export type QueryContractArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -414,8 +522,22 @@ export type QueryIsRoomFavouritedArgs = {
 };
 
 
+export type QueryMyContractsArgs = {
+  limit: Scalars['Float'];
+  page: Scalars['Float'];
+  status?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryRoomArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryRoomRatesArgs = {
+  limit: Scalars['Float'];
+  page: Scalars['Float'];
+  roomId: Scalars['String'];
 };
 
 
@@ -567,6 +689,40 @@ export type RoomRate = {
   userId: Scalars['String'];
 };
 
+export type RoomRateMutationResponse = IMutationResponse & {
+  __typename?: 'RoomRateMutationResponse';
+  code: Scalars['Float'];
+  errors?: Maybe<Array<FieldError>>;
+  message?: Maybe<Scalars['String']>;
+  roomRate?: Maybe<RoomRate>;
+  success: Scalars['Boolean'];
+};
+
+export type Transaction = {
+  __typename?: 'Transaction';
+  admin?: Maybe<Admin>;
+  adminId?: Maybe<Scalars['String']>;
+  amount: Scalars['Float'];
+  content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  direction: Scalars['String'];
+  id: Scalars['ID'];
+  referenceId?: Maybe<Scalars['String']>;
+  room?: Maybe<Room>;
+  roomId?: Maybe<Scalars['String']>;
+  status: Scalars['String'];
+  type: Scalars['String'];
+  wallet: Wallet;
+  walletId: Scalars['String'];
+};
+
+export type UpdateRoomRateInput = {
+  comment?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  images?: InputMaybe<Array<Scalars['String']>>;
+  rate?: InputMaybe<Scalars['Float']>;
+};
+
 export type UpdateUiInput = {
   address?: InputMaybe<Scalars['String']>;
   avatarUrl?: InputMaybe<Scalars['String']>;
@@ -596,6 +752,7 @@ export type User = {
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
   wallet: Wallet;
+  walletId: Scalars['String'];
 };
 
 export type UserHistory = {
@@ -636,7 +793,17 @@ export type Wallet = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   status: Scalars['String'];
+  transactions?: Maybe<Array<Transaction>>;
   updatedAt: Scalars['DateTime'];
+};
+
+export type WalletMutationResponse = IMutationResponse & {
+  __typename?: 'WalletMutationResponse';
+  code: Scalars['Float'];
+  errors?: Maybe<Array<FieldError>>;
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+  wallet?: Maybe<Wallet>;
 };
 
 export type Wards = {
@@ -653,11 +820,25 @@ export type Wards = {
   rooms: Array<Room>;
 };
 
+export type WithdrawInput = {
+  accountName: Scalars['String'];
+  amount: Scalars['Float'];
+  bankName: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type OwnerInfoFragment = { __typename?: 'Owner', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
 
 export type RoomInfoFragment = { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> };
 
 export type UserInfoFragment = { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
+
+export type AcceptContractMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type AcceptContractMutation = { __typename?: 'Mutation', acceptContract: { __typename?: 'ContractMutationResponse', code: number, success: boolean, message?: string | null | undefined, contract?: { __typename?: 'Contract', id: string, status: string } | null | undefined, errors?: Array<{ __typename?: 'FieldError', message: string }> | null | undefined } };
 
 export type AcceptInviteMutationVariables = Exact<{
   inviteId: Scalars['String'];
@@ -673,12 +854,26 @@ export type AddRoomToFavouriteMutationVariables = Exact<{
 
 export type AddRoomToFavouriteMutation = { __typename?: 'Mutation', createRoomFavourite: { __typename?: 'RoomFavouriteMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
 
+export type CreateContractMutationVariables = Exact<{
+  contractInput: CreateContractInput;
+}>;
+
+
+export type CreateContractMutation = { __typename?: 'Mutation', createContract: { __typename?: 'ContractMutationResponse', code: number, success: boolean, message?: string | null | undefined, contract?: { __typename?: 'Contract', id: string, roomId: string, userId: string } | null | undefined } };
+
 export type CreateRoomMutationVariables = Exact<{
   roomInput: CreateRoomInput;
 }>;
 
 
 export type CreateRoomMutation = { __typename?: 'Mutation', createRoom: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
+
+export type CreateRoomRateMutationVariables = Exact<{
+  rateInput: CreateRoomRateInput;
+}>;
+
+
+export type CreateRoomRateMutation = { __typename?: 'Mutation', createRoomRate: { __typename?: 'RoomRateMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
 
 export type InviteMutationVariables = Exact<{
   inviteInput: InviteInput;
@@ -715,6 +910,13 @@ export type OwnerRegisterMutationVariables = Exact<{
 
 export type OwnerRegisterMutation = { __typename?: 'Mutation', registerOwner: { __typename?: 'OwnerMutationResponse', success: boolean, code: number, message?: string | null | undefined, owner?: { __typename?: 'Owner', username: string } | null | undefined } };
 
+export type RejectContractMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type RejectContractMutation = { __typename?: 'Mutation', rejectContract: { __typename?: 'ContractMutationResponse', code: number, success: boolean, message?: string | null | undefined, contract?: { __typename?: 'Contract', id: string, status: string } | null | undefined } };
+
 export type RejectInviteMutationVariables = Exact<{
   inviteId: Scalars['String'];
 }>;
@@ -729,6 +931,13 @@ export type RemoveRoomFromFavouritesMutationVariables = Exact<{
 
 export type RemoveRoomFromFavouritesMutation = { __typename?: 'Mutation', deleteRoomFavourite: { __typename?: 'RoomFavouriteMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
 
+export type UpdateRoomRateMutationVariables = Exact<{
+  rateInput: UpdateRoomRateInput;
+}>;
+
+
+export type UpdateRoomRateMutation = { __typename?: 'Mutation', updateRoomRate: { __typename?: 'RoomRateMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
+
 export type UpdateUserMutationVariables = Exact<{
   updateUserInput: UpdateUiInput;
 }>;
@@ -742,6 +951,20 @@ export type UserRegisterMutationVariables = Exact<{
 
 
 export type UserRegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', success: boolean, code: number, message?: string | null | undefined, user?: { __typename?: 'User', id: string, username: string } | null | undefined } };
+
+export type CheckRoomFavouritedQueryVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type CheckRoomFavouritedQuery = { __typename?: 'Query', isRoomFavourited: boolean };
+
+export type ContractDetailQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ContractDetailQuery = { __typename?: 'Query', contract: { __typename?: 'ContractMutationResponse', code: number, success: boolean, message?: string | null | undefined, contract?: { __typename?: 'Contract', id: string, contractFee: number, contractDuration: any, leasePrice: number, deposit: number, address: string, additionalAgreements: string, status: string, createdAt: any, room: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> }, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } }, owner: { __typename?: 'Owner', id: string, fullName: string, avatarUrl: string, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } } | null | undefined } };
 
 export type GetMyFavouritesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -775,6 +998,15 @@ export type MeOwnerQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeOwnerQuery = { __typename?: 'Query', meOwner?: { __typename?: 'Owner', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
 
+export type MyContractsQueryVariables = Exact<{
+  page: Scalars['Float'];
+  limit: Scalars['Float'];
+  status?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type MyContractsQuery = { __typename?: 'Query', myContracts?: { __typename?: 'ListContractResponse', totalPages: number, contracts: Array<{ __typename?: 'Contract', id: string, contractFee: number, contractDuration: any, leasePrice: number, room: { __typename?: 'Room', id: string, title: string, address: string }, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string } }> } | null | undefined };
+
 export type MyInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -791,6 +1023,15 @@ export type RoomQueryVariables = Exact<{
 
 
 export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, rates: Array<{ __typename?: 'RoomRate', id: string, comment: string, rate: number, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string } }>, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
+
+export type RoomRatesQueryVariables = Exact<{
+  roomId: Scalars['String'];
+  limit: Scalars['Float'];
+  page: Scalars['Float'];
+}>;
+
+
+export type RoomRatesQuery = { __typename?: 'Query', roomRates: { __typename?: 'ListRoomRateResponse', totalPages: number, roomRates: Array<{ __typename?: 'RoomRate', id: string, rate: number, comment: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string }, images: Array<{ __typename?: 'RateImage', imageUrl: string }> }> } };
 
 export type RoomsQueryVariables = Exact<{
   page: Scalars['Float'];
@@ -899,6 +1140,48 @@ export const UserInfoFragmentDoc = gql`
   }
 }
     `;
+export const AcceptContractDocument = gql`
+    mutation AcceptContract($id: String!) {
+  acceptContract(id: $id) {
+    code
+    success
+    message
+    contract {
+      id
+      status
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type AcceptContractMutationFn = Apollo.MutationFunction<AcceptContractMutation, AcceptContractMutationVariables>;
+
+/**
+ * __useAcceptContractMutation__
+ *
+ * To run a mutation, you first call `useAcceptContractMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptContractMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptContractMutation, { data, loading, error }] = useAcceptContractMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAcceptContractMutation(baseOptions?: Apollo.MutationHookOptions<AcceptContractMutation, AcceptContractMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptContractMutation, AcceptContractMutationVariables>(AcceptContractDocument, options);
+      }
+export type AcceptContractMutationHookResult = ReturnType<typeof useAcceptContractMutation>;
+export type AcceptContractMutationResult = Apollo.MutationResult<AcceptContractMutation>;
+export type AcceptContractMutationOptions = Apollo.BaseMutationOptions<AcceptContractMutation, AcceptContractMutationVariables>;
 export const AcceptInviteDocument = gql`
     mutation AcceptInvite($inviteId: String!) {
   acceptInvite(inviteId: $inviteId) {
@@ -985,6 +1268,46 @@ export function useAddRoomToFavouriteMutation(baseOptions?: Apollo.MutationHookO
 export type AddRoomToFavouriteMutationHookResult = ReturnType<typeof useAddRoomToFavouriteMutation>;
 export type AddRoomToFavouriteMutationResult = Apollo.MutationResult<AddRoomToFavouriteMutation>;
 export type AddRoomToFavouriteMutationOptions = Apollo.BaseMutationOptions<AddRoomToFavouriteMutation, AddRoomToFavouriteMutationVariables>;
+export const CreateContractDocument = gql`
+    mutation CreateContract($contractInput: CreateContractInput!) {
+  createContract(contractInput: $contractInput) {
+    code
+    success
+    message
+    contract {
+      id
+      roomId
+      userId
+    }
+  }
+}
+    `;
+export type CreateContractMutationFn = Apollo.MutationFunction<CreateContractMutation, CreateContractMutationVariables>;
+
+/**
+ * __useCreateContractMutation__
+ *
+ * To run a mutation, you first call `useCreateContractMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateContractMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createContractMutation, { data, loading, error }] = useCreateContractMutation({
+ *   variables: {
+ *      contractInput: // value for 'contractInput'
+ *   },
+ * });
+ */
+export function useCreateContractMutation(baseOptions?: Apollo.MutationHookOptions<CreateContractMutation, CreateContractMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateContractMutation, CreateContractMutationVariables>(CreateContractDocument, options);
+      }
+export type CreateContractMutationHookResult = ReturnType<typeof useCreateContractMutation>;
+export type CreateContractMutationResult = Apollo.MutationResult<CreateContractMutation>;
+export type CreateContractMutationOptions = Apollo.BaseMutationOptions<CreateContractMutation, CreateContractMutationVariables>;
 export const CreateRoomDocument = gql`
     mutation CreateRoom($roomInput: CreateRoomInput!) {
   createRoom(roomInput: $roomInput) {
@@ -1020,6 +1343,41 @@ export function useCreateRoomMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateRoomMutationHookResult = ReturnType<typeof useCreateRoomMutation>;
 export type CreateRoomMutationResult = Apollo.MutationResult<CreateRoomMutation>;
 export type CreateRoomMutationOptions = Apollo.BaseMutationOptions<CreateRoomMutation, CreateRoomMutationVariables>;
+export const CreateRoomRateDocument = gql`
+    mutation CreateRoomRate($rateInput: CreateRoomRateInput!) {
+  createRoomRate(rateInput: $rateInput) {
+    code
+    success
+    message
+  }
+}
+    `;
+export type CreateRoomRateMutationFn = Apollo.MutationFunction<CreateRoomRateMutation, CreateRoomRateMutationVariables>;
+
+/**
+ * __useCreateRoomRateMutation__
+ *
+ * To run a mutation, you first call `useCreateRoomRateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRoomRateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRoomRateMutation, { data, loading, error }] = useCreateRoomRateMutation({
+ *   variables: {
+ *      rateInput: // value for 'rateInput'
+ *   },
+ * });
+ */
+export function useCreateRoomRateMutation(baseOptions?: Apollo.MutationHookOptions<CreateRoomRateMutation, CreateRoomRateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRoomRateMutation, CreateRoomRateMutationVariables>(CreateRoomRateDocument, options);
+      }
+export type CreateRoomRateMutationHookResult = ReturnType<typeof useCreateRoomRateMutation>;
+export type CreateRoomRateMutationResult = Apollo.MutationResult<CreateRoomRateMutation>;
+export type CreateRoomRateMutationOptions = Apollo.BaseMutationOptions<CreateRoomRateMutation, CreateRoomRateMutationVariables>;
 export const InviteDocument = gql`
     mutation Invite($inviteInput: InviteInput!) {
   invite(inviteInput: $inviteInput) {
@@ -1214,6 +1572,45 @@ export function useOwnerRegisterMutation(baseOptions?: Apollo.MutationHookOption
 export type OwnerRegisterMutationHookResult = ReturnType<typeof useOwnerRegisterMutation>;
 export type OwnerRegisterMutationResult = Apollo.MutationResult<OwnerRegisterMutation>;
 export type OwnerRegisterMutationOptions = Apollo.BaseMutationOptions<OwnerRegisterMutation, OwnerRegisterMutationVariables>;
+export const RejectContractDocument = gql`
+    mutation RejectContract($id: String!) {
+  rejectContract(id: $id) {
+    code
+    success
+    contract {
+      id
+      status
+    }
+    message
+  }
+}
+    `;
+export type RejectContractMutationFn = Apollo.MutationFunction<RejectContractMutation, RejectContractMutationVariables>;
+
+/**
+ * __useRejectContractMutation__
+ *
+ * To run a mutation, you first call `useRejectContractMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRejectContractMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rejectContractMutation, { data, loading, error }] = useRejectContractMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRejectContractMutation(baseOptions?: Apollo.MutationHookOptions<RejectContractMutation, RejectContractMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RejectContractMutation, RejectContractMutationVariables>(RejectContractDocument, options);
+      }
+export type RejectContractMutationHookResult = ReturnType<typeof useRejectContractMutation>;
+export type RejectContractMutationResult = Apollo.MutationResult<RejectContractMutation>;
+export type RejectContractMutationOptions = Apollo.BaseMutationOptions<RejectContractMutation, RejectContractMutationVariables>;
 export const RejectInviteDocument = gql`
     mutation RejectInvite($inviteId: String!) {
   rejectInvite(inviteId: $inviteId) {
@@ -1300,6 +1697,41 @@ export function useRemoveRoomFromFavouritesMutation(baseOptions?: Apollo.Mutatio
 export type RemoveRoomFromFavouritesMutationHookResult = ReturnType<typeof useRemoveRoomFromFavouritesMutation>;
 export type RemoveRoomFromFavouritesMutationResult = Apollo.MutationResult<RemoveRoomFromFavouritesMutation>;
 export type RemoveRoomFromFavouritesMutationOptions = Apollo.BaseMutationOptions<RemoveRoomFromFavouritesMutation, RemoveRoomFromFavouritesMutationVariables>;
+export const UpdateRoomRateDocument = gql`
+    mutation UpdateRoomRate($rateInput: UpdateRoomRateInput!) {
+  updateRoomRate(rateInput: $rateInput) {
+    code
+    success
+    message
+  }
+}
+    `;
+export type UpdateRoomRateMutationFn = Apollo.MutationFunction<UpdateRoomRateMutation, UpdateRoomRateMutationVariables>;
+
+/**
+ * __useUpdateRoomRateMutation__
+ *
+ * To run a mutation, you first call `useUpdateRoomRateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateRoomRateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateRoomRateMutation, { data, loading, error }] = useUpdateRoomRateMutation({
+ *   variables: {
+ *      rateInput: // value for 'rateInput'
+ *   },
+ * });
+ */
+export function useUpdateRoomRateMutation(baseOptions?: Apollo.MutationHookOptions<UpdateRoomRateMutation, UpdateRoomRateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateRoomRateMutation, UpdateRoomRateMutationVariables>(UpdateRoomRateDocument, options);
+      }
+export type UpdateRoomRateMutationHookResult = ReturnType<typeof useUpdateRoomRateMutation>;
+export type UpdateRoomRateMutationResult = Apollo.MutationResult<UpdateRoomRateMutation>;
+export type UpdateRoomRateMutationOptions = Apollo.BaseMutationOptions<UpdateRoomRateMutation, UpdateRoomRateMutationVariables>;
 export const UpdateUserDocument = gql`
     mutation UpdateUser($updateUserInput: UpdateUIInput!) {
   updateUser(updateUserInput: $updateUserInput) {
@@ -1376,6 +1808,155 @@ export function useUserRegisterMutation(baseOptions?: Apollo.MutationHookOptions
 export type UserRegisterMutationHookResult = ReturnType<typeof useUserRegisterMutation>;
 export type UserRegisterMutationResult = Apollo.MutationResult<UserRegisterMutation>;
 export type UserRegisterMutationOptions = Apollo.BaseMutationOptions<UserRegisterMutation, UserRegisterMutationVariables>;
+export const CheckRoomFavouritedDocument = gql`
+    query CheckRoomFavourited($roomId: String!) {
+  isRoomFavourited(roomId: $roomId)
+}
+    `;
+
+/**
+ * __useCheckRoomFavouritedQuery__
+ *
+ * To run a query within a React component, call `useCheckRoomFavouritedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckRoomFavouritedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckRoomFavouritedQuery({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *   },
+ * });
+ */
+export function useCheckRoomFavouritedQuery(baseOptions: Apollo.QueryHookOptions<CheckRoomFavouritedQuery, CheckRoomFavouritedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckRoomFavouritedQuery, CheckRoomFavouritedQueryVariables>(CheckRoomFavouritedDocument, options);
+      }
+export function useCheckRoomFavouritedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckRoomFavouritedQuery, CheckRoomFavouritedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckRoomFavouritedQuery, CheckRoomFavouritedQueryVariables>(CheckRoomFavouritedDocument, options);
+        }
+export type CheckRoomFavouritedQueryHookResult = ReturnType<typeof useCheckRoomFavouritedQuery>;
+export type CheckRoomFavouritedLazyQueryHookResult = ReturnType<typeof useCheckRoomFavouritedLazyQuery>;
+export type CheckRoomFavouritedQueryResult = Apollo.QueryResult<CheckRoomFavouritedQuery, CheckRoomFavouritedQueryVariables>;
+export const ContractDetailDocument = gql`
+    query ContractDetail($id: String!) {
+  contract(id: $id) {
+    code
+    success
+    message
+    contract {
+      id
+      room {
+        id
+        title
+        price
+        description
+        rate
+        size
+        floor
+        maxOccupancy
+        liveWithHost
+        petsAllowed
+        electricPrice
+        waterPrice
+        parking
+        parkingFee
+        waterHeating
+        airConditioning
+        createdAt
+        province {
+          code
+          name
+          full_name
+        }
+        district {
+          code
+          name
+          full_name
+        }
+        ward {
+          code
+          name
+          full_name
+        }
+        wifi
+        wifiFee
+        lift
+        numberOfFloors
+        available
+        images {
+          imageUrl
+          caption
+        }
+        address
+        enclosed
+        province {
+          code
+        }
+      }
+      contractFee
+      contractDuration
+      leasePrice
+      user {
+        id
+        fullName
+        avatarUrl
+        identification {
+          serial
+          issuedBy
+          issueDate
+        }
+      }
+      owner {
+        id
+        fullName
+        avatarUrl
+        identification {
+          serial
+          issuedBy
+          issueDate
+        }
+      }
+      deposit
+      address
+      additionalAgreements
+      status
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useContractDetailQuery__
+ *
+ * To run a query within a React component, call `useContractDetailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useContractDetailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useContractDetailQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useContractDetailQuery(baseOptions: Apollo.QueryHookOptions<ContractDetailQuery, ContractDetailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ContractDetailQuery, ContractDetailQueryVariables>(ContractDetailDocument, options);
+      }
+export function useContractDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ContractDetailQuery, ContractDetailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ContractDetailQuery, ContractDetailQueryVariables>(ContractDetailDocument, options);
+        }
+export type ContractDetailQueryHookResult = ReturnType<typeof useContractDetailQuery>;
+export type ContractDetailLazyQueryHookResult = ReturnType<typeof useContractDetailLazyQuery>;
+export type ContractDetailQueryResult = Apollo.QueryResult<ContractDetailQuery, ContractDetailQueryVariables>;
 export const GetMyFavouritesDocument = gql`
     query getMyFavourites {
   me {
@@ -1614,6 +2195,59 @@ export function useMeOwnerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Me
 export type MeOwnerQueryHookResult = ReturnType<typeof useMeOwnerQuery>;
 export type MeOwnerLazyQueryHookResult = ReturnType<typeof useMeOwnerLazyQuery>;
 export type MeOwnerQueryResult = Apollo.QueryResult<MeOwnerQuery, MeOwnerQueryVariables>;
+export const MyContractsDocument = gql`
+    query MyContracts($page: Float!, $limit: Float!, $status: String) {
+  myContracts(limit: $limit, page: $page, status: $status) {
+    totalPages
+    contracts {
+      id
+      room {
+        id
+        title
+        address
+      }
+      contractFee
+      contractDuration
+      leasePrice
+      user {
+        id
+        fullName
+        avatarUrl
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useMyContractsQuery__
+ *
+ * To run a query within a React component, call `useMyContractsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyContractsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyContractsQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      limit: // value for 'limit'
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useMyContractsQuery(baseOptions: Apollo.QueryHookOptions<MyContractsQuery, MyContractsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyContractsQuery, MyContractsQueryVariables>(MyContractsDocument, options);
+      }
+export function useMyContractsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyContractsQuery, MyContractsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyContractsQuery, MyContractsQueryVariables>(MyContractsDocument, options);
+        }
+export type MyContractsQueryHookResult = ReturnType<typeof useMyContractsQuery>;
+export type MyContractsLazyQueryHookResult = ReturnType<typeof useMyContractsLazyQuery>;
+export type MyContractsQueryResult = Apollo.QueryResult<MyContractsQuery, MyContractsQueryVariables>;
 export const MyInvitationsDocument = gql`
     query MyInvitations {
   myInvitations {
@@ -1758,6 +2392,58 @@ export function useRoomLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RoomQ
 export type RoomQueryHookResult = ReturnType<typeof useRoomQuery>;
 export type RoomLazyQueryHookResult = ReturnType<typeof useRoomLazyQuery>;
 export type RoomQueryResult = Apollo.QueryResult<RoomQuery, RoomQueryVariables>;
+export const RoomRatesDocument = gql`
+    query RoomRates($roomId: String!, $limit: Float!, $page: Float!) {
+  roomRates(roomId: $roomId, page: $page, limit: $limit) {
+    totalPages
+    roomRates {
+      id
+      rate
+      user {
+        id
+        fullName
+        avatarUrl
+      }
+      comment
+      images {
+        imageUrl
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useRoomRatesQuery__
+ *
+ * To run a query within a React component, call `useRoomRatesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRoomRatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRoomRatesQuery({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *      limit: // value for 'limit'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useRoomRatesQuery(baseOptions: Apollo.QueryHookOptions<RoomRatesQuery, RoomRatesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RoomRatesQuery, RoomRatesQueryVariables>(RoomRatesDocument, options);
+      }
+export function useRoomRatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RoomRatesQuery, RoomRatesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RoomRatesQuery, RoomRatesQueryVariables>(RoomRatesDocument, options);
+        }
+export type RoomRatesQueryHookResult = ReturnType<typeof useRoomRatesQuery>;
+export type RoomRatesLazyQueryHookResult = ReturnType<typeof useRoomRatesLazyQuery>;
+export type RoomRatesQueryResult = Apollo.QueryResult<RoomRatesQuery, RoomRatesQueryVariables>;
 export const RoomsDocument = gql`
     query Rooms($page: Float!, $limit: Float!, $orderBy: RoomOrderByInput, $filter: RoomFilterInput) {
   rooms(page: $page, limit: $limit, orderBy: $orderBy, filter: $filter) {
