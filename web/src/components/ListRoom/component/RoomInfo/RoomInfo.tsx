@@ -41,7 +41,7 @@ const RoomInfo = (props) => {
         <div className="info_container">
           <div className="title">
             {/* <a  className="title_text">{title}</a> */}
-            <Link to={routes.roomDetails({ id: id })}>
+            <Link to={routes.viewRoomDetail({ id: id })}>
               <p className="title_text">{title}</p>
             </Link>
           </div>

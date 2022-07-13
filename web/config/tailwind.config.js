@@ -37,6 +37,7 @@ module.exports = {
 				"status-purple": "#7B61FF",
 				green: "#28A745",
 				red: "#FF6550",
+        star: "#FF8E35",
 				neutral: {
 					100: "#25324B",
 					80: "#515B6F",

@@ -37,6 +37,10 @@ button, input, label, textarea {
 label {
   margin-top: 1rem;
 }
+.linear-gradient-template {
+  width: 0;
+  height: 0;
+}
 .error {
   color: red;
 }

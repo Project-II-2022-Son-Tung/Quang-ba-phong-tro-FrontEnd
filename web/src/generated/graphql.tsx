@@ -88,6 +88,12 @@ export type CreateContractInput = {
   userId: Scalars['String'];
 };
 
+export type CreateOwnerRateInput = {
+  comment: Scalars['String'];
+  ownerId: Scalars['String'];
+  rate: Scalars['Float'];
+};
+
 export type CreateRoomInput = {
   address: Scalars['String'];
   airConditioning: Scalars['Boolean'];
@@ -209,6 +215,12 @@ export type ListContractResponse = {
   totalPages: Scalars['Float'];
 };
 
+export type ListOwnerRateResponse = {
+  __typename?: 'ListOwnerRateResponse';
+  ownerRates: Array<OwnerRate>;
+  totalPages: Scalars['Float'];
+};
+
 export type ListRoomRateResponse = {
   __typename?: 'ListRoomRateResponse';
   roomRates: Array<RoomRate>;
@@ -234,6 +246,7 @@ export type Mutation = {
   changePassword: UserMutationResponse;
   changePasswordOwner: OwnerMutationResponse;
   createContract: ContractMutationResponse;
+  createOwnerRate: OwnerRateMutationResponse;
   createRoom: RoomMutationResponse;
   createRoomFavourite: RoomFavouriteMutationResponse;
   createRoomRate: RoomRateMutationResponse;
@@ -254,6 +267,7 @@ export type Mutation = {
   rejectInvite: InvitationMutationResponse;
   unlockWallet: WalletMutationResponse;
   updateOwner?: Maybe<OwnerMutationResponse>;
+  updateOwnerRate: OwnerRateMutationResponse;
   updateRoomRate: RoomRateMutationResponse;
   updateUser?: Maybe<UserMutationResponse>;
   withdraw: WalletMutationResponse;
@@ -292,6 +306,11 @@ export type MutationChangePasswordOwnerArgs = {
 
 export type MutationCreateContractArgs = {
   contractInput: CreateContractInput;
+};
+
+
+export type MutationCreateOwnerRateArgs = {
+  rateInput: CreateOwnerRateInput;
 };
 
 
@@ -380,6 +399,11 @@ export type MutationUpdateOwnerArgs = {
 };
 
 
+export type MutationUpdateOwnerRateArgs = {
+  rateInput: UpdateOwnerRateInput;
+};
+
+
 export type MutationUpdateRoomRateArgs = {
   rateInput: UpdateRoomRateInput;
 };
@@ -407,8 +431,9 @@ export type Owner = {
   identification: Identification;
   identificationId: Scalars['ID'];
   invites?: Maybe<Array<Invite>>;
+  numberOfRates: Scalars['Float'];
   phoneNumber: Scalars['String'];
-  rate: Scalars['Float'];
+  rate?: Maybe<Scalars['Float']>;
   rates?: Maybe<Array<OwnerRate>>;
   rooms?: Maybe<Array<Room>>;
   updatedAt: Scalars['DateTime'];
@@ -440,10 +465,22 @@ export type OwnerRate = {
   comment: Scalars['String'];
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  images: Array<RateImage>;
   owner: Owner;
+  ownerId: Scalars['String'];
   rate: Scalars['Float'];
   updatedAt: Scalars['DateTime'];
   user: User;
+  userId: Scalars['String'];
+};
+
+export type OwnerRateMutationResponse = IMutationResponse & {
+  __typename?: 'OwnerRateMutationResponse';
+  code: Scalars['Float'];
+  errors?: Maybe<Array<FieldError>>;
+  message?: Maybe<Scalars['String']>;
+  ownerRate?: Maybe<OwnerRate>;
+  success: Scalars['Boolean'];
 };
 
 export type OwnerRegisterInput = {
@@ -488,6 +525,7 @@ export type Query = {
   meOwner?: Maybe<Owner>;
   myContracts?: Maybe<ListContractResponse>;
   myInvitations?: Maybe<Array<Invite>>;
+  ownerRates: ListOwnerRateResponse;
   provinces: Array<Provinces>;
   room?: Maybe<RoomMutationResponse>;
   roomRates: ListRoomRateResponse;
@@ -526,6 +564,13 @@ export type QueryMyContractsArgs = {
   limit: Scalars['Float'];
   page: Scalars['Float'];
   status?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryOwnerRatesArgs = {
+  limit: Scalars['Float'];
+  ownerId: Scalars['String'];
+  page: Scalars['Float'];
 };
 
 
@@ -583,6 +628,7 @@ export type Room = {
   liveWithHost: Scalars['Boolean'];
   maxOccupancy: Scalars['Float'];
   numberOfFloors: Scalars['Float'];
+  numberOfRates: Scalars['Float'];
   owner: Owner;
   ownerId: Scalars['String'];
   parking: Scalars['Boolean'];
@@ -716,6 +762,12 @@ export type Transaction = {
   walletId: Scalars['String'];
 };
 
+export type UpdateOwnerRateInput = {
+  comment?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  rate?: InputMaybe<Scalars['Float']>;
+};
+
 export type UpdateRoomRateInput = {
   comment?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
@@ -827,9 +879,9 @@ export type WithdrawInput = {
   id: Scalars['String'];
 };
 
-export type OwnerInfoFragment = { __typename?: 'Owner', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
+export type OwnerInfoFragment = { __typename?: 'Owner', username: string, id: string, rate?: number | null | undefined, numberOfRates: number, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
 
-export type RoomInfoFragment = { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> };
+export type RoomInfoFragment = { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, numberOfRates: number, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string, rate?: number | null | undefined, numberOfRates: number }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> };
 
 export type UserInfoFragment = { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
 
@@ -860,6 +912,13 @@ export type CreateContractMutationVariables = Exact<{
 
 
 export type CreateContractMutation = { __typename?: 'Mutation', createContract: { __typename?: 'ContractMutationResponse', code: number, success: boolean, message?: string | null | undefined, contract?: { __typename?: 'Contract', id: string, roomId: string, userId: string } | null | undefined } };
+
+export type CreateOwnerRateMutationVariables = Exact<{
+  rateInput: CreateOwnerRateInput;
+}>;
+
+
+export type CreateOwnerRateMutation = { __typename?: 'Mutation', createOwnerRate: { __typename?: 'OwnerRateMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
 
 export type CreateRoomMutationVariables = Exact<{
   roomInput: CreateRoomInput;
@@ -931,6 +990,13 @@ export type RemoveRoomFromFavouritesMutationVariables = Exact<{
 
 export type RemoveRoomFromFavouritesMutation = { __typename?: 'Mutation', deleteRoomFavourite: { __typename?: 'RoomFavouriteMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
 
+export type UpdateOwnerRateMutationVariables = Exact<{
+  rateInput: UpdateOwnerRateInput;
+}>;
+
+
+export type UpdateOwnerRateMutation = { __typename?: 'Mutation', updateOwnerRate: { __typename?: 'OwnerRateMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
+
 export type UpdateRoomRateMutationVariables = Exact<{
   rateInput: UpdateRoomRateInput;
 }>;
@@ -996,7 +1062,7 @@ export type MeAdminQuery = { __typename?: 'Query', meAdmin?: { __typename?: 'Adm
 export type MeOwnerQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeOwnerQuery = { __typename?: 'Query', meOwner?: { __typename?: 'Owner', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
+export type MeOwnerQuery = { __typename?: 'Query', meOwner?: { __typename?: 'Owner', username: string, id: string, rate?: number | null | undefined, numberOfRates: number, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
 
 export type MyContractsQueryVariables = Exact<{
   page: Scalars['Float'];
@@ -1010,7 +1076,16 @@ export type MyContractsQuery = { __typename?: 'Query', myContracts?: { __typenam
 export type MyInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyInvitationsQuery = { __typename?: 'Query', myInvitations?: Array<{ __typename?: 'Invite', id: string, status: string, timeOfCheck: any, user: { __typename?: 'User', fullName: string, email: string, phoneNumber: string, address: string, avatarUrl: string }, room: { __typename?: 'Room', title: string, address: string, description: string } }> | null | undefined };
+export type MyInvitationsQuery = { __typename?: 'Query', myInvitations?: Array<{ __typename?: 'Invite', id: string, status: string, timeOfCheck: any, user: { __typename?: 'User', fullName: string, email: string, phoneNumber: string, address: string, avatarUrl: string }, room: { __typename?: 'Room', title: string, address: string, description: string, rate?: number | null | undefined } }> | null | undefined };
+
+export type OwnerRatesQueryVariables = Exact<{
+  ownerId: Scalars['String'];
+  page: Scalars['Float'];
+  limit: Scalars['Float'];
+}>;
+
+
+export type OwnerRatesQuery = { __typename?: 'Query', ownerRates: { __typename?: 'ListOwnerRateResponse', totalPages: number, ownerRates: Array<{ __typename?: 'OwnerRate', id: string, rate: number, comment: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string } }> } };
 
 export type ProvincesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1022,7 +1097,7 @@ export type RoomQueryVariables = Exact<{
 }>;
 
 
-export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, rates: Array<{ __typename?: 'RoomRate', id: string, comment: string, rate: number, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string } }>, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
+export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, numberOfRates: number, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, rates: Array<{ __typename?: 'RoomRate', id: string, comment: string, rate: number, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string }, images: Array<{ __typename?: 'RateImage', imageUrl: string }> }>, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string, rate?: number | null | undefined, numberOfRates: number }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
 
 export type RoomRatesQueryVariables = Exact<{
   roomId: Scalars['String'];
@@ -1041,12 +1116,14 @@ export type RoomsQueryVariables = Exact<{
 }>;
 
 
-export type RoomsQuery = { __typename?: 'Query', rooms: { __typename?: 'ListRoomResponse', totalPages: number, rooms: Array<{ __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> }> } };
+export type RoomsQuery = { __typename?: 'Query', rooms: { __typename?: 'ListRoomResponse', totalPages: number, rooms: Array<{ __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, numberOfRates: number, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string, rate?: number | null | undefined, numberOfRates: number }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> }> } };
 
 export const OwnerInfoFragmentDoc = gql`
     fragment ownerInfo on Owner {
   username
   id
+  rate
+  numberOfRates
   fullName
   email
   address
@@ -1070,6 +1147,7 @@ export const RoomInfoFragmentDoc = gql`
   price
   description
   rate
+  numberOfRates
   size
   floor
   maxOccupancy
@@ -1108,6 +1186,8 @@ export const RoomInfoFragmentDoc = gql`
     fullName
     phoneNumber
     avatarUrl
+    rate
+    numberOfRates
   }
   images {
     imageUrl
@@ -1308,6 +1388,41 @@ export function useCreateContractMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateContractMutationHookResult = ReturnType<typeof useCreateContractMutation>;
 export type CreateContractMutationResult = Apollo.MutationResult<CreateContractMutation>;
 export type CreateContractMutationOptions = Apollo.BaseMutationOptions<CreateContractMutation, CreateContractMutationVariables>;
+export const CreateOwnerRateDocument = gql`
+    mutation CreateOwnerRate($rateInput: CreateOwnerRateInput!) {
+  createOwnerRate(rateInput: $rateInput) {
+    code
+    success
+    message
+  }
+}
+    `;
+export type CreateOwnerRateMutationFn = Apollo.MutationFunction<CreateOwnerRateMutation, CreateOwnerRateMutationVariables>;
+
+/**
+ * __useCreateOwnerRateMutation__
+ *
+ * To run a mutation, you first call `useCreateOwnerRateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOwnerRateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOwnerRateMutation, { data, loading, error }] = useCreateOwnerRateMutation({
+ *   variables: {
+ *      rateInput: // value for 'rateInput'
+ *   },
+ * });
+ */
+export function useCreateOwnerRateMutation(baseOptions?: Apollo.MutationHookOptions<CreateOwnerRateMutation, CreateOwnerRateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOwnerRateMutation, CreateOwnerRateMutationVariables>(CreateOwnerRateDocument, options);
+      }
+export type CreateOwnerRateMutationHookResult = ReturnType<typeof useCreateOwnerRateMutation>;
+export type CreateOwnerRateMutationResult = Apollo.MutationResult<CreateOwnerRateMutation>;
+export type CreateOwnerRateMutationOptions = Apollo.BaseMutationOptions<CreateOwnerRateMutation, CreateOwnerRateMutationVariables>;
 export const CreateRoomDocument = gql`
     mutation CreateRoom($roomInput: CreateRoomInput!) {
   createRoom(roomInput: $roomInput) {
@@ -1697,6 +1812,41 @@ export function useRemoveRoomFromFavouritesMutation(baseOptions?: Apollo.Mutatio
 export type RemoveRoomFromFavouritesMutationHookResult = ReturnType<typeof useRemoveRoomFromFavouritesMutation>;
 export type RemoveRoomFromFavouritesMutationResult = Apollo.MutationResult<RemoveRoomFromFavouritesMutation>;
 export type RemoveRoomFromFavouritesMutationOptions = Apollo.BaseMutationOptions<RemoveRoomFromFavouritesMutation, RemoveRoomFromFavouritesMutationVariables>;
+export const UpdateOwnerRateDocument = gql`
+    mutation UpdateOwnerRate($rateInput: UpdateOwnerRateInput!) {
+  updateOwnerRate(rateInput: $rateInput) {
+    code
+    success
+    message
+  }
+}
+    `;
+export type UpdateOwnerRateMutationFn = Apollo.MutationFunction<UpdateOwnerRateMutation, UpdateOwnerRateMutationVariables>;
+
+/**
+ * __useUpdateOwnerRateMutation__
+ *
+ * To run a mutation, you first call `useUpdateOwnerRateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOwnerRateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOwnerRateMutation, { data, loading, error }] = useUpdateOwnerRateMutation({
+ *   variables: {
+ *      rateInput: // value for 'rateInput'
+ *   },
+ * });
+ */
+export function useUpdateOwnerRateMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOwnerRateMutation, UpdateOwnerRateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOwnerRateMutation, UpdateOwnerRateMutationVariables>(UpdateOwnerRateDocument, options);
+      }
+export type UpdateOwnerRateMutationHookResult = ReturnType<typeof useUpdateOwnerRateMutation>;
+export type UpdateOwnerRateMutationResult = Apollo.MutationResult<UpdateOwnerRateMutation>;
+export type UpdateOwnerRateMutationOptions = Apollo.BaseMutationOptions<UpdateOwnerRateMutation, UpdateOwnerRateMutationVariables>;
 export const UpdateRoomRateDocument = gql`
     mutation UpdateRoomRate($rateInput: UpdateRoomRateInput!) {
   updateRoomRate(rateInput: $rateInput) {
@@ -2263,6 +2413,7 @@ export const MyInvitationsDocument = gql`
       title
       address
       description
+      rate
     }
     status
     timeOfCheck
@@ -2296,6 +2447,55 @@ export function useMyInvitationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type MyInvitationsQueryHookResult = ReturnType<typeof useMyInvitationsQuery>;
 export type MyInvitationsLazyQueryHookResult = ReturnType<typeof useMyInvitationsLazyQuery>;
 export type MyInvitationsQueryResult = Apollo.QueryResult<MyInvitationsQuery, MyInvitationsQueryVariables>;
+export const OwnerRatesDocument = gql`
+    query OwnerRates($ownerId: String!, $page: Float!, $limit: Float!) {
+  ownerRates(ownerId: $ownerId, page: $page, limit: $limit) {
+    totalPages
+    ownerRates {
+      id
+      rate
+      user {
+        id
+        fullName
+        avatarUrl
+      }
+      comment
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useOwnerRatesQuery__
+ *
+ * To run a query within a React component, call `useOwnerRatesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOwnerRatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOwnerRatesQuery({
+ *   variables: {
+ *      ownerId: // value for 'ownerId'
+ *      page: // value for 'page'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useOwnerRatesQuery(baseOptions: Apollo.QueryHookOptions<OwnerRatesQuery, OwnerRatesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OwnerRatesQuery, OwnerRatesQueryVariables>(OwnerRatesDocument, options);
+      }
+export function useOwnerRatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OwnerRatesQuery, OwnerRatesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OwnerRatesQuery, OwnerRatesQueryVariables>(OwnerRatesDocument, options);
+        }
+export type OwnerRatesQueryHookResult = ReturnType<typeof useOwnerRatesQuery>;
+export type OwnerRatesLazyQueryHookResult = ReturnType<typeof useOwnerRatesLazyQuery>;
+export type OwnerRatesQueryResult = Apollo.QueryResult<OwnerRatesQuery, OwnerRatesQueryVariables>;
 export const ProvincesDocument = gql`
     query Provinces {
   provinces {
@@ -2358,6 +2558,9 @@ export const RoomDocument = gql`
           id
           fullName
           avatarUrl
+        }
+        images {
+          imageUrl
         }
       }
     }

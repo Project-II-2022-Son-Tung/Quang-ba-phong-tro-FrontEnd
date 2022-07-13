@@ -8,7 +8,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import Rating from '../../components/RateFolder/Rating';
 import { Form, Formik } from 'formik';
 import FormTextArea from '../../components/RateFolder/FormTextArea';
-import { useAddRoomToFavouriteMutation, useCheckRoomFavouritedQuery, useRemoveRoomFromFavouritesMutation, useRoomQuery } from 'src/generated/graphql';
+import { useAddRoomToFavouriteMutation, useCheckRoomFavouritedQuery, useCreateRoomRateMutation, useRemoveRoomFromFavouritesMutation, useRoomQuery } from 'src/generated/graphql';
 import LoadingComponent from 'src/helper/LoadingComponent';
 import { Image } from "antd";
 // import Breadcrumb from 'src/components/RateFolder/Breadcrumb';
@@ -21,6 +21,7 @@ import ItemComment from 'src/components/RateFolder/ItemComment';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import ReactPagination from 'src/components/RateFolder/ReactPagination';
 import Profiles from 'src/components/RateFolder/Profiles';
+import { border, margin } from '@mui/system';
 // import { Head } from '@redwoodjs/web';
 
 type RoomDetailProps = { id: string; title: string }
@@ -29,9 +30,13 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
   const [isFavourite, setIsFavourite] = useState(false);
 	const [rating, setRating] = useState(0);
 	const [isOpenDescription, setIsOpenDescription] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const [addToFavourite, { loading: _addToFavouriteLoading }] = useAddRoomToFavouriteMutation()
   const [removefromFavourite, { loading: _removefromFavouriteLoading }] = useRemoveRoomFromFavouritesMutation()
+  const [createRoomRate, {loading: _createRoomRateLoading}] = useCreateRoomRateMutation()
 
   const { data, loading, error } = useRoomQuery({
     variables: {
@@ -60,7 +65,6 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
   }
 
 
-
 	return (
 		<>
       {/* <Head>
@@ -87,7 +91,7 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                 {data.room.room.province.name}
               </Tag>
               <Tag color="yellow">
-                {data.room.room.district.name}
+                {data.room.room.district.full_name}
               </Tag>
               <Tag color="yellow">
                 {data.room.room.ward.full_name}
@@ -129,6 +133,8 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                         alt="media"
                         width={"100%"}
                         height={"100%"}
+
+                        style={{ maxHeight: "800px", objectFit: "cover" }}
                          />
                     </div>
                   ))
@@ -141,7 +147,7 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                 )}
               </CustomSlider>
             </div>
-            <div className="w-full mt-24">
+            {/* <div className="w-full mt-24">
               <p className="text-2xl font-semibold">
                 Giới thiệu chung:
               </p>
@@ -150,40 +156,8 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                   {data.room.room.description}
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="col-span-12 lg:col-span-4">
-            <div className="mb-8">
-              <RoomCart data={data} addToFavourite={addToFavourite} isFavourite={isFavourite} removefromFavourite={removefromFavourite} />
-            </div>
-            <div className="mt-8">
-              <Profiles name={data.room.room.owner.fullName} linkAvt={data.room.room.owner.avatarUrl} isUserView={true} rating={4} numEvaluation={2} phoneNumber={data.room.room.owner.phoneNumber} />
-            </div>
-          </div>
-        </Row>
-        <Row>
-          <div className="mt-[6.75rem] col-span-12 lg:col-span-8">
-            <p className="text-2xl font-semibold">
-              Một số đánh giá từ người dùng
-            </p>
-            <div className="mt-4">
-              <CustomSlider
-                settings={{
-                  slidesToShow: 1,
-                  slidesToScroll: 1,
-                  arrows: true,
-                }}>
-                <ItemComment
-                  comment={'"Chủ Phòng rất tận tâm và hiệu quả, và các chi tiết trong quá trình trang trí rất tốt. Anh ấy đã cho chúng tôi rất nhiều gợi ý có giá trị để trang trí nhà cửa. Chúng tôi rất hài lòng và đội ngũ rất chuyên nghiệp và có trách nhiệm, rất đáng để giới thiệu ! "'}
-                  name="Nguyễn Văn A"
-                  rating={4} />
-                <ItemComment
-                  comment={'"Chủ Phòng rất tận tâm và hiệu quả, và các chi tiết trong quá trình trang trí rất tốt. Anh ấy đã cho chúng tôi rất nhiều gợi ý có giá trị để trang trí nhà cửa. Chúng tôi rất hài lòng và đội ngũ rất chuyên nghiệp và có trách nhiệm, rất đáng để giới thiệu ! "'}
-                  name="Nguyễn Văn A"
-                  rating={4} />
-              </CustomSlider>
-            </div>
-            <div className="mt-9">
+            </div> */}
+            <div className="w-full mt-24">
               <p className="text-2xl font-semibold">Mô tả</p>
               <div className="mt-4">
                 <p
@@ -206,6 +180,41 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+          <div className="col-span-12 lg:col-span-4">
+            <div className="mb-8">
+              <RoomCart data={data} addToFavourite={addToFavourite} isFavourite={isFavourite} removefromFavourite={removefromFavourite} />
+            </div>
+            <div className="mt-8">
+              <Profiles name={data.room.room.owner.fullName} linkAvt={data.room.room.owner.avatarUrl} isUserView={true} numEvaluation={data.room.room.owner.numberOfRates} phoneNumber={data.room.room.owner.phoneNumber} rating={data.room.room.owner.rate}/>
+            </div>
+          </div>
+        </Row>
+        <Row>
+          <div className="mt-[6.75rem] col-span-12 lg:col-span-8">
+            <p className="text-2xl font-semibold">
+              Một số đánh giá từ người dùng
+            </p>
+            {(data.room.room.rates.length > 1 && <div className="mt-4">
+              <CustomSlider
+                settings={{
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                  arrows: true,
+                }}>
+                <ItemComment
+                  comment={data.room.room.rates[0].comment}
+                  name={data.room.room.rates[0].user.fullName}
+                  rating={data.room.room.rates[0].rate} />
+                <ItemComment
+                  comment={data.room.room.rates[1].comment}
+                  name={data.room.room.rates[1].user.fullName}
+                  rating={data.room.room.rates[1].rate} />
+              </CustomSlider>
+            </div>)}
+            <div className="mt-9">
+
               <div className="mt-9">
                 <div className="flex justify-between">
                   <span className="text-2xl font-semibold">
@@ -227,7 +236,7 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                     <StarRating rating={data.room.room.rate} />
                   </span>
                   <span className="text-neutral-60 text-sm">
-                    Dựa trên {10} đánh
+                    Dựa trên {data.room.room.numberOfRates} đánh
                     giá
                   </span>
                   <span className="text-status-blue text-sm">
@@ -238,15 +247,15 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                 </div>
                 <div className="mt-4 border-t">
                   <div className="flex flex-col">
-                    <div>
-                      <ItemReview />
-                    </div>
-                    <div>
-                      <ItemReview />
-                    </div>
-                    <div>
-                      <ItemReview />
-                    </div>
+                    {
+                      data.room.room.rates.map((rate, index) => {
+                        return (
+                          <div key={index}>
+                            <ItemReview rate={rate.rate} comment={rate.comment} user={rate.user} images={rate.images}/>
+                          </div>
+                        )
+                      })
+                    }
                   </div>
                 </div>
               </div>
@@ -282,7 +291,7 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                       </div>
                     </div>
                     <div className="text-center body-1-semibold">
-                      Đánh giá dịch vụ
+                      Đánh giá phòng
                     </div>
                   </Dialog.Title>
                   <Dialog.Description>
@@ -291,15 +300,17 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                         <div className="h-[38px] w-full flex">
                           <div className="mr-2">
                             <Image
-                              src={"/work.jpg"}
+                              src={data.room.room.owner.avatarUrl}
                               alt="media"
                               className="rounded-full"
                               width={"48px"}
-                              height={"48px"} />
+                              height={"48px"}
+                              preview={false}
+                              />
                           </div>
                           <div>
                             <p className="body-4-semibold m-0">
-                              {data.room?.room?.owner?.id ||
+                              {data.room?.room?.owner?.fullName ||
                                 ""}
                             </p>
                             <span className="text-center p-1 text-[10px] bg-gradient-to-r from-[#FF4D97] to-[#FF9500] text-white rounded-tl-lg rounded-br-lg">
@@ -309,7 +320,7 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                         </div>
                       </div>
                       <div className="flex items-center py-4">
-                        <div>Dịch vụ</div>
+                        <div style={{marginRight: "0.5vw"  }}>Tên phòng</div>
                         <div className="ml-auto body-5-semibold text-neutral-100">
                           {data.room.room.title || ""}
                         </div>
@@ -330,21 +341,76 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                             rating: 0,
                             comment: "",
                           }}
-                          onSubmit={(values) => {
-                            console.log(values);
+                          onSubmit={async(values) => {
+                              let uploadedFiles: string[] = [];
+                              selectedFiles.forEach(async file => {
+                                let formData = new FormData();
+                                formData.append("file", file);
+                                fetch(process.env.BACKEND_URL + "/uploadImages", {
+                                  method: "POST",
+                                  body: formData,
+                                })
+                                .then(response => response.text())
+                                .then(result => { console.log(result);
+                                  uploadedFiles.push(result);})
+                                .catch(error => console.log('error', error));
+                              });
+                              while(uploadedFiles.length < selectedFiles.length) {
+                                await new Promise(resolve => setTimeout(resolve, 100));
+                              }
+                              console.log(uploadedFiles)
+
+                              createRoomRate({
+                                variables: {
+                                  rateInput:{
+                                    roomId: data.room.room.id,
+                                    rate: rating,
+                                    comment: values.comment,
+                                    images: uploadedFiles
+                                  }
+                                },
+                              })
+                              .then((response) => {
+                                console.log(response)
+                                setIsSubmitted(true)
+                                uploadedFiles = []
+                              })
+                              .catch((error) => {
+                                console.log(JSON.stringify(error))
+                              }
+                              )
+                              setSelectedFiles([]);
+                              setRating(0);
+                              setSelectedImages([]);
                           } }>
                           {(props) => (
                             <Form>
+                              <div className="flex flex-col divide-y divide-1-grey">
+                                  <label htmlFor="file">Thêm ảnh</label>
+                                  <input id="file" name="file" type="file" accept="image/*" onChange={(event) => {
+                                    setSelectedFiles([...selectedFiles, event.currentTarget.files[0]]);
+                                    setSelectedImages([...selectedImages, URL.createObjectURL(event.currentTarget.files[0])]);
+                                    }} className="form-control"
+                                    style={{marginTop: "1vh"}}
+                                  />
+                                  <div className="multi-preview" style={{marginTop: "1vh" }}>
+                                      {(selectedImages).map(image => (
+                                        <div key={image[0]} style={{float: "left", marginTop: "1vh", marginRight: "10px" }}>
+                                          <img src={image} style={{maxWidth: "10vw", maxHeight: "10vh"}} alt={"hinh anh nhan xet"}  />
+                                        </div>
+                                      ))}
+                                  </div>
+                              </div>
                               <label>
-                                Nhận xét dịch vụ
+                                Nhận xét phòng
                               </label>
                               <FormTextArea
                                 rows={4}
                                 name="comment"
                                 className="border p-4 w-full"
-                                placeholder="Nhập mô tả dịch vụ"
+                                placeholder="Nhập mô tả nhận xét về phòng"
                                 maxLength={500} />
-                              <p className="flex justify-between text-sm text-neutral-60">
+                              <div className="flex justify-between text-sm text-neutral-60">
                                 <span>
                                   Tối đa 500
                                   ký tự{" "}
@@ -356,7 +422,7 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                                     .length}
                                   /500
                                 </span>
-                              </p>
+                              </div>
                               <Button
                                 md
                                 type="submit"

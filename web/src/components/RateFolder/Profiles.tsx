@@ -16,7 +16,7 @@ interface IProfileProps {
 function Profiles({
 	name,
 	numEvaluation,
-	rating = 0,
+	rating,
 	linkAvt,
 	isUserView,
   phoneNumber,
