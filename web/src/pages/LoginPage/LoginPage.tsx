@@ -79,9 +79,9 @@ const LoginPage = () => {
           <input type="password" name="pass" required />
           {/* {renderErrorMessage("pass")} */}
         </div>
-        <div style={{ display: 'float' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <input type="checkbox" name="isOwner" onChange={onChangeCheckbox}  />{' '}
-          <label>Tôi là người đăng tin </label>
+          <label style={{lineHeight:'38px', marginTop:'0px', marginLeft:'5px'}}>Tôi là người cho thuê </label>
         </div>
 
         <div className="button-container">
