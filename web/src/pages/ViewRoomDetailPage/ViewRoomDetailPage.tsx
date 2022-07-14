@@ -206,10 +206,12 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                 <ItemComment
                   comment={data.room.room.rates[0].comment}
                   name={data.room.room.rates[0].user.fullName}
+                  avatar={data.room.room.rates[0].user.avatarUrl}
                   rating={data.room.room.rates[0].rate} />
                 <ItemComment
                   comment={data.room.room.rates[1].comment}
                   name={data.room.room.rates[1].user.fullName}
+                  avatar={data.room.room.rates[1].user.avatarUrl}
                   rating={data.room.room.rates[1].rate} />
               </CustomSlider>
             </div>)}
@@ -251,7 +253,7 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                       data.room.room.rates.map((rate, index) => {
                         return (
                           <div key={index}>
-                            <ItemReview rate={rate.rate} comment={rate.comment} user={rate.user} images={rate.images}/>
+                            <ItemReview rate={rate.rate} comment={rate.comment} user={rate.user} images={rate.images} createdDate={rate.createdAt}/>
                           </div>
                         )
                       })
@@ -358,7 +360,6 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                               while(uploadedFiles.length < selectedFiles.length) {
                                 await new Promise(resolve => setTimeout(resolve, 100));
                               }
-                              console.log(uploadedFiles)
 
                               createRoomRate({
                                 variables: {

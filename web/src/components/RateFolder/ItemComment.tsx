@@ -27,7 +27,9 @@ export default function ItemComment({
 			</div>
 			<div className="font-normal text-base">{comment}</div>
 			<div className="flex items-center">
-				<Image src={avatar} alt="user-avatar" width={36} height={36} preview={false}/>
+        <div className="rounded-[50%] overflow-hidden">
+				  <Image src={avatar} alt="user-avatar" width={36} height={36} preview={false}/>
+        </div>
 				<div className="ml-2">
 					<div className="font-medium text-sm">{name}</div>
 				</div>
