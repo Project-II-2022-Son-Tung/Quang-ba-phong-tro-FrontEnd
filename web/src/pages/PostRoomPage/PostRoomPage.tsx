@@ -46,7 +46,7 @@ const PostRoomPage = () => {
         body: formData,
       })
       .then(response => response.text())
-      .then(result => uploadedFiles.push({fileUrl: result, caption: file[1]}))
+      .then(result => setUploadedFiles([...uploadedFiles, {fileUrl: result, caption: file[1]}]))
       .catch(error => console.log('error', error));
     });
     const room = {
