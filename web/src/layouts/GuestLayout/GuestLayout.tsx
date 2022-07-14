@@ -25,10 +25,10 @@ const GuestLayout = ({ children }) => {
           >House Rental</text>
         </div>
         <div>
-          <Button onClick={onLoginClick} type="primary" shape="round">
+          <Button onClick={onLoginClick} style={{backgroundColor: '#01d28e'}} shape="round">
             Đăng nhập
           </Button>
-          <Button onClick={onSignupClick} type="primary" shape="round">
+          <Button onClick={onSignupClick} style={{backgroundColor: '#01d28e'}}  shape="round">
             Đăng ký
           </Button>
         </div>

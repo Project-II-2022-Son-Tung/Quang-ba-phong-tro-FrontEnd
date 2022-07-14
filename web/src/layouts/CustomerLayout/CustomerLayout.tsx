@@ -33,10 +33,9 @@ const CustomerLayout = ({ children }) => {
               onClick={() => {
                 navigate(routes.login())
               }}
-              style={{ width: '200px', height: '40px', borderRadius: '30px' }}
+              style={{ width: '200px', height: '40px', borderRadius: '30px', backgroundColor: '#1890ff'}}
               type="primary"
             >
-              {' '}
               Đăng xuất
             </Button>
           </div>

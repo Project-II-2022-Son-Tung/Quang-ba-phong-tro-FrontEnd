@@ -9,7 +9,7 @@ const { Option } = Select
 
 const provinceData = provinces
 
-const FilterBar = (props) => {
+const   FilterBar = (props) => {
   const onFinish = (values) => {
     // console.log('Success:', values)
     props.onFilter(values)
