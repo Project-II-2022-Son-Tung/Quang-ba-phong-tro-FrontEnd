@@ -43,6 +43,7 @@ export default function RoomCart(props: { data?: RoomQuery, addToFavourite: any,
 							height={20}
 							alt="VND_icon"
               preview={false}
+              wrapperClassName="antd-wrapper-center"
 						/>
 						{props?.data?.room.room.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 					</div>
@@ -66,7 +67,6 @@ export default function RoomCart(props: { data?: RoomQuery, addToFavourite: any,
                 className="bg-brand-primary text-white"
                 onClick={handleRemoveFromFavourite}
               >
-                <HiOutlineBookmark className="text-white" />
                 Đã yêu thích
               </Button>) : (
                 <Button

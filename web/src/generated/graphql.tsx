@@ -946,7 +946,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', username: string } | null | undefined } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined } };
 
 export type LoginAdminMutationVariables = Exact<{
   loginInput: LoginInput;
@@ -1097,7 +1097,7 @@ export type RoomQueryVariables = Exact<{
 }>;
 
 
-export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, numberOfRates: number, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, rates: Array<{ __typename?: 'RoomRate', id: string, comment: string, rate: number, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string }, images: Array<{ __typename?: 'RateImage', imageUrl: string }> }>, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string, rate?: number | null | undefined, numberOfRates: number }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
+export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'RoomMutationResponse', code: number, success: boolean, message?: string | null | undefined, room?: { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, numberOfRates: number, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, rates: Array<{ __typename?: 'RoomRate', id: string, comment: string, rate: number, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: string, fullName: string, avatarUrl: string }, images: Array<{ __typename?: 'RateImage', imageUrl: string }> }>, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string, rate?: number | null | undefined, numberOfRates: number }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> } | null | undefined } | null | undefined };
 
 export type RoomRatesQueryVariables = Exact<{
   roomId: Scalars['String'];
@@ -1540,11 +1540,11 @@ export const LoginDocument = gql`
     success
     message
     user {
-      username
+      ...userInfo
     }
   }
 }
-    `;
+    ${UserInfoFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -2562,6 +2562,8 @@ export const RoomDocument = gql`
         images {
           imageUrl
         }
+        createdAt
+        updatedAt
       }
     }
   }

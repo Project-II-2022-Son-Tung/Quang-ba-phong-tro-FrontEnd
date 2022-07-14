@@ -61,6 +61,10 @@ input.error, textarea.error {
   margin: 1rem;
   padding: 1rem;
 }
+.antd-wrapper-center{
+  display: flex;
+  justify-content: center;
+}
 .form-error li {
   display: list-item;
 }

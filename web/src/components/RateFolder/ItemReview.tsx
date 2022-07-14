@@ -7,12 +7,14 @@ import {StarRating} from "./StarRating";
 import Tag from "./Tag";
 import { Image } from "antd";
 
-export default function ItemReview({rate, comment, user, images}) {
+export default function ItemReview({rate, comment, user, images, createdDate}) {
+  let date = new Date(createdDate);
+  let stringDate = date.toLocaleDateString(undefined, { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"  });
 
 	return (
 		<div className="border-b">
 			<div className="flex items-center py-3">
-				<div>
+				<div className="rounded-[50%] overflow-hidden">
 					<Image
 						src={user?.avatarUrl ? user?.avatarUrl : "/icons/default-avatar.svg"}
 						alt="avatar"
@@ -23,7 +25,7 @@ export default function ItemReview({rate, comment, user, images}) {
 				</div>
 				<div className="ml-4">
 					<div className="text-sm font-semibold">{user?.fullName}</div>
-					<div className="text-xs text-gray-600">22/3/2022</div>
+					<div className="text-xs text-gray-600">{stringDate}</div>
 				</div>
 			</div>
 			<div>

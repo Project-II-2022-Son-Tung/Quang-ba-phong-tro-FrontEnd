@@ -16,7 +16,6 @@ const PostRoomPage = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
   const [caption, setCaption] = useState("");
-  const [uploadedFiles, setUploadedFiles] = useState([]);
 
 
   // const [mutate] =useMutation(mutation)
@@ -35,7 +34,7 @@ const PostRoomPage = () => {
     //     value: file.base64
     //   }
     // })
-    setUploadedFiles([]);
+    let uploadedFiles = [];
 
     selectedFiles.forEach(async file => {
       let formData = new FormData();
@@ -46,9 +45,12 @@ const PostRoomPage = () => {
         body: formData,
       })
       .then(response => response.text())
-      .then(result => setUploadedFiles([...uploadedFiles, {fileUrl: result, caption: file[1]}]))
+      .then(result => uploadedFiles.push({fileUrl: result, caption: file[1]}))
       .catch(error => console.log('error', error));
     });
+    while(uploadedFiles.length < selectedFiles.length) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
     const room = {
       title: event.target.title.value,
       description: event.target.description.value,
