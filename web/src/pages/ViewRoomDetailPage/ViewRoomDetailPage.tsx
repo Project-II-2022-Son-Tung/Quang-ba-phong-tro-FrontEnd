@@ -9,7 +9,7 @@ import Rating from '../../components/RateFolder/Rating';
 import { Form, Formik } from 'formik';
 import FormTextArea from '../../components/RateFolder/FormTextArea';
 import { useAddRoomToFavouriteMutation, useCheckRoomFavouritedQuery, useCreateRoomRateMutation, useRemoveRoomFromFavouritesMutation, useRoomQuery } from 'src/generated/graphql';
-import LoadingComponent from 'src/helper/LoadingComponent';
+import LoadingComponent from 'src/helper/MessageComponent';
 import { Image } from "antd";
 // import Breadcrumb from 'src/components/RateFolder/Breadcrumb';
 import { Row } from 'src/components/RateFolder/Grid';

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useRoomsQuery } from 'src/generated/graphql'
 import RoomInfo from './component/RoomInfo/RoomInfo'
 import { Pagination } from 'antd'
-import LoadingComponent  from '../../helper/LoadingComponent'
+import MessageComponent  from '../../helper/MessageComponent'
 import './index.css'
 const ListRoom = (props) => {
   let finalFilter = {}
@@ -66,17 +66,18 @@ const ListRoom = (props) => {
   })
 
   if (loading) {
-    return <LoadingComponent/>
+    return <MessageComponent message='Loading...'/>
   } else {
     if (error) {
       console.log(error)
+      return(<MessageComponent message='Không tìm thấy phòng bạn mong muốn'/>)
     }
 
     console.log(data)
   }
-  // const totalPages = data.rooms.totalPages
+  const totalPages = data.rooms.totalPages
 
-  // console.log(totalPages)
+  console.log(totalPages)
 
 
 
@@ -119,7 +120,7 @@ const ListRoom = (props) => {
 
           current={currentPage}
           onChange={onChangePage}
-          // total={totalPages * 10}
+          total={totalPages * 10}
         />
       </div>
     </div>

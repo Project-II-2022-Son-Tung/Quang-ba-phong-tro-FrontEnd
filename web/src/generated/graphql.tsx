@@ -962,6 +962,11 @@ export type LoginOwnerMutationVariables = Exact<{
 
 export type LoginOwnerMutation = { __typename?: 'Mutation', loginOwner: { __typename?: 'OwnerMutationResponse', code: number, success: boolean, message?: string | null | undefined, owner?: { __typename?: 'Owner', id: string, username: string } | null | undefined } };
 
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
 export type OwnerRegisterMutationVariables = Exact<{
   registerInput: OwnerRegisterInput;
 }>;
@@ -1035,7 +1040,7 @@ export type ContractDetailQuery = { __typename?: 'Query', contract: { __typename
 export type GetMyFavouritesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyFavouritesQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, roomFavourites?: Array<{ __typename?: 'RoomFavourite', room: { __typename?: 'Room', id: string, title: string, address: string, images: Array<{ __typename?: 'RoomImage', imageUrl: string }> } }> | null | undefined } | null | undefined };
+export type GetMyFavouritesQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, roomFavourites?: Array<{ __typename?: 'RoomFavourite', room: { __typename?: 'Room', id: string, title: string, address: string, price: number, size: number, description: string, rate?: number | null | undefined, owner: { __typename?: 'Owner', id: string, fullName: string, avatarUrl: string }, district: { __typename?: 'Districts', code: string, full_name?: string | null | undefined }, province: { __typename?: 'Provinces', code: string, full_name?: string | null | undefined }, images: Array<{ __typename?: 'RoomImage', imageUrl: string }> } }> | null | undefined } | null | undefined };
 
 export type GetUsersFavouritedQueryVariables = Exact<{
   roomId: Scalars['String'];
@@ -1649,6 +1654,36 @@ export function useLoginOwnerMutation(baseOptions?: Apollo.MutationHookOptions<L
 export type LoginOwnerMutationHookResult = ReturnType<typeof useLoginOwnerMutation>;
 export type LoginOwnerMutationResult = Apollo.MutationResult<LoginOwnerMutation>;
 export type LoginOwnerMutationOptions = Apollo.BaseMutationOptions<LoginOwnerMutation, LoginOwnerMutationVariables>;
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
+
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
+      }
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const OwnerRegisterDocument = gql`
     mutation OwnerRegister($registerInput: OwnerRegisterInput!) {
   registerOwner(registerInput: $registerInput) {
@@ -2116,6 +2151,23 @@ export const GetMyFavouritesDocument = gql`
         id
         title
         address
+        price
+        size
+        description
+        rate
+        owner {
+          id
+          fullName
+          avatarUrl
+        }
+        district {
+          code
+          full_name
+        }
+        province {
+          code
+          full_name
+        }
         images {
           imageUrl
         }

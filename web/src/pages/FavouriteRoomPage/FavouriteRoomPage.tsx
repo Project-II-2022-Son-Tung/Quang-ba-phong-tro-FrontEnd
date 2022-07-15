@@ -1,50 +1,53 @@
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import ListRoom from 'src/components/ListRoom/ListRoom'
-import {useGetMyFavouritesQuery} from 'src/generated/graphql'
+import { useGetMyFavouritesQuery } from 'src/generated/graphql'
 import RoomInfo from '../../components/ListRoom/component/RoomInfo/RoomInfo'
+import LoadingComponent from 'src/helper/MessageComponent'
 
 const FavouriteRoomPage = () => {
+  const { data, loading, error } = useGetMyFavouritesQuery()
 
-  const {data, loading, error} = useGetMyFavouritesQuery({
-    variables: {
+  if (!loading) {
+    console.log(data)
+  }
 
-    }
-  })
-
-  console.log(data)
   return (
     <>
-    <h1>Danh sách phòng yêu thích </h1>
-    <div
-      style={{ justifyContent: 'center', alignItems: 'center', marginTop: 50 }}
-    >
-      {data.me.roomFavourites.map((room) => {
-        return (
-          <>
-            <RoomInfo
-              // id={room.id}
-              // title={room.title}
-              // price={room.price}
-              // size={room.size}
-              // district={room.district}
-              // province={room.province}
-              // description={room.description}
-              // rate={room.rate}
-              // owner={room.owner}
-              // address={room.address}
-              // room_images={room.images}
-              // key={room.id}
 
-            />
-          </>
-        )
-      })}
+      <div
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 50,
+          marginBottom : 50,
+        }}
+      >
+        {loading ? (
+          <LoadingComponent />
+        ) : (
+          data.me.roomFavourites.map((room) => {
+            return (
+                <RoomInfo
+                  id={room.room.id}
+                  title={room.room.title}
+                  price={room.room.price}
+                  size={room.room.size}
+                  district={room.room.district}
+                  province={room.room.province}
+                  description={room.room.description}
+                  rate={room.room.rate}
+                  owner={room.room.owner}
+                  address={room.room.address}
+                  room_images={room.room.images}
+                  key={room.room.id}
+                />
+            )
+          })
+        )}
 
-    </div>
-
-
-
+        {}
+      </div>
     </>
   )
 }

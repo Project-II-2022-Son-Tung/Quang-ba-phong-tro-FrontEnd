@@ -28,7 +28,7 @@ export default function RoomCart(props: { data?: RoomQuery, addToFavourite: any,
     return dateString.toLocaleDateString(undefined, { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"  });
   }
   const features = [
-		`Địa chỉ: ${props?.data?.room.room.address}`,
+		` ${props?.data?.room.room.address}`,
 		`Diện tích : ${props?.data?.room.room.size} m²`,
     `Thời điểm đăng : ${dataDateToString(props?.data?.room.room.createdAt)}`,
 	];

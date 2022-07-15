@@ -1,6 +1,6 @@
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import LoadingComponent from '../../helper/LoadingComponent'
+import LoadingComponent from '../../helper/MessageComponent'
 import './index.css'
 import {Button} from 'antd'
 import { useMeQuery, useUpdateUserMutation } from 'src/generated/graphql'

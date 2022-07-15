@@ -5,9 +5,9 @@ const TopBar =(props)=>{
 
   return(
 
-    <>
+    <div style={{marginTop:'20px'}}>
     <FilterBar onFilter={props.onFilter}/>
-</>
+</div>
   )
 
 }
