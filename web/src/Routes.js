@@ -11,8 +11,9 @@ const Routes = () => {
         <Route path="/user/favourite-room" page={FavouriteRoomPage} name="favouriteRoom" />
         <Route path="/user" page={HomePage} name="home" />
         <Route path="/viewRoomDetails/{id:String}" page={ViewRoomDetailPage} name="viewRoomDetail" />
-        <Route path="/roomDetails/{id:String}" page={RoomDetailsPage} name="roomDetails" />
         <Route path="/user/edit-profile" page={EditProfilePage} name="editProfile" />
+        <Route path="/invitations" page={InvitationsPage} name="invitations" />
+
       </Set>
       <Set wrap={GuestLayout}>
         <Route path="/" page={LoginPage} name="login" />
