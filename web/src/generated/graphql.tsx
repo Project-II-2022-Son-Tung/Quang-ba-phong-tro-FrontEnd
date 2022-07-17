@@ -526,6 +526,7 @@ export type Query = {
   myContracts?: Maybe<ListContractResponse>;
   myInvitations?: Maybe<Array<Invite>>;
   myRoomRate?: Maybe<RoomRate>;
+  myRooms: ListRoomResponse;
   ownerRates: ListOwnerRateResponse;
   provinces: Array<Provinces>;
   room?: Maybe<RoomMutationResponse>;
@@ -570,6 +571,13 @@ export type QueryMyContractsArgs = {
 
 export type QueryMyRoomRateArgs = {
   roomId: Scalars['String'];
+};
+
+
+export type QueryMyRoomsArgs = {
+  limit: Scalars['Float'];
+  orderBy?: InputMaybe<RoomOrderByInput>;
+  page: Scalars['Float'];
 };
 
 
@@ -1095,6 +1103,15 @@ export type MyRoomRateQueryVariables = Exact<{
 
 
 export type MyRoomRateQuery = { __typename?: 'Query', myRoomRate?: { __typename?: 'RoomRate', id: string } | null | undefined };
+
+export type MyRoomsQueryVariables = Exact<{
+  page: Scalars['Float'];
+  limit: Scalars['Float'];
+  orderBy?: InputMaybe<RoomOrderByInput>;
+}>;
+
+
+export type MyRoomsQuery = { __typename?: 'Query', myRooms: { __typename?: 'ListRoomResponse', totalPages: number, rooms: Array<{ __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, numberOfRates: number, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string, rate?: number | null | undefined, numberOfRates: number }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> }> } };
 
 export type OwnerRatesQueryVariables = Exact<{
   ownerId: Scalars['String'];
@@ -2547,6 +2564,46 @@ export function useMyRoomRateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type MyRoomRateQueryHookResult = ReturnType<typeof useMyRoomRateQuery>;
 export type MyRoomRateLazyQueryHookResult = ReturnType<typeof useMyRoomRateLazyQuery>;
 export type MyRoomRateQueryResult = Apollo.QueryResult<MyRoomRateQuery, MyRoomRateQueryVariables>;
+export const MyRoomsDocument = gql`
+    query MyRooms($page: Float!, $limit: Float!, $orderBy: RoomOrderByInput) {
+  myRooms(page: $page, limit: $limit, orderBy: $orderBy) {
+    totalPages
+    rooms {
+      ...roomInfo
+    }
+  }
+}
+    ${RoomInfoFragmentDoc}`;
+
+/**
+ * __useMyRoomsQuery__
+ *
+ * To run a query within a React component, call `useMyRoomsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyRoomsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyRoomsQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      limit: // value for 'limit'
+ *      orderBy: // value for 'orderBy'
+ *   },
+ * });
+ */
+export function useMyRoomsQuery(baseOptions: Apollo.QueryHookOptions<MyRoomsQuery, MyRoomsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyRoomsQuery, MyRoomsQueryVariables>(MyRoomsDocument, options);
+      }
+export function useMyRoomsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyRoomsQuery, MyRoomsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyRoomsQuery, MyRoomsQueryVariables>(MyRoomsDocument, options);
+        }
+export type MyRoomsQueryHookResult = ReturnType<typeof useMyRoomsQuery>;
+export type MyRoomsLazyQueryHookResult = ReturnType<typeof useMyRoomsLazyQuery>;
+export type MyRoomsQueryResult = Apollo.QueryResult<MyRoomsQuery, MyRoomsQueryVariables>;
 export const OwnerRatesDocument = gql`
     query OwnerRates($ownerId: String!, $page: Float!, $limit: Float!) {
   ownerRates(ownerId: $ownerId, page: $page, limit: $limit) {
