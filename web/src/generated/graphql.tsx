@@ -893,11 +893,11 @@ export type WithdrawInput = {
   id: Scalars['String'];
 };
 
-export type OwnerInfoFragment = { __typename?: 'Owner', username: string, id: string, rate?: number | null | undefined, numberOfRates: number, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
+export type OwnerInfoFragment = { __typename?: 'Owner', username: string, id: string, rate?: number | null | undefined, numberOfRates: number, fullName: string, phoneNumber: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
 
 export type RoomInfoFragment = { __typename?: 'Room', id: string, title: string, price: number, description: string, rate?: number | null | undefined, numberOfRates: number, size: number, floor: number, maxOccupancy: number, liveWithHost: boolean, petsAllowed: boolean, electricPrice?: number | null | undefined, waterPrice?: number | null | undefined, parking: boolean, parkingFee?: number | null | undefined, waterHeating: boolean, airConditioning: boolean, createdAt: any, wifi: boolean, wifiFee?: number | null | undefined, lift: boolean, numberOfFloors: number, available: boolean, address: string, enclosed: boolean, province: { __typename?: 'Provinces', code: string, name: string, full_name?: string | null | undefined }, district: { __typename?: 'Districts', code: string, name: string, full_name?: string | null | undefined }, ward: { __typename?: 'Wards', code: string, name: string, full_name?: string | null | undefined }, owner: { __typename?: 'Owner', id: string, email: string, fullName: string, phoneNumber: string, avatarUrl: string, rate?: number | null | undefined, numberOfRates: number }, images: Array<{ __typename?: 'RoomImage', imageUrl: string, caption: string }> };
 
-export type UserInfoFragment = { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
+export type UserInfoFragment = { __typename?: 'User', username: string, id: string, fullName: string, email: string, phoneNumber: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } };
 
 export type AcceptContractMutationVariables = Exact<{
   id: Scalars['String'];
@@ -960,7 +960,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', username: string, id: string, fullName: string, email: string, phoneNumber: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined } };
 
 export type LoginAdminMutationVariables = Exact<{
   loginInput: LoginInput;
@@ -1028,7 +1028,7 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UserMutationResponse', code: number, message?: string | null | undefined, user?: { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined } | null | undefined };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UserMutationResponse', code: number, message?: string | null | undefined, user?: { __typename?: 'User', username: string, id: string, fullName: string, email: string, phoneNumber: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined } | null | undefined };
 
 export type UserRegisterMutationVariables = Exact<{
   registerInput: UserRegisterInput;
@@ -1071,7 +1071,7 @@ export type InvitationsToMeQuery = { __typename?: 'Query', invitationsToMe?: Arr
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', username: string, id: string, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', username: string, id: string, fullName: string, email: string, phoneNumber: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
 
 export type MeAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1081,7 +1081,7 @@ export type MeAdminQuery = { __typename?: 'Query', meAdmin?: { __typename?: 'Adm
 export type MeOwnerQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeOwnerQuery = { __typename?: 'Query', meOwner?: { __typename?: 'Owner', username: string, id: string, rate?: number | null | undefined, numberOfRates: number, fullName: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
+export type MeOwnerQuery = { __typename?: 'Query', meOwner?: { __typename?: 'Owner', username: string, id: string, rate?: number | null | undefined, numberOfRates: number, fullName: string, phoneNumber: string, email: string, address: string, avatarUrl: string, wallet: { __typename?: 'Wallet', id: string, availableBalance: number, balance: number }, identification: { __typename?: 'Identification', serial: string, issuedBy: string, issueDate: any } } | null | undefined };
 
 export type MyContractsQueryVariables = Exact<{
   page: Scalars['Float'];
@@ -1160,6 +1160,7 @@ export const OwnerInfoFragmentDoc = gql`
   rate
   numberOfRates
   fullName
+  phoneNumber
   email
   address
   avatarUrl
@@ -1241,6 +1242,7 @@ export const UserInfoFragmentDoc = gql`
   id
   fullName
   email
+  phoneNumber
   address
   avatarUrl
   wallet {
