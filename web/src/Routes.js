@@ -21,7 +21,7 @@ const Routes = () => {
       </Set>
 
       <Set wrap={OwnerLayout}>
-        <Route path="/owner/postRoom" page={PostRoomPage} name="postRoom" />
+        <Route path="/owner/postRoom" page={PostRoomPage  } name="postRoom" />
         <Route path="/owner" page={OwnerRoomPage} name="ownerRoom" />
 
       </Set>

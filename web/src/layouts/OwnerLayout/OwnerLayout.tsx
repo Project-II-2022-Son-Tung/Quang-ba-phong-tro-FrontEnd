@@ -33,7 +33,7 @@ const OwnerLayout = ({ children }) => {
               onClick={() => {
                 navigate(routes.login())
               }}
-              style={{ width: '200px', height: '40px', borderRadius: '30px' }}
+              style={{ width: '200px', height: '40px', borderRadius: '30px' , backgroundColor:'#1890ff'}}
               type="primary"
             >
               {' '}
@@ -46,20 +46,15 @@ const OwnerLayout = ({ children }) => {
           <ul className="nav_bar">
 
             <li>
-              {/* <Link className="nav_text" to={routes.favouriteRoom()}> */}
+              <Link className="nav_text" to={routes.ownerRoom()}>
                 Phòng trọ của bạn
-              {/* </Link> */}
+              </Link>
             </li>
             <li>
               <Link className="nav_text" to={routes.postRoom()}>
                 Đăng phòng
               </Link>
             </li>
-            {/* <li style={{position:'absolute', right:'0'}}>
-              <Link className="nav_text" to={routes.editProfile()}>
-              <UserOutlined />
-              </Link>
-            </li> */}
 
           </ul>
         </nav>

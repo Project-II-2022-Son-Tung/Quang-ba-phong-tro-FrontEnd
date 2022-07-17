@@ -17,19 +17,27 @@ const EditProfilePage = () => {
     variables: {},
   })
 
-  let submittedData = {}
+  let submittedData
 
-  const onSubmit = (dataSubmit) => {
+
+  const [updateUserMutation, {}] = useUpdateUserMutation({
+      variables: {
+          updateUserInput: {fullName: submittedData.fullName, phoneNumber: submittedData.phoneNumber, address: submittedData.address}
+      },
+    });
+
+
+
+  const onSubmit = (dataSubmit: any) => {
+
     console.log(dataSubmit)
-    submittedData = dataSubmit
-    return submittedData
+
+
   }
 
-  const {} = useUpdateUserMutation({
-    variables: {
-      updateUserInput: submittedData,
-    },
-  })
+
+
+
 
   if (loading) {
     return <LoadingComponent />
@@ -51,40 +59,28 @@ const EditProfilePage = () => {
             errorClassName="label error"
           />
           <TextField
-            name="fullname"
+            name="fullName"
             className="input"
             errorClassName="input error"
             validation={{ required: true }}
             placeholder={data.me.fullName}
           />
 
-          <FieldError name="fullname" className="error-message" />
+          <FieldError name="fullName" className="error-message" />
 
-          <Label
-            name="Tên tài khoản"
-            className="label"
-            errorClassName="label error"
-          />
-          <TextField
-            name="username"
-            className="input"
-            errorClassName="input error"
-            validation={{ required: true }}
-            placeholder={data.me.username}
-          />
-          <FieldError name="username" className="error-message" />
 
-          <Label name="Email" className="label" errorClassName="label error" />
+
+          <Label name="Số điện thoại" className="label" errorClassName="label error" />
           <TextField
-            name="email"
+            name="phoneNumber"
             className="input"
             errorClassName="input error"
             validation={{
               required: true,
             }}
-            placeholder={data.me.email}
+            // placeholder={data.me.phoneNumber}
           />
-          <FieldError name="email" className="error-message" />
+          <FieldError name="phoneNumber" className="error-message" />
 
           <Label
             name="Địa chỉ"
@@ -101,7 +97,7 @@ const EditProfilePage = () => {
 
           <FieldError name="address" className="error-message" />
 
-          <Submit style={{border:'none', marginTop:'20px'}}><Button type="primary"> Lưu</Button></Submit>
+          <Submit style={{border:'none', marginTop:'20px', backgroundColor:''}}><Button type="primary"> Lưu</Button></Submit>
         </Form>
       </div>
     </div>

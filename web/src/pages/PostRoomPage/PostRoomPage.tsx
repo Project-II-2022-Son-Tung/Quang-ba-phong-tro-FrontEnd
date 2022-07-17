@@ -239,7 +239,7 @@ const PostRoomPage = () => {
       <MetaTags title="PostRoom" description="PostRoom page" />
       <div className="app">
         <div className="postRoom-form">
-          <div className="title">Đăng phòng</div>
+
           {isSubmitted ? (
             <>
             <div>Người dùng đã đăng phòng thành công</div>

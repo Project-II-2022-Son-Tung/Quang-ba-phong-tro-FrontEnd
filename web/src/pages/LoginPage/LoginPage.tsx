@@ -53,7 +53,7 @@ const LoginPage = () => {
     }
     else if (ownerData) {
       setIsSubmitted(true)
-      navigate(routes.home())
+      navigate(routes.ownerRoom())
 
     }
      else {

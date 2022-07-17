@@ -5,7 +5,7 @@
   justify-content: center;
   flex-direction: column;
 
-  height: 150vh;
+
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   background-color: #f8f9fd;
 }
@@ -30,50 +30,53 @@ input[type="submit"]:hover {
   background: #6cf0c2;
 }
 
-.button-container {
+.form .button-container {
   display: flex;
   justify-content: center;
 }
 
-.login-form {
+.form .login-form {
   background-color: white;
   padding: 2rem;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.list-container {
+.form .list-container {
   display: flex;
 }
 
-.error {
+.form .error {
   color: red;
   font-size: 12px;
 }
 
-.title {
+.form .title {
   font-size: 25px;
   margin-bottom: 20px;
 }
 
-.input-container {
+.form .input-container {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin: 10px;
 }
-.input-container2 {
+.form .input-container2 {
   display: flex;
   flex-direction: row;
   gap: 8px;
   margin: 10px;
 }
-.multi-preview{
+.form .multi-preview{
   display: flex;
   flex-direction: row;
   gap: 8px;
   margin: 10px;
 }
-.header{
+.form .header{
   text-align: center;
 
+}
+.form{
+  margin-bottom: 20px;
 }
