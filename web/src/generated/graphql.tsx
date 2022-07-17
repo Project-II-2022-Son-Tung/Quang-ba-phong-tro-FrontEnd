@@ -525,6 +525,7 @@ export type Query = {
   meOwner?: Maybe<Owner>;
   myContracts?: Maybe<ListContractResponse>;
   myInvitations?: Maybe<Array<Invite>>;
+  myRoomRate?: Maybe<RoomRate>;
   ownerRates: ListOwnerRateResponse;
   provinces: Array<Provinces>;
   room?: Maybe<RoomMutationResponse>;
@@ -564,6 +565,11 @@ export type QueryMyContractsArgs = {
   limit: Scalars['Float'];
   page: Scalars['Float'];
   status?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryMyRoomRateArgs = {
+  roomId: Scalars['String'];
 };
 
 
@@ -962,6 +968,11 @@ export type LoginOwnerMutationVariables = Exact<{
 
 export type LoginOwnerMutation = { __typename?: 'Mutation', loginOwner: { __typename?: 'OwnerMutationResponse', code: number, success: boolean, message?: string | null | undefined, owner?: { __typename?: 'Owner', id: string, username: string } | null | undefined } };
 
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
 export type OwnerRegisterMutationVariables = Exact<{
   registerInput: OwnerRegisterInput;
 }>;
@@ -1035,7 +1046,7 @@ export type ContractDetailQuery = { __typename?: 'Query', contract: { __typename
 export type GetMyFavouritesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyFavouritesQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, roomFavourites?: Array<{ __typename?: 'RoomFavourite', room: { __typename?: 'Room', id: string, title: string, address: string, images: Array<{ __typename?: 'RoomImage', imageUrl: string }> } }> | null | undefined } | null | undefined };
+export type GetMyFavouritesQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, roomFavourites?: Array<{ __typename?: 'RoomFavourite', room: { __typename?: 'Room', id: string, title: string, address: string, price: number, size: number, description: string, rate?: number | null | undefined, owner: { __typename?: 'Owner', id: string, fullName: string, avatarUrl: string }, district: { __typename?: 'Districts', code: string, full_name?: string | null | undefined }, province: { __typename?: 'Provinces', code: string, full_name?: string | null | undefined }, images: Array<{ __typename?: 'RoomImage', imageUrl: string }> } }> | null | undefined } | null | undefined };
 
 export type GetUsersFavouritedQueryVariables = Exact<{
   roomId: Scalars['String'];
@@ -1077,6 +1088,13 @@ export type MyInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MyInvitationsQuery = { __typename?: 'Query', myInvitations?: Array<{ __typename?: 'Invite', id: string, status: string, timeOfCheck: any, user: { __typename?: 'User', fullName: string, email: string, phoneNumber: string, address: string, avatarUrl: string }, room: { __typename?: 'Room', title: string, address: string, description: string, rate?: number | null | undefined } }> | null | undefined };
+
+export type MyRoomRateQueryVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type MyRoomRateQuery = { __typename?: 'Query', myRoomRate?: { __typename?: 'RoomRate', id: string } | null | undefined };
 
 export type OwnerRatesQueryVariables = Exact<{
   ownerId: Scalars['String'];
@@ -1649,6 +1667,36 @@ export function useLoginOwnerMutation(baseOptions?: Apollo.MutationHookOptions<L
 export type LoginOwnerMutationHookResult = ReturnType<typeof useLoginOwnerMutation>;
 export type LoginOwnerMutationResult = Apollo.MutationResult<LoginOwnerMutation>;
 export type LoginOwnerMutationOptions = Apollo.BaseMutationOptions<LoginOwnerMutation, LoginOwnerMutationVariables>;
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
+
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
+      }
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const OwnerRegisterDocument = gql`
     mutation OwnerRegister($registerInput: OwnerRegisterInput!) {
   registerOwner(registerInput: $registerInput) {
@@ -2116,6 +2164,23 @@ export const GetMyFavouritesDocument = gql`
         id
         title
         address
+        price
+        size
+        description
+        rate
+        owner {
+          id
+          fullName
+          avatarUrl
+        }
+        district {
+          code
+          full_name
+        }
+        province {
+          code
+          full_name
+        }
         images {
           imageUrl
         }
@@ -2447,6 +2512,41 @@ export function useMyInvitationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type MyInvitationsQueryHookResult = ReturnType<typeof useMyInvitationsQuery>;
 export type MyInvitationsLazyQueryHookResult = ReturnType<typeof useMyInvitationsLazyQuery>;
 export type MyInvitationsQueryResult = Apollo.QueryResult<MyInvitationsQuery, MyInvitationsQueryVariables>;
+export const MyRoomRateDocument = gql`
+    query MyRoomRate($roomId: String!) {
+  myRoomRate(roomId: $roomId) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useMyRoomRateQuery__
+ *
+ * To run a query within a React component, call `useMyRoomRateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyRoomRateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyRoomRateQuery({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *   },
+ * });
+ */
+export function useMyRoomRateQuery(baseOptions: Apollo.QueryHookOptions<MyRoomRateQuery, MyRoomRateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyRoomRateQuery, MyRoomRateQueryVariables>(MyRoomRateDocument, options);
+      }
+export function useMyRoomRateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyRoomRateQuery, MyRoomRateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyRoomRateQuery, MyRoomRateQueryVariables>(MyRoomRateDocument, options);
+        }
+export type MyRoomRateQueryHookResult = ReturnType<typeof useMyRoomRateQuery>;
+export type MyRoomRateLazyQueryHookResult = ReturnType<typeof useMyRoomRateLazyQuery>;
+export type MyRoomRateQueryResult = Apollo.QueryResult<MyRoomRateQuery, MyRoomRateQueryVariables>;
 export const OwnerRatesDocument = gql`
     query OwnerRates($ownerId: String!, $page: Float!, $limit: Float!) {
   ownerRates(ownerId: $ownerId, page: $page, limit: $limit) {

@@ -1,4 +1,5 @@
 import {
+  HiOutlinePlus,
 	HiOutlineShare,
 	HiOutlineThumbDown,
 	HiOutlineThumbUp
@@ -6,8 +7,9 @@ import {
 import {StarRating} from "./StarRating";
 import Tag from "./Tag";
 import { Image } from "antd";
+import Button from "./Button";
 
-export default function ItemReview({rate, comment, user, images, createdDate}) {
+export default function ItemReview({rate, comment, user, images, createdDate, isEditable, id, openEdit}) {
   let date = new Date(createdDate);
   let stringDate = date.toLocaleDateString(undefined, { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"  });
 
@@ -27,6 +29,15 @@ export default function ItemReview({rate, comment, user, images, createdDate}) {
 					<div className="text-sm font-semibold">{user?.fullName}</div>
 					<div className="text-xs text-gray-600">{stringDate}</div>
 				</div>
+        <div className="ml-auto" style={{visibility: isEditable ? "visible" : "hidden" }}>
+            <Button
+              sm
+              onClick={() => openEdit(true)}
+              className="text-star border">
+              <HiOutlinePlus className="mr-1" />
+              Sửa đánh giá
+            </Button>
+        </div>
 			</div>
 			<div>
 				<div>
