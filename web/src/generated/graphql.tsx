@@ -1066,7 +1066,7 @@ export type GetUsersFavouritedQuery = { __typename?: 'Query', getUsersFavourited
 export type InvitationsToMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type InvitationsToMeQuery = { __typename?: 'Query', invitationsToMe?: Array<{ __typename?: 'Invite', id: string, status: string, timeOfCheck: any, room: { __typename?: 'Room', title: string, address: string, description: string }, owner: { __typename?: 'Owner', fullName: string, phoneNumber: string, email: string, avatarUrl: string } }> | null | undefined };
+export type InvitationsToMeQuery = { __typename?: 'Query', invitationsToMe?: Array<{ __typename?: 'Invite', id: string, status: string, timeOfCheck: any, room: { __typename?: 'Room', id: string, title: string, address: string, description: string }, owner: { __typename?: 'Owner', id: string, fullName: string, phoneNumber: string, email: string, avatarUrl: string } }> | null | undefined };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2282,11 +2282,13 @@ export const InvitationsToMeDocument = gql`
   invitationsToMe {
     id
     room {
+      id
       title
       address
       description
     }
     owner {
+      id
       fullName
       phoneNumber
       email
