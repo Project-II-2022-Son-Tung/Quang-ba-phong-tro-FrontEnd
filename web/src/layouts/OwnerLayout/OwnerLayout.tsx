@@ -55,6 +55,11 @@ const OwnerLayout = ({ children }) => {
                 Đăng phòng
               </Link>
             </li>
+            <li style={{ position: 'absolute', right: '0' }}>
+              <Link className="nav_text" to={routes.ownerEditProfile()}>
+                <UserOutlined />
+              </Link>
+            </li>
 
           </ul>
         </nav>

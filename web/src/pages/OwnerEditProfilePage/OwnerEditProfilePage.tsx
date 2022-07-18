@@ -3,7 +3,7 @@ import { MetaTags } from '@redwoodjs/web'
 import LoadingComponent from '../../helper/MessageComponent'
 import './index.css'
 import { Button } from 'antd'
-import { useMeQuery, useUpdateUserMutation } from 'src/generated/graphql'
+import { useMeOwnerQuery, useUpdateUserMutation } from 'src/generated/graphql'
 import {
   Form,
   Label,
@@ -12,40 +12,20 @@ import {
   FieldError,
   Submit,
 } from '@redwoodjs/forms'
-const EditProfilePage = () => {
+const OwnerEditProfilePage = () => {
   let submittedData = {
     fullName: '',
     phoneNumber: '',
     address: '',
   }
-  const { data, loading, error } = useMeQuery({
+  const { data, loading, error } = useMeOwnerQuery({
     variables: {},
   })
 
-  const [updateUser, {}] = useUpdateUserMutation()
-
-  const onSubmit = (dataSubmit: any) => {
-    console.log(dataSubmit)
-    submittedData = dataSubmit
-
-    console.log('Submitted Data'  + submittedData.fullName);
-    onhandleUpdate()
 
 
-  }
-  const onhandleUpdate =()=>{
-    updateUser({ variables: {
-      updateUserInput: {
-        fullName: submittedData.fullName,
-        phoneNumber: submittedData.phoneNumber,
-        address: submittedData.address,
-      },
 
 
-    },});
-
-    alert("Cập nhật thông tin thành công")
-  }
 
   if (loading) {
     return <LoadingComponent />
@@ -54,14 +34,14 @@ const EditProfilePage = () => {
       console.log(error)
     }
 
-    // console.log(data)
+    console.log(data)
   }
 
   return (
     <div className="edit-profile">
       <div className="form">
         <h1 style={{fontSize:'24px', textAlign:'center', fontWeight:'bold'}}>Chỉnh sửa thông tin cá nhân</h1>
-        <Form onSubmit={onSubmit}>
+        <Form >
           <Label
             name="Tên người dùng"
             className="label"
@@ -72,7 +52,7 @@ const EditProfilePage = () => {
             className="input"
             errorClassName="input error"
             validation={{ required: true }}
-            placeholder={data.me.fullName}
+            placeholder={data.meOwner.fullName}
 
           />
 
@@ -90,7 +70,7 @@ const EditProfilePage = () => {
             validation={{
               required: true,
             }}
-            placeholder={data.me.phoneNumber}
+            placeholder={data.meOwner.phoneNumber}
 
           />
           <FieldError name="phoneNumber" className="error-message" />
@@ -105,7 +85,7 @@ const EditProfilePage = () => {
             className="input"
             errorClassName="input error"
             validation={{ required: true }}
-            placeholder={data.me.address}
+            placeholder={data.meOwner.address}
 
 
           />
@@ -123,4 +103,4 @@ const EditProfilePage = () => {
   )
 }
 
-export default EditProfilePage
+export default OwnerEditProfilePage
