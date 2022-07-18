@@ -3,6 +3,7 @@ import { MetaTags } from '@redwoodjs/web'
 import { useMeOwnerQuery } from 'src/generated/graphql'
 import { useRoomsQuery } from 'src/generated/graphql'
 import MessageComponent from 'src/helper/MessageComponent'
+import RoomInfo from '../../components/ListRoom/component/RoomInfo'
 import ListRoom from 'antd/lib/layout/layout'
 import { useState } from 'react'
 const OwnerRoomPage = () => {
@@ -32,18 +33,51 @@ const OwnerRoomPage = () => {
     else console.log(data)
   return (
     <>
-      <MetaTags title="OwnerRoom" description="OwnerRoom page" />
+    <div
+      style={{ justifyContent: 'center', alignItems: 'center', marginTop: 50 }}
+    >
+      {data.rooms.rooms.map((room) => {
+        return (
+          <>
+            <RoomInfo
+              id={room.id}
+              title={room.title}
+              price={room.price}
+              size={room.size}
+              district={room.district}
+              province={room.province}
+              description={room.description}
+              rate={room.rate}
+              owner={room.owner}
+              address={room.address}
+              room_images={room.images}
+              key={room.id}
 
-      <h1>OwnerRoomPage</h1>
-      <p>
-        Find me in <code>./web/src/pages/OwnerRoomPage/OwnerRoomPage.tsx</code>
-      </p>
-      <p>
-        My default route is named <code>ownerRoom</code>, link to me with `
-        <Link to={routes.ownerRoom()}>OwnerRoom</Link>`
+            />
+          </>
+        )
+      })}
+      <div
+        style={{
+          width: '22vw',
+          height: '40px',
+          marginLeft: '39vw',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {/* <Pagination
 
 
-      </p>
+          current={currentPage}
+          onChange={onChangePage}
+          total={totalPages * 10}
+        /> */}
+      </div>
+    </div>
+
+
+
     </>
   )
 }
