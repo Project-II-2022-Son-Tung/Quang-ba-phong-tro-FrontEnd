@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  outline: 0;
+}
+.roomInfo .container {
+  margin: 0 auto;
+  width: 1200px;
+  height: 300px;
+  /* border-top: 1px solid;
+  border-bottom: 1px solid; */
+  border: 1px solid #e13427;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+  background-color: #fff9f3;
+}
+.roomInfo .image_container {
+  width: 40%;
+  height: 300px;
+  border-right: 1px solid;
+  float: left;
+}
+.roomInfo .info_container {
+  width: 60%;
+
+  height: 300px;
+  float: right;
+}
+.roomInfo .img {
+  width: 400px;
+  height: 300px;
+}
+.roomInfo .title {
+  width: 95%;
+  height: 60px;
+  margin-left: 25px;
+}
+.roomInfo .title_text {
+  font-size: 18px;
+  line-height: 30px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  color: #e13427;
+  display: 'block';
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+.roomInfo .sub_info {
+  width: 95%;
+  height: 60px;
+  margin-left: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.roomInfo .price_text {
+  color: #16c784;
+  font-size: 24px;
+  font-weight: 700;
+}
+.roomInfo .size_text {
+  color: #333;
+  line-height: 24px;
+  font-size: 19px;
+}
+.roomInfo .district_text {
+  color: #333;
+  line-height: 24px;
+  font-size: 19px;
+  margin-right: 80px;
+}
+.roomInfo .description_container {
+  width: 95%;
+  height: 75px;
+  margin-left: 25px;
+}
+.roomInfo .description_text {
+  display: block;
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 25px;
+
+  /* white-space: pre-wrap; current browsers */
+  /* text-overflow: ellipsis; */
+  color: #8a8d91;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+}
+.roomInfo .contact_container {
+  margin-left: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 105px;
+
+}
+.roomInfo .avt_img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.roomInfo .owner_name {
+  color: #8a8d91;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: 5px;
+}

@@ -6,13 +6,14 @@ import OwnerLayout from './layouts/OwnerLayout/OwnerLayout'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/owner-view-room-detail" page={OwnerViewRoomDetailPage} name="ownerViewRoomDetail" />
       <Route path="/admin/login" page={AdminLoginPage} name="adminLogin" />
       <Set wrap={CustomerLayout}>
         <Route path="/user/favourite-room" page={FavouriteRoomPage} name="favouriteRoom" />
         <Route path="/user" page={HomePage} name="home" />
-        <Route path="/viewRoomDetails/{id:String}" page={ViewRoomDetailPage} name="viewRoomDetail" />
+        <Route path="/user/viewRoomDetails/{id:String}" page={ViewRoomDetailPage} name="viewRoomDetail" />
         <Route path="/user/edit-profile" page={EditProfilePage} name="editProfile" />
-        <Route path="/invitations" page={InvitationsPage} name="invitations" />
+        <Route path="/user/invitations" page={InvitationsPage} name="invitations" />
 
       </Set>
       <Set wrap={GuestLayout}>

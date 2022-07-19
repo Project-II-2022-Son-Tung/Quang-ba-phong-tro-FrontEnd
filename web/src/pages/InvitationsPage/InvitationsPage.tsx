@@ -1,19 +1,35 @@
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-
+import { useInvitationsToMeQuery } from 'src/generated/graphql'
+import MessageComponent from 'src/helper/MessageComponent'
+import InvitationItem from './component/InvitationItem'
 const InvitationsPage = () => {
+  const { data, loading, error } = useInvitationsToMeQuery({
+    variables: {},
+  })
+
+  if (loading) {
+    return <MessageComponent message="Loading..."></MessageComponent>
+  } else console.log(data)
+
   return (
     <>
-      <MetaTags title="Invitations" description="Invitations page" />
+ {data.invitationsToMe.map((invite) => {
+        return (
+          <div style={{justifyContent: 'center', alignItems: 'center', marginTop: 50}}>
+            <InvitationItem
+              id={invite.room.id}
+              owner={invite.owner}
+              room = {invite.room}
+              timeOfCheck = {invite.timeOfCheck}
+              status = {invite.status}
+              key={invite.id}
 
-      <h1>InvitationsPage</h1>
-      <p>
-        Find me in <code>./web/src/pages/InvitationsPage/InvitationsPage.tsx</code>
-      </p>
-      <p>
-        My default route is named <code>invitations</code>, link to me with `
-        <Link to={routes.invitations()}>Invitations</Link>`
-      </p>
+            />
+          </div>
+        )
+      })}
+
     </>
   )
 }
