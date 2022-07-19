@@ -178,7 +178,7 @@ const   FilterBar = (props) => {
             <Button
               type="primary"
               htmlType="submit"
-              style={{ marginTop: '30px', borderRadius:'30px', width: '100px'}}
+              style={{ marginTop: '30px', borderRadius:'30px', width: '100px', backgroundColor:'#1890ff'}}
             >
               Bộ lọc
             </Button>

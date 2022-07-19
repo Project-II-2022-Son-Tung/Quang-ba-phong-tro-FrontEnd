@@ -43,7 +43,7 @@ const InvitationItem = (props) => {
   }
 
   return (
-    <div className="roomInfo">
+    <div className="inviteInfo">
       <div className="container">
         <div className="image_container">
           <img className="img" src={owner.avatarUrl} />

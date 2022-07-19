@@ -28,13 +28,7 @@ const columns = [
 const UserFavouritedList = (props) => {
   const { id, data } = props
 
-  console.log(data)
-  console.log(data.getUsersFavourited[0].fullName)
-
-
-
-
-
+  if(!data) return <MessageComponent message="Chưa có người yêu thích phòng"></MessageComponent>
   return (
     <div>
       <h1>Danh sách người dùng đã yêu thích phòng</h1>
