@@ -17,6 +17,7 @@ const RoomInfo = (props) => {
     owner,
     room_images,
     address,
+    actor
   } = props
 
   // const room_id = useParams()

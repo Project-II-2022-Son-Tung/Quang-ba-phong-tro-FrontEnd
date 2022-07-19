@@ -4,6 +4,7 @@ import RoomInfo from './component/RoomInfo/RoomInfo'
 import { Pagination } from 'antd'
 import MessageComponent  from '../../helper/MessageComponent'
 import './index.css'
+import { routes } from '@redwoodjs/router'
 const ListRoom = (props) => {
   let finalFilter = {}
 
@@ -89,6 +90,7 @@ const ListRoom = (props) => {
         return (
           <>
             <RoomInfo
+              link = 'viewRoomDetail'
               id={room.id}
               title={room.title}
               price={room.price}

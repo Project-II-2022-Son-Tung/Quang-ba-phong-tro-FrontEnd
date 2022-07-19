@@ -18,7 +18,9 @@ const InvitationsPage = () => {
         return (
           <div style={{justifyContent: 'center', alignItems: 'center', marginTop: 50}}>
             <InvitationItem
-              id={invite.room.id}
+
+              id={invite.id}
+              roomId={invite.room.id}
               owner={invite.owner}
               room = {invite.room}
               timeOfCheck = {invite.timeOfCheck}

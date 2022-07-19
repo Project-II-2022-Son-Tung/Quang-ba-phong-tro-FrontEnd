@@ -25,6 +25,8 @@ const Routes = () => {
         <Route path="/owner/postRoom" page={PostRoomPage  } name="postRoom" />
         <Route path="/owner" page={OwnerRoomPage} name="ownerRoom" />
         <Route path="/owner/edit-profile" page={OwnerEditProfilePage} name="ownerEditProfile" />
+        <Route path="/owner/viewRoomDetails/{id:String}" page={OwnerViewRoomDetailPage} name="ownerViewRoomDetail" />
+
 
 
       </Set>
