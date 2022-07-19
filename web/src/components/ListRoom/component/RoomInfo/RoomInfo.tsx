@@ -17,7 +17,7 @@ const RoomInfo = (props) => {
     owner,
     room_images,
     address,
-    actor
+    actor,
   } = props
 
   // const room_id = useParams()
@@ -41,10 +41,15 @@ const RoomInfo = (props) => {
         </div>
         <div className="info_container">
           <div className="title">
-            {/* <a  className="title_text">{title}</a> */}
-            <Link to={routes.viewRoomDetail({ id: id })}>
+            {actor =='user'? (
+            <Link to={routes.viewRoomDetail({id:id})}>
               <p className="title_text">{title}</p>
             </Link>
+            ) : (
+            <Link to={routes.ownerViewRoomDetail({id:id})}>
+              <p className="title_text">{title}</p>
+            </Link>
+            )}
           </div>
           <div className="sub_info">
             <div>
@@ -66,7 +71,14 @@ const RoomInfo = (props) => {
             <div>
               <img className="avt_img" src={owner.avatarUrl} />
             </div>
-            <div style={{textAlign: 'center', justifyContent: 'center', height: '28px', marginLeft: '10px'}} >
+            <div
+              style={{
+                textAlign: 'center',
+                justifyContent: 'center',
+                height: '28px',
+                marginLeft: '10px',
+              }}
+            >
               <p className="owner_name">{owner.fullName}</p>
             </div>
           </div>

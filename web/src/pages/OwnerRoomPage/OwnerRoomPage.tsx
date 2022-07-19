@@ -52,6 +52,7 @@ const OwnerRoomPage = () => {
               address={room.address}
               room_images={room.images}
               key={room.id}
+              actor='owner'
 
             />
           </>

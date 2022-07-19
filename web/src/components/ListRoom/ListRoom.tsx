@@ -90,7 +90,7 @@ const ListRoom = (props) => {
         return (
           <>
             <RoomInfo
-              link = 'viewRoomDetail'
+
               id={room.id}
               title={room.title}
               price={room.price}
@@ -103,6 +103,7 @@ const ListRoom = (props) => {
               address={room.address}
               room_images={room.images}
               key={room.id}
+              actor='user'
 
             />
           </>

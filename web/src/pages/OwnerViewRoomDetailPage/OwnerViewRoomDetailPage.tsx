@@ -8,10 +8,12 @@ import { Dialog, Transition } from '@headlessui/react'
 import Rating from '../../components/RateFolder/Rating'
 import { Form, Formik } from 'formik'
 import FormTextArea from '../../components/RateFolder/FormTextArea'
+import UserFavouritedList from './component/UserFavouritedList'
 import {
   useAddRoomToFavouriteMutation,
   useCheckRoomFavouritedQuery,
   useCreateRoomRateMutation,
+  useGetUsersFavouritedQuery,
   useMyRoomRateQuery,
   useRemoveRoomFromFavouritesMutation,
   useRoomQuery,
@@ -58,6 +60,12 @@ export default function OwnerViewRoomDetailPage({ id }: RoomDetailProps) {
     },
   })
 
+  const { data: data_user, loading: data_user_loading } = useGetUsersFavouritedQuery({
+    variables: {
+      roomId: id,
+    },
+  })
+
   const { data, loading, error } = useRoomQuery({
     variables: {
       roomId: id,
@@ -74,12 +82,14 @@ export default function OwnerViewRoomDetailPage({ id }: RoomDetailProps) {
     }
   }, [CheckRoomFavourited.data])
 
-  if (loading || data_rate_loading) {
+  if (loading || data_rate_loading || data_user_loading) {
     return <LoadingComponent />
   } else {
     if (error) {
       console.log(error)
     }
+
+    console.log(data_user)
   }
 
   return (
@@ -311,6 +321,7 @@ export default function OwnerViewRoomDetailPage({ id }: RoomDetailProps) {
                   console.log(page)
                 }}
               />
+              <UserFavouritedList  roomId={id} data={data_user}/>
             </div>
           </Row>
         </div>
@@ -730,6 +741,8 @@ export default function OwnerViewRoomDetailPage({ id }: RoomDetailProps) {
             </Transition.Child>
           </Dialog>
         </Transition>
+
+
       </div>
       ;
     </>
