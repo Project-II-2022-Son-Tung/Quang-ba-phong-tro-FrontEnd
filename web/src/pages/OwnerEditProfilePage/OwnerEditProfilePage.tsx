@@ -56,6 +56,8 @@ const OwnerEditProfilePage = () => {
 
           />
 
+          <OwnerContractPage roomId="ebc761bc-ee71-4525-a098-8bc46e1a6fc5" userId="5a922ead-d10b-4b2f-be0a-52ce697f5d2c"/>
+
           <FieldError name="fullName" className="error-message" />
 
           <Label
