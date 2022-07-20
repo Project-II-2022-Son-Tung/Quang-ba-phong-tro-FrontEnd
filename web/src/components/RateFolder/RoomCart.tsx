@@ -25,7 +25,7 @@ export default function RoomCart(props: { data?: RoomQuery, addToFavourite: any,
   }
   const dataDateToString = (date: string) => {
     const dateString = new Date(date);
-    return dateString.toLocaleDateString(undefined, { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"  });
+    return dateString.toLocaleDateString('vi-VN', { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"  });
   }
   const features = [
 		` ${props?.data?.room.room.address}`,

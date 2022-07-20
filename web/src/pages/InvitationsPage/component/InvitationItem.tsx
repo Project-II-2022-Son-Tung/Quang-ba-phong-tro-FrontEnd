@@ -13,9 +13,9 @@ const InvitationItem = (props) => {
 
   let date = new Date(timeOfCheck)
 
-  let stringDate = date.toLocaleDateString(undefined, {
-    day: '2-digit',
+  let stringDate = date.toLocaleDateString('vi-VN', {
     month: '2-digit',
+    day: '2-digit',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
