@@ -435,6 +435,7 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                               setSelectedFiles([])
                               setRating(0)
                               setSelectedImages([])
+                              setIsOpen(false)
                             }}
                           >
                             {(props) => (
@@ -643,6 +644,7 @@ export default function ViewRoomDetailPage({ id }: RoomDetailProps) {
                               setSelectedFiles([])
                               setRating(0)
                               setSelectedImages([])
+                              setIsUpdateOpen(false)
                             }}
                           >
                             {(props) => (
